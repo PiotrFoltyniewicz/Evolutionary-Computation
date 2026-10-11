@@ -23,9 +23,11 @@ int main(int argc, char *argv[])
     std::filesystem::create_directories(outputDir);
 
     const std::string resultsFilename = (outputDir / "greedy_results.csv").string();
+    const std::string summaryFilename = (outputDir / "greedy_summary.csv").string();
     std::ofstream(resultsFilename) << "instance,method,run,start,objective,solution\n";
+    std::ofstream(summaryFilename) << "instance,method,min,max,average,average_time_ms\n";
     for (const auto &filename : files)
-        runExperimentForFile(filename, resultsFilename);
+        runExperimentForFile(filename, resultsFilename, summaryFilename);
 
     return 0;
 }

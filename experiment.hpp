@@ -22,4 +22,4 @@ ExperimentStats statsForValues(const std::vector<int> &values);
 ExperimentStats runGreedyExperiment(const Nodes &nodes, std::function<int(const Nodes &, int, Solution &)> algorithm);
 ExperimentStats runRandomExperiment(const Nodes &nodes, int samples);
 void printExperimentSummary(const std::string &label, const ExperimentStats &stats);
-void runExperimentForFile(const std::string &filename, const std::string &resultsFilename);
+void runExperimentForFile(const std::string &filename, const std::string &resultsFilename, const std::string &summaryFilename);
