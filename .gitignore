@@ -1,0 +1,17 @@
+output/
+main
+*.o
+*.obj
+*.exe
+*.out
+*.a
+*.so
+*.dll
+*.dylib
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.vscode/*.log
+.vscode/*.tmp
+.vscode/*.swp

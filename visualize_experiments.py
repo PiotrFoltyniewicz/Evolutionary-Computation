@@ -63,8 +63,8 @@ def plot_solution(nodes, record, output: Path, title: str) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--results", type=Path, default=Path("Reports/experiment_results.csv"))
-    parser.add_argument("--output-dir", type=Path, default=Path("Reports/generated"))
+    parser.add_argument("--results", type=Path, default=Path("output/greedy_results.csv"))
+    parser.add_argument("--output-dir", type=Path, default=Path("output/generated"))
     parser.add_argument("--instances-dir", type=Path, default=Path("."))
     args = parser.parse_args()
 
@@ -79,7 +79,7 @@ def main() -> None:
         report.append(f"| {instance} | {method} | {min(values)} | {max(values)} | {sum(values) / len(values):.2f} |")
         report.append(f"\nBest `{method}` for `{instance}`: objective `{best['objective']}`, nodes `{best['solution']}`; [visualization]({image}).")
     report.extend(["", "The exported objective values were calculated by the C++ `assessSolution` function. A separate solution checker is not present in the current codebase.", "", "Source: [`visualize_experiments.py`](../../visualize_experiments.py)."])
-    (args.output_dir / "Lab1.md").write_text("\n".join(report) + "\n", encoding="utf-8")
+    (args.output_dir / "greedy_final_result.txt").write_text("\n".join(report) + "\n", encoding="utf-8")
     print(f"Wrote visualizations and report to {args.output_dir}")
 
 

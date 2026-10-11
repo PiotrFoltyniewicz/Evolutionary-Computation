@@ -1,6 +1,7 @@
 #include "experiment.hpp"
 
 #include <fstream>
+#include <filesystem>
 
 ExperimentStats statsForValues(const std::vector<int> &values)
 {
@@ -79,6 +80,10 @@ void runExperimentForFile(const std::string &filename, const std::string &result
     calculateDistances(nodes);
 
     std::cout << "Problem instance: " << filename << "\n";
+
+    const std::filesystem::path resultsPath{resultsFilename};
+    if (resultsPath.has_parent_path())
+        std::filesystem::create_directories(resultsPath.parent_path());
 
     std::ofstream results(resultsFilename, std::ios::app);
     if (!results)
