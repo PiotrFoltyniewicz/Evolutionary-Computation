@@ -1,5 +1,7 @@
 #include "experiment.hpp"
 
+#include <fstream>
+
 ExperimentStats statsForValues(const std::vector<int> &values)
 {
     ExperimentStats stats;
@@ -70,13 +72,43 @@ void printExperimentSummary(const std::string &label, const ExperimentStats &sta
               << ", avg time=" << stats.averageTimeMs << " ms/run\n";
 }
 
-void runExperimentForFile(const std::string &filename)
+void runExperimentForFile(const std::string &filename, const std::string &resultsFilename)
 {
     Nodes nodes{};
     readFile(filename.c_str(), nodes);
     calculateDistances(nodes);
 
     std::cout << "Problem instance: " << filename << "\n";
+
+    std::ofstream results(resultsFilename, std::ios::app);
+    if (!results)
+        throw std::runtime_error("Unable to open experiment results file");
+    auto writeResult = [&](const std::string &method, int run, int start, const Solution &solution, int value)
+    {
+        results << filename << "," << method << "," << run << "," << start << "," << value << ",\"";
+        for (std::size_t i = 0; i < solution.size(); ++i)
+            results << (i == 0 ? "" : " ") << solution[i];
+        results << "\"\n";
+    };
+
+    for (int run = 0; run < 200; ++run)
+    {
+        Solution solution{};
+        const int value = randomSolution(nodes, solution);
+        writeResult("random", run, -1, solution, value);
+    }
+    const std::vector<std::pair<std::string, std::function<int(const Nodes &, int, Solution &)>>> algorithms{
+        {"nearest_end", greedyNN1Solution},
+        {"nearest_any", greedyNN2Solution},
+        {"greedy_cycle", greedyCycleSolution}};
+    for (const auto &[method, algorithm] : algorithms)
+    {
+        for (int start = 0; start < PROBLEMSIZE; ++start)
+        {
+            Solution solution{};
+            writeResult(method, start, start, solution, algorithm(nodes, start, solution));
+        }
+    }
 
     auto randomStats = runRandomExperiment(nodes, 200);
     auto nn1Stats = runGreedyExperiment(nodes, greedyNN1Solution);
