@@ -72,25 +72,47 @@ NEAREST_ANY(start):
 
 ### Greedy cycle
 
-The implementation initializes a two-node cycle, then chooses the globally cheapest insertion into any current cycle edge, including the closing edge.
+The implementation initializes a two-node cycle, then chooses the globally cheapest insertion into any current cycle edge, including the closing edge. It uses cache to avoid redundant calculations on solution nodes which didn't change between calculations.
 
 ```text
 GREEDY_CYCLE(start):
-    t = argmin over V minus {start} of d(start, t)
+    t = argmin over V \ {start} of d(start, t)
     S = [start, t]
-    U = V minus {start, t}
+    U = V \ {start, t}
+
+    cache[position] stores:
+        left = S[position]
+        right = S[(position + 1) mod length(S)]
+        bestNode, bestDelta for inserting into edge (left, right)
+
+    initialize cache for the two edges of the 2-node cycle
+
     while length(S) < m:
         bestDelta = infinity
-        for v in U, in increasing index order:
-            for i = 0, ..., length(S)-1:
-                a = S[i]
-                b = S[(i+1) mod length(S)]
-                delta = d(a,v) + d(v,b) - d(a,b) + c[v]
-                if delta < bestDelta:
-                    remember v and insertion position i+1
-                    bestDelta = delta
-        insert the remembered node at the remembered position
-        remove it from U
+        bestPosition = undefined
+        bestNode = undefined
+
+        for each position i in 0, ..., length(S) - 1:
+            if cache[i] is invalid or its endpoints changed or its cached node is no longer in U:
+                recompute cache[i]:
+                    left = S[i]
+                    right = S[(i + 1) mod length(S)]
+                    bestNode = argmin over v in U, in increasing index order, of
+                            d(left, v) + d(v, right) - d(left, right) + c[v]
+                    bestDelta = that minimum delta
+
+            if cache[i].bestDelta < bestDelta:
+                bestDelta = cache[i].bestDelta
+                bestPosition = i + 1
+                bestNode = cache[i].bestNode
+
+        insert bestNode into S at bestPosition
+        remove bestNode from U
+
+        shift cache to match the new cycle
+        invalidate only the cache entries whose edges were changed by the insertion
+        keep all other cache entries unchanged
+
     return S, evaluate(S)
 ```
 
@@ -101,11 +123,11 @@ GREEDY_CYCLE(start):
 | TSPA | Random solution | 200 | 232272 | 292568 | 261848.80 |
 | TSPA | Nearest neighbor: end | 200 | 84362 | 90075 | 87476.63 | 0.7111
 | TSPA | Nearest neighbor: any | 200 | 75664 | 80051 | 77693.10 | 0.4656
-| TSPA | Greedy cycle | 200 | 72726 | 76277 | 74005.23 | 17.2665
+| TSPA | Greedy cycle | 200 | 72726 | 76277 | 73954 | 2.0680
 | TSPB | Random solution | 200 | 178576 | 231858 | 206620.77 |
 | TSPB | Nearest neighbor: end | 200 | 56007 | 63166 | 59397.33 | 0.6400
 | TSPB | Nearest neighbor: any | 200 | 54197 | 58230 | 56210.50 | 0.4330
-| TSPB | Greedy cycle | 200 | 54310 | 63734 | 59743.99 | 21.7271
+| TSPB | Greedy cycle | 200 | 54310 | 63734 | 59746 | 2.6861
 
 ## Visualizations
 
@@ -253,4 +275,4 @@ Greedy methods are located in `greedy_methods.cpp`
 
 ## Conclusions
 
-All greedy methods proved to be better than random. Due to implementation, greedy cycle approach is the slowest, but on instance A it gave the best results. Generally greedy with appending only at the end was worse than greedy with inserting the node anywhere.
+All greedy methods proved to be better than random. Greedy cycle approach is the slowest, but on instance A it gave the best results. Generally greedy with appending only at the end was worse than greedy with inserting the node anywhere.
