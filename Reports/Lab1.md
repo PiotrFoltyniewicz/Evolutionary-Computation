@@ -96,16 +96,16 @@ GREEDY_CYCLE(start):
 
 ## Results
 
-| Instance | Method | Runs | Minimum | Maximum | Mean |
-|---|---|---:|---:|---:|---:|
+| Instance | Method | Runs | Minimum | Maximum | Mean | Avg Time (ms)
+|---|---|---:|---:|---:|---:|---:|
 | TSPA | Random solution | 200 | 232272 | 292568 | 261848.80 |
-| TSPA | Nearest neighbor: end | 200 | 84362 | 90075 | 87476.63 |
-| TSPA | Nearest neighbor: any | 200 | 75664 | 80051 | 77693.10 |
-| TSPA | Greedy cycle | 200 | 72726 | 76277 | 74005.23 |
+| TSPA | Nearest neighbor: end | 200 | 84362 | 90075 | 87476.63 | 0.7111
+| TSPA | Nearest neighbor: any | 200 | 75664 | 80051 | 77693.10 | 0.4656
+| TSPA | Greedy cycle | 200 | 72726 | 76277 | 74005.23 | 17.2665
 | TSPB | Random solution | 200 | 178576 | 231858 | 206620.77 |
-| TSPB | Nearest neighbor: end | 200 | 56007 | 63166 | 59397.33 |
-| TSPB | Nearest neighbor: any | 200 | 54197 | 58230 | 56210.50 |
-| TSPB | Greedy cycle | 200 | 54310 | 63734 | 59743.99 |
+| TSPB | Nearest neighbor: end | 200 | 56007 | 63166 | 59397.33 | 0.6400
+| TSPB | Nearest neighbor: any | 200 | 54197 | 58230 | 56210.50 | 0.4330
+| TSPB | Greedy cycle | 200 | 54310 | 63734 | 59743.99 | 21.7271
 
 ## Visualizations
 
@@ -253,9 +253,4 @@ Greedy methods are located in `greedy_methods.cpp`
 
 ## Conclusions
 
-- Every greedy method substantially outperformed random sampling on both instances: even the worst recorded greedy solution was better than the best recorded random solution.
-- On TSPA, greedy cycle achieved the lowest minimum (72,726) and mean (74,005.23). Its mean was approximately 71.74% below the random mean. The implemented `nearest_any` variant ranked second, followed by `nearest_end`.
-- On TSPB, the implemented `nearest_any` variant achieved the lowest minimum (54,197), mean (56,210.50), and maximum (58,230). Its mean was approximately 72.80% below the random mean. Greedy cycle produced a slightly better best solution than `nearest_end` (54,310 versus 56,007), but a worse mean (59,743.99 versus 59,397.33).
-- The best method depended on the instance. Considering insertion positions improved the observed results over end-only construction, but greedy cycle was not consistently the strongest method on both instances.
-- Starting-node choice affected solution quality. For example, greedy cycle on TSPB ranged from 54,310 to 63,734, supporting the use of all starting nodes rather than a single arbitrary start.
-- These are constructive heuristic results, not proofs of optimality. The two implementation differences identified above limit conclusions about the exact algorithms requested in the assignment. Correcting those steps would require a new experiment and updated statistics, plots, and best-solution lists.
+All greedy methods proved to be better than random. Due to implementation, greedy cycle approach is the slowest, but on instance A it gave the best results. Generally greedy with appending only at the end was worse than greedy with inserting the node anywhere.
