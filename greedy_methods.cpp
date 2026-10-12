@@ -1,5 +1,92 @@
 #include "greedy_methods.hpp"
 
+#include <limits>
+
+namespace
+{
+struct CyclePositionCache
+{
+    int leftNode = -1;
+    int rightNode = -1;
+    int bestNode = -1;
+    int bestCost = std::numeric_limits<int>::max();
+};
+
+CyclePositionCache makeInvalidCyclePositionCache()
+{
+    return {};
+}
+
+CyclePositionCache buildCyclePositionCache(const Nodes &nodesArr,
+                                          const std::array<bool, PROBLEMSIZE> &availableNodes,
+                                          const Solution &solution,
+                                          int position,
+                                          int size)
+{
+    CyclePositionCache cache;
+    cache.leftNode = solution[position];
+    cache.rightNode = solution[(position + 1) % size];
+
+    for (int candidate = 0; candidate < PROBLEMSIZE; ++candidate)
+    {
+        if (!availableNodes[candidate])
+            continue;
+
+        const int insertionCost = nodesArr[cache.leftNode].distances[candidate] +
+                                  nodesArr[candidate].distances[cache.rightNode] -
+                                  nodesArr[cache.leftNode].distances[cache.rightNode] +
+                                  nodesArr[candidate].cost;
+
+        if (insertionCost < cache.bestCost)
+        {
+            cache.bestCost = insertionCost;
+            cache.bestNode = candidate;
+        }
+    }
+
+    return cache;
+}
+
+bool isCyclePositionCacheValid(const CyclePositionCache &cache,
+                               const Solution &solution,
+                               int position,
+                               int size,
+                               const std::array<bool, PROBLEMSIZE> &availableNodes)
+{
+    return cache.leftNode == solution[position] &&
+           cache.rightNode == solution[(position + 1) % size] &&
+           cache.bestNode != -1 &&
+           availableNodes[cache.bestNode];
+}
+
+std::vector<CyclePositionCache> shiftCyclePositionCache(const std::vector<CyclePositionCache> &cache, int insertPos)
+{
+    const int oldSize = static_cast<int>(cache.size());
+    std::vector<CyclePositionCache> nextCache(oldSize + 1, makeInvalidCyclePositionCache());
+
+    if (insertPos == 0)
+    {
+        for (int position = 0; position < oldSize - 1; ++position)
+            nextCache[position + 1] = cache[position];
+    }
+    else if (insertPos == oldSize)
+    {
+        for (int position = 0; position < oldSize - 1; ++position)
+            nextCache[position] = cache[position];
+    }
+    else
+    {
+        for (int position = 0; position < insertPos - 1; ++position)
+            nextCache[position] = cache[position];
+
+        for (int position = insertPos; position < oldSize; ++position)
+            nextCache[position + 1] = cache[position];
+    }
+
+    return nextCache;
+}
+} // namespace
+
 std::list<int>::const_iterator getNearsetNode(const std::list<int> &l, const Nodes &nodesArr, const Node &currNode)
 {
     return std::min_element(
@@ -120,6 +207,9 @@ int greedyCycleSolution(const Nodes &nodesArr, int startNodeIdx, Solution &solut
     std::array<bool, PROBLEMSIZE> availableNodes;
     availableNodes.fill(true);
 
+    std::vector<CyclePositionCache> positionCache;
+    positionCache.reserve(SOLUTIONSIZE);
+
     solution[0] = startNodeIdx;
     availableNodes[startNodeIdx] = false;
 
@@ -143,30 +233,26 @@ int greedyCycleSolution(const Nodes &nodesArr, int startNodeIdx, Solution &solut
     solution[1] = nearestNode;
     availableNodes[nearestNode] = false;
 
+    positionCache.push_back(makeInvalidCyclePositionCache());
+    positionCache.push_back(makeInvalidCyclePositionCache());
+
     for (int size = 2; size < SOLUTIONSIZE; ++size)
     {
         int bestNode = -1;
         int bestInsertPos = -1;
         int bestCost = std::numeric_limits<int>::max();
 
-        for (int j = 0; j < PROBLEMSIZE; ++j)
+        for (int position = 0; position < size; ++position)
         {
-            if (!availableNodes[j])
-                continue;
+            auto &cacheEntry = positionCache[position];
+            if (!isCyclePositionCacheValid(cacheEntry, solution, position, size, availableNodes))
+                cacheEntry = buildCyclePositionCache(nodesArr, availableNodes, solution, position, size);
 
-            for (int i = 0; i < size; ++i)
+            if (cacheEntry.bestCost < bestCost)
             {
-                int a = solution[i];
-                int b = solution[(i + 1) % size];
-
-                int insertionCost = nodesArr[a].distances[j] + nodesArr[j].distances[b] - nodesArr[a].distances[b] + nodesArr[j].cost;
-
-                if (insertionCost < bestCost)
-                {
-                    bestCost = insertionCost;
-                    bestNode = j;
-                    bestInsertPos = i + 1;
-                }
+                bestCost = cacheEntry.bestCost;
+                bestNode = cacheEntry.bestNode;
+                bestInsertPos = position + 1;
             }
         }
 
@@ -177,6 +263,8 @@ int greedyCycleSolution(const Nodes &nodesArr, int startNodeIdx, Solution &solut
 
         solution[bestInsertPos] = bestNode;
         availableNodes[bestNode] = false;
+
+        positionCache = shiftCyclePositionCache(positionCache, bestInsertPos);
     }
 
     return assessSolution(nodesArr, solution);
