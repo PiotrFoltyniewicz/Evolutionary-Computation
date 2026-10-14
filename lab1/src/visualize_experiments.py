@@ -74,11 +74,13 @@ def plot_solution(nodes, record, output: Path, title: str) -> None:
 
 
 def main() -> None:
+    repo_dir = Path(__file__).resolve().parents[2]
+    out_dir = repo_dir / "lab1" / "out"
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--results", type=Path, default=Path("output/greedy_results.csv"))
-    parser.add_argument("--summary", type=Path, default=Path("output/greedy_summary.csv"))
-    parser.add_argument("--output-dir", type=Path, default=Path("output/generated"))
-    parser.add_argument("--instances-dir", type=Path, default=Path("."))
+    parser.add_argument("--results", type=Path, default=out_dir / "greedy_results.csv")
+    parser.add_argument("--summary", type=Path, default=out_dir / "greedy_summary.csv")
+    parser.add_argument("--output-dir", type=Path, default=out_dir / "generated")
+    parser.add_argument("--instances-dir", type=Path, default=repo_dir / "common" / "data")
     args = parser.parse_args()
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
@@ -88,12 +90,12 @@ def main() -> None:
     for (instance, method), records in sorted(groups.items()):
         best = min(records, key=lambda row: (row["objective"], int(row["run"])))
         image = f"{Path(instance).stem}_{method}.png"
-        plot_solution(read_nodes(args.instances_dir / instance), best, args.output_dir / image, f"{instance}: {method}")
+        plot_solution(read_nodes(args.instances_dir / Path(instance).name), best, args.output_dir / image, f"{instance}: {method}")
         summary = summaries[(instance, method)]
         report.append(f"| {instance} | {method} | {summary['min']} | {summary['max']} | {summary['average']:.2f} | {summary['average_time_ms']:.6f} |")
         report.append(f"Best `{method}` for `{instance}`: objective `{best['objective']}`, nodes `{best['solution']}`; [visualization]({image}).")
         report.append("")
-    report.extend(["", "The exported objective values were calculated by the C++ `assessSolution` function. A separate solution checker is not present in the current codebase.", "", "Source: [`visualize_experiments.py`](../../visualize_experiments.py)."])
+    report.extend(["", "The exported objective values were calculated by the C++ `assessSolution` function. A separate solution checker is not present in the current codebase.", "", "Source: [`visualize_experiments.py`](../../src/visualize_experiments.py)."])
     (args.output_dir / "greedy_final_result.txt").write_text("\n".join(report) + "\n", encoding="utf-8")
     print(f"Wrote visualizations and report to {args.output_dir}")
 

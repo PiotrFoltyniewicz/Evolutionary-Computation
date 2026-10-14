@@ -1,4 +1,4 @@
-#include "experiment.hpp"
+#include "lab1_experiment.hpp"
 
 #include <fstream>
 #include <filesystem>
@@ -16,10 +16,10 @@ int main(int argc, char *argv[])
     }
     else
     {
-        files = {"TSPA.csv", "TSPB.csv"};
+        files = {"common/data/TSPA.csv", "common/data/TSPB.csv"};
     }
 
-    const std::filesystem::path outputDir{"output"};
+    const std::filesystem::path outputDir{"lab1/out"};
     std::filesystem::create_directories(outputDir);
 
     const std::string resultsFilename = (outputDir / "greedy_results.csv").string();

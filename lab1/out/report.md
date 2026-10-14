@@ -137,7 +137,7 @@ GREEDY_CYCLE(start):
 
 Objective: **232272**. Run: `90`. Construction start: `not applicable`.
 
-![TSPA: Random solution](../output/generated/Lab1/TSPA_random.png)
+![TSPA: Random solution](generated/TSPA_random.png)
 
 ```text
 [
@@ -153,7 +153,7 @@ Objective: **232272**. Run: `90`. Construction start: `not applicable`.
 
 Objective: **84362**. Run: `54`. Construction start: `54`.
 
-![TSPA: Nearest neighbor: end](../output/generated/Lab1/TSPA_nearest_end.png)
+![TSPA: Nearest neighbor: end](generated/TSPA_nearest_end.png)
 
 ```text
 [
@@ -169,7 +169,7 @@ Objective: **84362**. Run: `54`. Construction start: `54`.
 
 Objective: **75664**. Run: `49`. Construction start: `49`.
 
-![TSPA: Nearest neighbor: any (implemented variant)](../output/generated/Lab1/TSPA_nearest_any.png)
+![TSPA: Nearest neighbor: any (implemented variant)](generated/TSPA_nearest_any.png)
 
 ```text
 [
@@ -185,7 +185,7 @@ Objective: **75664**. Run: `49`. Construction start: `49`.
 
 Objective: **72726**. Run: `104`. Construction start: `104`.
 
-![TSPA: Greedy cycle](../output/generated/Lab1/TSPA_greedy_cycle.png)
+![TSPA: Greedy cycle](generated/TSPA_greedy_cycle.png)
 
 ```text
 [
@@ -203,7 +203,7 @@ Objective: **72726**. Run: `104`. Construction start: `104`.
 
 Objective: **178576**. Run: `4`. Construction start: `not applicable`.
 
-![TSPB: Random solution](../output/generated/Lab1/TSPB_random.png)
+![TSPB: Random solution](generated/TSPB_random.png)
 
 ```text
 [
@@ -219,7 +219,7 @@ Objective: **178576**. Run: `4`. Construction start: `not applicable`.
 
 Objective: **56007**. Run: `32`. Construction start: `32`.
 
-![TSPB: Nearest neighbor: end](../output/generated/Lab1/TSPB_nearest_end.png)
+![TSPB: Nearest neighbor: end](generated/TSPB_nearest_end.png)
 
 ```text
 [
@@ -235,7 +235,7 @@ Objective: **56007**. Run: `32`. Construction start: `32`.
 
 Objective: **54197**. Run: `158`. Construction start: `158`.
 
-![TSPB: Nearest neighbor: any (implemented variant)](../output/generated/Lab1/TSPB_nearest_any.png)
+![TSPB: Nearest neighbor: any (implemented variant)](generated/TSPB_nearest_any.png)
 
 ```text
 [
@@ -251,7 +251,7 @@ Objective: **54197**. Run: `158`. Construction start: `158`.
 
 Objective: **54310**. Run: `49`. Construction start: `49`.
 
-![TSPB: Greedy cycle](../output/generated/Lab1/TSPB_greedy_cycle.png)
+![TSPB: Greedy cycle](generated/TSPB_greedy_cycle.png)
 
 ```text
 [
@@ -271,7 +271,7 @@ Solutions were checked with given Excel solution checker, but we implemented als
 
 Repository: [PiotrFoltyniewicz/Evolutionary-Computation](https://github.com/PiotrFoltyniewicz/Evolutionary-Computation).
 
-Greedy methods are located in `greedy_methods.cpp`
+Greedy methods are located in `../src/greedy_methods.cpp`
 
 ## Conclusions
 

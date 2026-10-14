@@ -29,4 +29,4 @@ Best `random` for `TSPB.csv`: objective `178576`, nodes `[149, 87, 80, 143, 196,
 
 The exported objective values were calculated by the C++ `assessSolution` function. A separate solution checker is not present in the current codebase.
 
-Source: [`visualize_experiments.py`](../../visualize_experiments.py).
+Source: [`visualize_experiments.py`](../../src/visualize_experiments.py).
