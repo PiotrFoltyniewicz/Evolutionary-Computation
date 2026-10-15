@@ -24,8 +24,7 @@ run-$(1): $(1)
 	./$(1)/out/main
 
 visualize-$(1):
-	@test -f $(1)/src/visualize_experiments.py || { echo "Brak skryptu $(1)/src/visualize_experiments.py"; exit 1; }
-	$$(PYTHON) $(1)/src/visualize_experiments.py
+	$$(PYTHON) common/src/visualize_experiments.py $(1)
 endef
 
 $(foreach lab,$(LABS),$(eval $(call LAB_RULES,$(lab))))

@@ -13,8 +13,8 @@ int main(int argc, char *argv[])
 
     const std::filesystem::path outputDir{"lab1/out/generated"};
     std::filesystem::create_directories(outputDir);
-    std::ofstream results(outputDir / "greedy_results.csv");
-    std::ofstream summary(outputDir / "greedy_summary.csv");
+    std::ofstream results(outputDir / "results.csv");
+    std::ofstream summary(outputDir / "summary.csv");
     if (!results || !summary)
         throw std::runtime_error("Unable to open experiment output files");
 

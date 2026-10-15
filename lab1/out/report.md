@@ -111,7 +111,7 @@ Each method was tested 200 times on TSPA and TSPB; greedy methods started once f
 
 ## Best solutions and visualizations
 
-Node color represents selection cost. Gray nodes are not selected, blue segments form the closed tour, and the red star marks the first node in the displayed sequence. This may differ from the construction start when insertion before the first node is allowed. Lists below use one node index per line.
+Node color represents selection cost; the compact horizontal scale below each plot uses the same cost range for all methods on an instance. Gray nodes are not selected, blue segments form the closed tour, and the red star marks the first node in the displayed sequence. This may differ from the construction start when insertion before the first node is allowed. Lists below use one node index per line.
 
 ### TSPA
 
@@ -119,7 +119,7 @@ Node color represents selection cost. Gray nodes are not selected, blue segments
 
 Objective: **240638**. Run: `56`. Construction start: `not applicable`.
 
-![TSPA: Random solution](generated/TSPA_random.png)
+![TSPA: Random solution](generated/TSPA_Random.png)
 
 <details>
 <summary>Solution</summary>
@@ -233,7 +233,7 @@ Objective: **240638**. Run: `56`. Construction start: `not applicable`.
 
 Objective: **84362**. Run: `54`. Construction start: `54`.
 
-![TSPA: Nearest neighbor: end](generated/TSPA_nearest_end.png)
+![TSPA: Nearest neighbor: end](generated/TSPA_Nearest%20Node%20End.png)
 
 <details>
 <summary>Solution</summary>
@@ -347,7 +347,7 @@ Objective: **84362**. Run: `54`. Construction start: `54`.
 
 Objective: **72328**. Run: `11`. Construction start: `11`.
 
-![TSPA: Nearest neighbor: any](generated/TSPA_nearest_any.png)
+![TSPA: Nearest neighbor: any](generated/TSPA_Nearest%20Node%20Any.png)
 
 <details>
 <summary>Solution</summary>
@@ -461,7 +461,7 @@ Objective: **72328**. Run: `11`. Construction start: `11`.
 
 Objective: **72590**. Run: `31`. Construction start: `31`.
 
-![TSPA: Greedy cycle](generated/TSPA_greedy_cycle.png)
+![TSPA: Greedy cycle](generated/TSPA_Greedy%20Cycle.png)
 
 <details>
 <summary>Solution</summary>
@@ -577,7 +577,7 @@ Objective: **72590**. Run: `31`. Construction start: `31`.
 
 Objective: **179002**. Run: `190`. Construction start: `not applicable`.
 
-![TSPB: Random solution](generated/TSPB_random.png)
+![TSPB: Random solution](generated/TSPB_Random.png)
 
 <details>
 <summary>Solution</summary>
@@ -691,7 +691,7 @@ Objective: **179002**. Run: `190`. Construction start: `not applicable`.
 
 Objective: **56007**. Run: `32`. Construction start: `32`.
 
-![TSPB: Nearest neighbor: end](generated/TSPB_nearest_end.png)
+![TSPB: Nearest neighbor: end](generated/TSPB_Nearest%20Node%20End.png)
 
 <details>
 <summary>Solution</summary>
@@ -805,7 +805,7 @@ Objective: **56007**. Run: `32`. Construction start: `32`.
 
 Objective: **52915**. Run: `50`. Construction start: `50`.
 
-![TSPB: Nearest neighbor: any](generated/TSPB_nearest_any.png)
+![TSPB: Nearest neighbor: any](generated/TSPB_Nearest%20Node%20Any.png)
 
 <details>
 <summary>Solution</summary>
@@ -919,7 +919,7 @@ Objective: **52915**. Run: `50`. Construction start: `50`.
 
 Objective: **55655**. Run: `174`. Construction start: `174`.
 
-![TSPB: Greedy cycle](generated/TSPB_greedy_cycle.png)
+![TSPB: Greedy cycle](generated/TSPB_Greedy%20Cycle.png)
 
 <details>
 <summary>Solution</summary>
@@ -1042,8 +1042,8 @@ Repository: [PiotrFoltyniewicz/Evolutionary-Computation](https://github.com/Piot
 - [Objective evaluation](../../common/src/types.hpp)
 - [Experiment statistics and timing](../../common/src/experiment.cpp)
 - [Experiment runner](../src/lab1_experiment.cpp)
-- [Visualization script](../src/visualize_experiments.py)
-- [Exported solutions](generated/greedy_results.csv)
+- [Visualization script](../../common/src/visualize_experiments.py)
+- [Exported solutions](generated/results.csv)
 
 ## Conclusions
 
