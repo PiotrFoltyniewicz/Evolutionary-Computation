@@ -1,5 +1,6 @@
 #pragma once
 
-#include "experiment.hpp"
+#include <ostream>
+#include <string>
 
-void runExperimentForFile(const std::string &filename, const std::string &resultsFilename, const std::string &summaryFilename);
+void runExperimentForFile(const std::string &filename, std::ostream &results, std::ostream &summary);

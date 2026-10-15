@@ -1,0 +1,9 @@
+instance,method,min,max,average,average_time_ms
+common/data/TSPA.csv,random,235381,284914,261507.815,0.00407302
+common/data/TSPA.csv,nearest_end,84362,90075,87476.63,0.028711765
+common/data/TSPA.csv,nearest_any,72328,77022,74306.53,0.94301845
+common/data/TSPA.csv,greedy_cycle,72590,75281,73743.725,1.242938115
+common/data/TSPB.csv,random,185025,237597,205271.375,0.003436025
+common/data/TSPB.csv,nearest_end,56007,63166,59397.335,0.017372865
+common/data/TSPB.csv,nearest_any,52915,66164,59476.225,0.96260835
+common/data/TSPB.csv,greedy_cycle,55655,63734,59650.81,1.228574715

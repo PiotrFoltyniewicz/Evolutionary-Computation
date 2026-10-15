@@ -1,33 +1,25 @@
 #include "lab1_experiment.hpp"
 
-#include <fstream>
 #include <filesystem>
+#include <fstream>
+#include <stdexcept>
+#include <vector>
 
 int main(int argc, char *argv[])
 {
-    std::vector<std::string> files;
-
+    std::vector<std::string> files{"common/data/TSPA.csv", "common/data/TSPB.csv"};
     if (argc > 1)
-    {
-        for (int i = 1; i < argc; ++i)
-        {
-            files.emplace_back(argv[i]);
-        }
-    }
-    else
-    {
-        files = {"common/data/TSPA.csv", "common/data/TSPB.csv"};
-    }
+        files.assign(argv + 1, argv + argc);
 
-    const std::filesystem::path outputDir{"lab1/out"};
+    const std::filesystem::path outputDir{"lab1/out/generated"};
     std::filesystem::create_directories(outputDir);
+    std::ofstream results(outputDir / "greedy_results.csv");
+    std::ofstream summary(outputDir / "greedy_summary.csv");
+    if (!results || !summary)
+        throw std::runtime_error("Unable to open experiment output files");
 
-    const std::string resultsFilename = (outputDir / "greedy_results.csv").string();
-    const std::string summaryFilename = (outputDir / "greedy_summary.csv").string();
-    std::ofstream(resultsFilename) << "instance,method,run,start,objective,solution\n";
-    std::ofstream(summaryFilename) << "instance,method,min,max,average,average_time_ms\n";
+    results << "instance,method,run,start,objective,solution\n";
+    summary << "instance,method,min,max,average,average_time_ms\n";
     for (const auto &filename : files)
-        runExperimentForFile(filename, resultsFilename, summaryFilename);
-
-    return 0;
+        runExperimentForFile(filename, results, summary);
 }

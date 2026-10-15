@@ -26,9 +26,9 @@ void readFile(const char *filename, Nodes &nodesArr)
 
 void calculateDistances(Nodes &nodesArr)
 {
-    for (int i = 0; i < nodesArr.size(); ++i)
+    for (std::size_t i = 0; i < nodesArr.size(); ++i)
     {
-        for (int j = i + 1; j < nodesArr.size(); ++j)
+        for (std::size_t j = i + 1; j < nodesArr.size(); ++j)
         {
             Node &tmp1 = nodesArr[i];
             Node &tmp2 = nodesArr[j];

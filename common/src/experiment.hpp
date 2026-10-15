@@ -1,11 +1,12 @@
 #pragma once
 
+#include "types.hpp"
+
 #include <functional>
 #include <limits>
-#include <string>
-#include <vector>
+#include <ostream>
 
-#include "types.hpp"
+using Algorithm = std::function<int(const Nodes &, int, Solution &)>;
 
 struct ExperimentStats
 {
@@ -15,7 +16,6 @@ struct ExperimentStats
     double averageTimeMs = 0.0;
 };
 
-ExperimentStats statsForValues(const std::vector<int> &values);
-ExperimentStats runStartNodeExperiment(const Nodes &nodes, std::function<int(const Nodes &, int, Solution &)> algorithm);
-ExperimentStats runRandomExperiment(const Nodes &nodes, int samples);
-void printExperimentSummary(const std::string &label, const ExperimentStats &stats);
+ExperimentStats runExperiment(const Nodes &nodes, const Algorithm &algorithm,
+                             const std::string &instance, const std::string &method,
+                             std::ostream &results, bool usesStartNode = true);
