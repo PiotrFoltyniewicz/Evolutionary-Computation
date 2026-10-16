@@ -14,6 +14,7 @@ constexpr int SOLUTIONSIZE = (PROBLEMSIZE - 1) / 2 + 1;
 
 struct Node
 {
+    int index;
     int x;
     int y;
     int cost;
@@ -23,8 +24,19 @@ struct Node
 using Solution = std::array<int, SOLUTIONSIZE>;
 using Nodes = std::array<Node, PROBLEMSIZE>;
 
-inline int assessSolution(const Nodes &nodesArr, const Solution &solution)
+template <typename NodeType>
+inline int assessSolution(const std::array<NodeType, PROBLEMSIZE> &nodesArr, const Solution &solution)
 {
+    std::array<bool, PROBLEMSIZE> used;
+    used.fill(false);
+
+    for (const auto& nodeIdx : solution)
+    {
+        if (used[nodeIdx])
+            return -1;
+        used[nodeIdx] = true;
+    }
+
     int cost = 0;
 
     for (auto it = solution.begin(); std::next(it) != solution.end(); ++it)

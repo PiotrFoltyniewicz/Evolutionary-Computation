@@ -19,7 +19,7 @@ void readFile(const char *filename, Nodes &nodesArr)
     int i = 0;
     while (stream >> x >> del1 >> y >> del2 >> cost)
     {
-        Node node{x, y, cost};
+        Node node{i, x, y, cost};
         nodesArr[i++] = node;
     }
 }
