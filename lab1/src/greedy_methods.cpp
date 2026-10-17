@@ -1,4 +1,5 @@
 #include "greedy_methods.hpp"
+#include "utils.hpp"
 
 #include <limits>
 
@@ -7,7 +8,9 @@ int greedyNN1Solution(const Nodes &nodesArr, int startNodeIdx, Solution &solutio
     std::array<bool, PROBLEMSIZE> availableNodes;
     availableNodes.fill(true);
     availableNodes[startNodeIdx] = false;
-    solution[0] = startNodeIdx;
+    solution.clear();
+    solution.reserve(SOLUTIONSIZE);
+    solution.push_back(startNodeIdx);
 
     for (int position = 1; position < SOLUTIONSIZE; ++position)
     {
@@ -25,7 +28,7 @@ int greedyNN1Solution(const Nodes &nodesArr, int startNodeIdx, Solution &solutio
                 bestNode = node;
             }
         }
-        solution[position] = bestNode;
+        solution.push_back(bestNode);
         availableNodes[bestNode] = false;
     }
     return assessSolution(nodesArr, solution);
@@ -34,11 +37,14 @@ int greedyNN1Solution(const Nodes &nodesArr, int startNodeIdx, Solution &solutio
 int greedyNN2Solution(const Nodes &nodesArr, int startNodeIdx, Solution &solution)
 {
     std::array<bool, PROBLEMSIZE> used{};
-    solution[0] = startNodeIdx;
+    solution.clear();
+    solution.reserve(SOLUTIONSIZE);
+    solution.push_back(startNodeIdx);
     used[startNodeIdx] = true;
 
-    for (int size = 1; size < SOLUTIONSIZE; ++size)
+    while (solution.size() < SOLUTIONSIZE)
     {
+        const int size = static_cast<int>(solution.size());
         int bestCost = std::numeric_limits<int>::max();
         int bestNode = -1;
         int bestPosition = -1;
@@ -49,13 +55,7 @@ int greedyNN2Solution(const Nodes &nodesArr, int startNodeIdx, Solution &solutio
             {
                 if (used[node])
                     continue;
-                int cost = nodesArr[node].cost;
-                if (position > 0)
-                    cost += nodesArr[solution[position - 1]].distances[node];
-                if (position < size)
-                    cost += nodesArr[node].distances[solution[position]];
-                if (position > 0 && position < size)
-                    cost -= nodesArr[solution[position - 1]].distances[solution[position]];
+                const int cost = calculateInsertionCost(nodesArr, solution, node, position);
 
                 if (cost < bestCost)
                 {
@@ -65,9 +65,7 @@ int greedyNN2Solution(const Nodes &nodesArr, int startNodeIdx, Solution &solutio
                 }
             }
         }
-        std::move_backward(solution.begin() + bestPosition,
-                           solution.begin() + size, solution.begin() + size + 1);
-        solution[bestPosition] = bestNode;
+        solution.insert(solution.begin() + bestPosition, bestNode);
         used[bestNode] = true;
     }
     return assessSolution(nodesArr, solution);
@@ -76,11 +74,14 @@ int greedyNN2Solution(const Nodes &nodesArr, int startNodeIdx, Solution &solutio
 int greedyCycleSolution(const Nodes &nodesArr, int startNodeIdx, Solution &solution)
 {
     std::array<bool, PROBLEMSIZE> used{};
-    solution[0] = startNodeIdx;
+    solution.clear();
+    solution.reserve(SOLUTIONSIZE);
+    solution.push_back(startNodeIdx);
     used[startNodeIdx] = true;
 
-    for (int size = 1; size < SOLUTIONSIZE; ++size)
+    while (solution.size() < SOLUTIONSIZE)
     {
+        const int size = static_cast<int>(solution.size());
         int bestCost = std::numeric_limits<int>::max();
         int bestNode = -1;
         int bestPosition = -1;
@@ -91,11 +92,7 @@ int greedyCycleSolution(const Nodes &nodesArr, int startNodeIdx, Solution &solut
             {
                 if (used[node])
                     continue;
-                const int left = solution[position - 1];
-                const int right = solution[position % size];
-                const int cost = nodesArr[left].distances[node] +
-                                 nodesArr[node].distances[right] -
-                                 nodesArr[left].distances[right] + nodesArr[node].cost;
+                const int cost = calculateInsertionCost(nodesArr, solution, node, position, true);
 
                 if (cost < bestCost)
                 {
@@ -105,9 +102,7 @@ int greedyCycleSolution(const Nodes &nodesArr, int startNodeIdx, Solution &solut
                 }
             }
         }
-        std::move_backward(solution.begin() + bestPosition,
-                           solution.begin() + size, solution.begin() + size + 1);
-        solution[bestPosition] = bestNode;
+        solution.insert(solution.begin() + bestPosition, bestNode);
         used[bestNode] = true;
     }
     return assessSolution(nodesArr, solution);

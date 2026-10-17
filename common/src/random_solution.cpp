@@ -11,7 +11,7 @@ int randomSolution(const Nodes &nodesArr, Solution &solution)
     std::iota(indexes.begin(), indexes.end(), 0);
 
     std::shuffle(indexes.begin(), indexes.end(), gen);
-    std::copy_n(indexes.begin(), solution.size(), solution.begin());
+    solution.assign(indexes.begin(), indexes.begin() + SOLUTIONSIZE);
 
     return assessSolution(nodesArr, solution);
 }

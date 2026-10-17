@@ -21,18 +21,22 @@ struct Node
     std::array<int, PROBLEMSIZE> distances{};
 };
 
-using Solution = std::array<int, SOLUTIONSIZE>;
+using Solution = std::vector<int>;
+
 using Nodes = std::array<Node, PROBLEMSIZE>;
 
 template <typename NodeType>
 inline int assessSolution(const std::array<NodeType, PROBLEMSIZE> &nodesArr, const Solution &solution)
 {
+    if (solution.size() != SOLUTIONSIZE)
+        return -1;
+
     std::array<bool, PROBLEMSIZE> used;
     used.fill(false);
 
     for (const auto& nodeIdx : solution)
     {
-        if (used[nodeIdx])
+        if (nodeIdx < 0 || nodeIdx >= PROBLEMSIZE || used[nodeIdx])
             return -1;
         used[nodeIdx] = true;
     }
@@ -60,4 +64,16 @@ inline std::ostream &operator<<(std::ostream &os, const std::array<int, N> &arr)
     }
     os << "]";
     return os;
+}
+
+inline std::ostream &operator<<(std::ostream &os, const Solution &solution)
+{
+    os << "[";
+    for (std::size_t i = 0; i < solution.size(); ++i)
+    {
+        if (i > 0)
+            os << "->";
+        os << solution[i];
+    }
+    return os << "]";
 }
