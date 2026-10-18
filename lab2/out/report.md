@@ -128,7 +128,7 @@ Lab 1 results for comparison
 
 ## Best solutions and visualizations
 
-Node color represents selection cost; the compact horizontal scale below each plot uses the same cost range for all methods on an instance. Gray nodes are not selected, blue segments form the closed tour, and the red star marks the first node in the displayed sequence. This may differ from the construction start when insertion before the first node is allowed. Lists below use one node index per line.
+Node color represents selection cost; the compact horizontal scale below each plot uses the same cost range for all methods on an instance. Gray nodes are not selected, blue segments form the closed tour, and the red star marks the first node in the displayed sequence. This may differ from the construction start when insertion before the first node is allowed. Lists below show ten node indices per row; read left to right, then top to bottom to follow the tour.
 
 ### TSPA
 
@@ -138,113 +138,20 @@ Objective: **112806**. Run: `189`. Construction start: `189`.
 
 ![TSPA: Greedy Cycle 2-regret heuristics](generated/TSPA_Greedy%20Cycle%202-regret%20heuristics.png)
 
-<details>
-<summary>Solution</summary>
+**Solution (tour order):**
 
 ```text
-189
-166
-183
-10
-70
-22
-25
-114
-118
-181
-121
-61
-41
-140
-53
-179
-177
-36
-99
-84
-134
-72
-65
-20
-192
-111
-182
-165
-151
-106
-89
-124
-57
-64
-107
-88
-78
-26
-75
-170
-159
-130
-117
-93
-50
-47
-37
-147
-6
-46
-86
-55
-17
-29
-19
-163
-197
-136
-195
-184
-164
-142
-85
-81
-174
-194
-9
-33
-143
-62
-34
-154
-39
-175
-115
-5
-112
-139
-18
-4
-196
-51
-190
-67
-185
-156
-28
-180
-191
-141
-30
-160
-80
-82
-11
-168
-188
-120
-125
-187
+189 166 183  10  70  22  25 114 118 181
+121  61  41 140  53 179 177  36  99  84
+134  72  65  20 192 111 182 165 151 106
+ 89 124  57  64 107  88  78  26  75 170
+159 130 117  93  50  47  37 147   6  46
+ 86  55  17  29  19 163 197 136 195 184
+164 142  85  81 174 194   9  33 143  62
+ 34 154  39 175 115   5 112 139  18   4
+196  51 190  67 185 156  28 180 191 141
+ 30 160  80  82  11 168 188 120 125 187
 ```
-
-</details>
 
 #### Greedy Cycle heuristics with a weighted sum criterion
 
@@ -252,113 +159,20 @@ Objective: **72011**. Run: `31`. Construction start: `31`.
 
 ![TSPA: Greedy Cycle heuristics with a weighted sum criterion](generated/TSPA_Greedy%20Cycle%20heuristics%20with%20a%20weighted%20sum%20criterion.png)
 
-<details>
-<summary>Solution</summary>
+**Solution (tour order):**
 
 ```text
-31
-60
-116
-149
-63
-168
-11
-49
-108
-152
-100
-123
-83
-160
-97
-127
-161
-30
-187
-171
-2
-189
-141
-87
-45
-73
-135
-114
-181
-192
-158
-58
-84
-134
-72
-176
-174
-150
-106
-113
-89
-42
-151
-138
-182
-57
-64
-107
-88
-78
-193
-153
-75
-170
-146
-159
-130
-47
-93
-50
-3
-169
-1
-178
-101
-55
-29
-163
-136
-186
-164
-142
-8
-9
-54
-33
-131
-36
-177
-52
-179
-53
-140
-144
-67
-16
-51
-35
-185
-102
-28
-180
-132
-76
-4
-71
-157
-91
-80
-48
+ 31  60 116 149  63 168  11  49 108 152
+100 123  83 160  97 127 161  30 187 171
+  2 189 141  87  45  73 135 114 181 192
+158  58  84 134  72 176 174 150 106 113
+ 89  42 151 138 182  57  64 107  88  78
+193 153  75 170 146 159 130  47  93  50
+  3 169   1 178 101  55  29 163 136 186
+164 142   8   9  54  33 131  36 177  52
+179  53 140 144  67  16  51  35 185 102
+ 28 180 132  76   4  71 157  91  80  48
 ```
-
-</details>
 
 #### NN heuristics 2-regret heuristics
 
@@ -366,113 +180,20 @@ Objective: **110950**. Run: `4`. Construction start: `4`.
 
 ![TSPA: NN heuristics 2-regret heuristics](generated/TSPA_NN%20heuristics%202-regret%20heuristics.png)
 
-<details>
-<summary>Solution</summary>
+**Solution (tour order):**
 
 ```text
-104
-69
-120
-97
-168
-149
-11
-49
-108
-152
-100
-123
-148
-162
-132
-76
-4
-157
-18
-173
-16
-156
-28
-185
-67
-144
-179
-177
-36
-33
-143
-190
-139
-112
-5
-115
-175
-39
-154
-34
-109
-186
-136
-197
-163
-19
-178
-101
-155
-21
-147
-37
-47
-50
-93
-81
-43
-113
-117
-130
-159
-170
-75
-26
-78
-122
-107
-64
-57
-105
-182
-111
-138
-165
-151
-150
-176
-72
-65
-134
-84
-58
-158
-192
-181
-118
-114
-25
-121
-73
-45
-70
-96
-10
-183
-166
-32
-40
-30
-23
+104  69 120  97 168 149  11  49 108 152
+100 123 148 162 132  76   4 157  18 173
+ 16 156  28 185  67 144 179 177  36  33
+143 190 139 112   5 115 175  39 154  34
+109 186 136 197 163  19 178 101 155  21
+147  37  47  50  93  81  43 113 117 130
+159 170  75  26  78 122 107  64  57 105
+182 111 138 165 151 150 176  72  65 134
+ 84  58 158 192 181 118 114  25 121  73
+ 45  70  96  10 183 166  32  40  30  23
 ```
-
-</details>
 
 #### NN heuristics with a weighted sum criterion
 
@@ -480,113 +201,20 @@ Objective: **72419**. Run: `69`. Construction start: `69`.
 
 ![TSPA: NN heuristics with a weighted sum criterion](generated/TSPA_NN%20heuristics%20with%20a%20weighted%20sum%20criterion.png)
 
-<details>
-<summary>Solution</summary>
+**Solution (tour order):**
 
 ```text
-171
-2
-189
-187
-30
-141
-87
-45
-73
-135
-114
-181
-192
-158
-58
-84
-134
-72
-176
-174
-150
-106
-113
-89
-42
-151
-138
-182
-57
-64
-107
-88
-78
-193
-153
-75
-170
-146
-159
-130
-47
-93
-50
-3
-169
-1
-59
-178
-101
-55
-29
-163
-136
-186
-164
-142
-8
-9
-54
-33
-131
-36
-177
-52
-179
-53
-140
-144
-67
-16
-51
-35
-185
-102
-28
-180
-132
-76
-4
-71
-157
-91
-80
-100
-123
-83
-160
-152
-108
-49
-60
-116
-149
-63
-168
-97
-127
-69
-129
-104
+171   2 189 187  30 141  87  45  73 135
+114 181 192 158  58  84 134  72 176 174
+150 106 113  89  42 151 138 182  57  64
+107  88  78 193 153  75 170 146 159 130
+ 47  93  50   3 169   1  59 178 101  55
+ 29 163 136 186 164 142   8   9  54  33
+131  36 177  52 179  53 140 144  67  16
+ 51  35 185 102  28 180 132  76   4  71
+157  91  80 100 123  83 160 152 108  49
+ 60 116 149  63 168  97 127  69 129 104
 ```
-
-</details>
 
 ### TSPB
 
@@ -596,113 +224,20 @@ Objective: **68150**. Run: `73`. Construction start: `73`.
 
 ![TSPB: Greedy Cycle 2-regret heuristics](generated/TSPB_Greedy%20Cycle%202-regret%20heuristics.png)
 
-<details>
-<summary>Solution</summary>
+**Solution (tour order):**
 
 ```text
-73
-167
-181
-25
-98
-151
-122
-128
-4
-168
-183
-176
-38
-47
-140
-154
-161
-26
-177
-170
-115
-113
-155
-141
-60
-157
-134
-175
-62
-108
-1
-132
-103
-178
-65
-145
-149
-13
-37
-116
-147
-123
-50
-195
-121
-198
-58
-16
-164
-43
-166
-92
-120
-133
-8
-117
-95
-109
-3
-27
-135
-76
-185
-104
-77
-194
-190
-70
-187
-165
-105
-139
-193
-114
-10
-78
-54
-162
-106
-150
-182
-127
-90
-56
-131
-110
-23
-2
-14
-20
-74
-17
-171
-99
-163
-31
-88
-82
-85
-59
+ 73 167 181  25  98 151 122 128   4 168
+183 176  38  47 140 154 161  26 177 170
+115 113 155 141  60 157 134 175  62 108
+  1 132 103 178  65 145 149  13  37 116
+147 123  50 195 121 198  58  16 164  43
+166  92 120 133   8 117  95 109   3  27
+135  76 185 104  77 194 190  70 187 165
+105 139 193 114  10  78  54 162 106 150
+182 127  90  56 131 110  23   2  14  20
+ 74  17 171  99 163  31  88  82  85  59
 ```
-
-</details>
 
 #### Greedy Cycle heuristics with a weighted sum criterion
 
@@ -710,113 +245,20 @@ Objective: **52731**. Run: `91`. Construction start: `91`.
 
 ![TSPB: Greedy Cycle heuristics with a weighted sum criterion](generated/TSPB_Greedy%20Cycle%20heuristics%20with%20a%20weighted%20sum%20criterion.png)
 
-<details>
-<summary>Solution</summary>
+**Solution (tour order):**
 
 ```text
-91
-36
-197
-132
-29
-6
-180
-115
-170
-177
-125
-26
-97
-154
-140
-47
-38
-21
-30
-183
-191
-130
-63
-121
-198
-96
-48
-43
-156
-32
-89
-57
-79
-185
-104
-54
-196
-114
-10
-90
-14
-2
-20
-153
-129
-127
-80
-192
-162
-76
-135
-27
-11
-66
-67
-24
-34
-152
-181
-126
-88
-179
-87
-82
-167
-51
-85
-59
-73
-98
-151
-122
-173
-3
-184
-86
-46
-72
-117
-8
-120
-133
-136
-172
-160
-69
-124
-4
-64
-33
-155
-71
-141
-40
-60
-157
-45
-134
-175
-62
+ 91  36 197 132  29   6 180 115 170 177
+125  26  97 154 140  47  38  21  30 183
+191 130  63 121 198  96  48  43 156  32
+ 89  57  79 185 104  54 196 114  10  90
+ 14   2  20 153 129 127  80 192 162  76
+135  27  11  66  67  24  34 152 181 126
+ 88 179  87  82 167  51  85  59  73  98
+151 122 173   3 184  86  46  72 117   8
+120 133 136 172 160  69 124   4  64  33
+155  71 141  40  60 157  45 134 175  62
 ```
-
-</details>
 
 #### NN heuristics 2-regret heuristics
 
@@ -824,113 +266,20 @@ Objective: **68761**. Run: `138`. Construction start: `138`.
 
 ![TSPB: NN heuristics 2-regret heuristics](generated/TSPB_NN%20heuristics%202-regret%20heuristics.png)
 
-<details>
-<summary>Solution</summary>
+**Solution (tour order):**
 
 ```text
-94
-169
-199
-70
-190
-194
-77
-104
-144
-185
-79
-57
-83
-44
-89
-156
-164
-96
-198
-121
-195
-50
-7
-116
-37
-13
-149
-28
-145
-158
-138
-55
-177
-53
-65
-178
-103
-180
-132
-1
-108
-62
-175
-134
-45
-157
-60
-40
-64
-47
-38
-21
-168
-172
-8
-92
-166
-72
-46
-109
-3
-122
-151
-98
-25
-181
-73
-59
-85
-82
-88
-163
-99
-39
-17
-74
-20
-14
-2
-23
-110
-118
-131
-143
-148
-196
-78
-54
-162
-106
-127
-90
-153
-182
-150
-84
-66
-35
-27
-135
+ 94 169 199  70 190 194  77 104 144 185
+ 79  57  83  44  89 156 164  96 198 121
+195  50   7 116  37  13 149  28 145 158
+138  55 177  53  65 178 103 180 132   1
+108  62 175 134  45 157  60  40  64  47
+ 38  21 168 172   8  92 166  72  46 109
+  3 122 151  98  25 181  73  59  85  82
+ 88 163  99  39  17  74  20  14   2  23
+110 118 131 143 148 196  78  54 162 106
+127  90 153 182 150  84  66  35  27 135
 ```
-
-</details>
 
 #### NN heuristics with a weighted sum criterion
 
@@ -938,113 +287,20 @@ Objective: **50485**. Run: `192`. Construction start: `192`.
 
 ![TSPB: NN heuristics with a weighted sum criterion](generated/TSPB_NN%20heuristics%20with%20a%20weighted%20sum%20criterion.png)
 
-<details>
-<summary>Solution</summary>
+**Solution (tour order):**
 
 ```text
-65
-145
-28
-149
-13
-146
-37
-116
-147
-42
-50
-130
-63
-121
-198
-96
-48
-156
-89
-57
-185
-76
-104
-162
-54
-192
-80
-127
-129
-90
-153
-14
-2
-20
-74
-17
-171
-99
-88
-179
-87
-82
-51
-85
-59
-73
-167
-181
-152
-34
-24
-67
-66
-27
-98
-151
-122
-3
-184
-46
-72
-117
-8
-120
-133
-136
-172
-160
-69
-124
-21
-183
-30
-38
-47
-154
-140
-64
-33
-40
-141
-155
-71
-60
-157
-45
-134
-175
-62
-36
-197
-6
-115
-170
-125
-177
-29
-132
-174
-1
+ 65 145  28 149  13 146  37 116 147  42
+ 50 130  63 121 198  96  48 156  89  57
+185  76 104 162  54 192  80 127 129  90
+153  14   2  20  74  17 171  99  88 179
+ 87  82  51  85  59  73 167 181 152  34
+ 24  67  66  27  98 151 122   3 184  46
+ 72 117   8 120 133 136 172 160  69 124
+ 21 183  30  38  47 154 140  64  33  40
+141 155  71  60 157  45 134 175  62  36
+197   6 115 170 125 177  29 132 174   1
 ```
-
-</details>
 
 ## Solution checking
 
@@ -1054,15 +310,15 @@ All 1600 exported lab 2 solutions were checked for exactly 100 distinct indices 
 
 Repository: [PiotrFoltyniewicz/Evolutionary-Computation](https://github.com/PiotrFoltyniewicz/Evolutionary-Computation).
 
-- [2-regret and weighted algorithms](../src/lab2_methods.cpp)
-- [Insertion cost calculation](../../common/src/utils.hpp)
-- [Objective evaluation](../../common/src/types.hpp)
-- [Experiment statistics and timing](../../common/src/experiment.cpp)
-- [Experiment runner](../src/lab2_experiment.cpp)
-- [Visualization script](../../common/src/visualize_experiments.py)
-- [Exported solutions](generated/results.csv)
-- [Lab 2 summary](generated/summary.csv)
-- [Lab 1 summary](../../lab1/out/generated/summary.csv)
+- [2-regret and weighted algorithms](https://github.com/PiotrFoltyniewicz/Evolutionary-Computation/blob/main/lab2/src/lab2_methods.cpp)
+- [Insertion cost calculation](https://github.com/PiotrFoltyniewicz/Evolutionary-Computation/blob/main/common/src/utils.hpp)
+- [Objective evaluation](https://github.com/PiotrFoltyniewicz/Evolutionary-Computation/blob/main/common/src/types.hpp)
+- [Experiment statistics and timing](https://github.com/PiotrFoltyniewicz/Evolutionary-Computation/blob/main/common/src/experiment.cpp)
+- [Experiment runner](https://github.com/PiotrFoltyniewicz/Evolutionary-Computation/blob/main/lab2/src/lab2_experiment.cpp)
+- [Visualization script](https://github.com/PiotrFoltyniewicz/Evolutionary-Computation/blob/main/common/src/visualize_experiments.py)
+- [Exported solutions](https://github.com/PiotrFoltyniewicz/Evolutionary-Computation/blob/main/lab2/out/generated/results.csv)
+- [Lab 2 summary](https://github.com/PiotrFoltyniewicz/Evolutionary-Computation/blob/main/lab2/out/generated/summary.csv)
+- [Lab 1 summary](https://github.com/PiotrFoltyniewicz/Evolutionary-Computation/blob/main/lab1/out/generated/summary.csv)
 
 ## Conclusions
 
