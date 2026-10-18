@@ -1,9 +1,9 @@
 instance,method,min,max,average,average_time_ms
-TSPA,Greedy Cycle 2-regret heuristics,112806,128089,120378.765,1.4572152
-TSPA,Greedy Cycle heuristics with a weighted sum criterion,72011,75532,73353.51,1.427200925
-TSPA,NN heuristics 2-regret heuristics,110950,135771,121360.29,1.43403966
-TSPA,NN heuristics with a weighted sum criterion,72419,78504,75561.195,1.49578412
-TSPB,Greedy Cycle 2-regret heuristics,68150,77274,72484.84,1.447818605
-TSPB,Greedy Cycle heuristics with a weighted sum criterion,52731,63370,57866.33,1.409372015
-TSPB,NN heuristics 2-regret heuristics,68761,79756,73649.84,1.408189415
-TSPB,NN heuristics with a weighted sum criterion,50485,61406,55698.34,1.493942935
+TSPA,Greedy Cycle 2-regret heuristics,112806,128089,120378.765,5.22937058
+TSPA,Greedy Cycle heuristics with a weighted sum criterion,72011,75532,73353.51,5.075576815
+TSPA,NN heuristics 2-regret heuristics,110950,135771,121360.29,5.459555525
+TSPA,NN heuristics with a weighted sum criterion,72419,78504,75561.195,5.377397595
+TSPB,Greedy Cycle 2-regret heuristics,68150,77274,72484.84,5.307665405
+TSPB,Greedy Cycle heuristics with a weighted sum criterion,52731,63370,57866.33,5.140883265
+TSPB,NN heuristics 2-regret heuristics,68761,79756,73649.84,5.37493618
+TSPB,NN heuristics with a weighted sum criterion,50485,61406,55698.34,5.332106525
