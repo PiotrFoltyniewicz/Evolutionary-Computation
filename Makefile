@@ -1,4 +1,4 @@
-CXX = g++
+﻿CXX = g++
 CXXFLAGS ?= -std=c++20 -O2 -Wall -Wextra
 CPPFLAGS += -Icommon/src
 PYTHON ?= python3
@@ -16,7 +16,7 @@ define LAB_RULES
 $(1): $(1)/out/main
 
 $(1)/out/main: $(wildcard $(1)/src/*.cpp) $(wildcard $(1)/src/*.hpp) $(COMMON_SOURCES) $(COMMON_HEADERS) Makefile
-	@test -n "$(wildcard $(1)/src/*.cpp)" || { echo "Brak plików C++ w $(1)/src"; exit 1; }
+	@test -n "$(wildcard $(1)/src/*.cpp)" || { echo "Brak plikĂłw C++ w $(1)/src"; exit 1; }
 	mkdir -p $(1)/out
 	$$(CXX) $$(CPPFLAGS) $$(CXXFLAGS) $$(filter %.cpp,$$^) -o $$@
 
@@ -28,3 +28,7 @@ visualize-$(1):
 endef
 
 $(foreach lab,$(LABS),$(eval $(call LAB_RULES,$(lab))))
+
+# Reuse construction heuristics without linking lab2's main or experiment runner.
+lab3/out/main: lab2/src/lab2_methods.cpp lab2/src/lab2_methods.hpp common/src/utils.hpp
+lab3/out/main: CPPFLAGS += -Ilab2/src
