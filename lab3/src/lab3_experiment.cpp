@@ -5,6 +5,7 @@
 
 #include <filesystem>
 #include <iomanip>
+#include <sstream>
 
 int runLocalSearchVariant(const Nodes &nodes, int startNode, Solution &solution,
                           const LocalSearchVariant &variant,
@@ -43,4 +44,16 @@ void runExperimentForFile(const std::string &filename, std::ostream &results, st
                   << ", average=" << stats.average
                   << ", avg time=" << stats.averageTimeMs << " ms/run\n";
     }
+
+        
+    std::ostringstream sink;  // wyniki nie są nikomu potrzebne, interesuje nas tylko czas
+    const auto constructionStats = runExperiment(nodes, greedyConstructor, instance,
+                                                "Construction", sink, true);
+    const Algorithm randomStart = [](const Nodes &n, int s, Solution &sol) {
+        return createStartingSolution(n, s, sol, StartingSolutionType::Random, {});
+    };
+    const auto randomStats = runExperiment(nodes, randomStart, instance,
+                                        "RandomStart", sink, false);
+    std::cout << instance << " construction avg ms: " << constructionStats.averageTimeMs
+            << ", random start avg ms: " << randomStats.averageTimeMs << '\n';
 }

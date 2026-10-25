@@ -121,6 +121,7 @@ namespace
         case MoveType::IntraRouteEdgesExchange:
             return edgesExchangeDelta(nodes, solution, move.firstPosition, move.secondPosition);
         }
+        throw std::runtime_error("Invalid MoveType");
     }
 
     void applyMove(Solution &solution, const Move &move)
