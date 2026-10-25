@@ -24,7 +24,7 @@ The neighborhood consists of inter-route moves and one kind of intra-route moves
 
 - `INTER(p, v)`: replace the selected node at position `p` with an unselected node `v`.
 - `SWAP_NODES(i, j)`, `i < j`: exchange the nodes at positions `i` and `j`.
-- `SWAP_EDGES(i, j)`, `i < j`: remove edges `(S[i], S[i+1])` and `(S[j], S[j+1])` and reverse `S[i+1..j]`. Adjacent edges are skipped.
+- `SWAP_EDGES(i, j)`, `i < j`: replace edges `(S[i], S[i+1])` and `(S[j], S[j+1])` with `(S[i], S[j])` and `(S[i+1], S[j+1])` by reversing `S[i+1..j]`. Edges sharing a node are skipped.
 
 Positions are taken modulo `m`, so the closing edge is handled like the others.
 
