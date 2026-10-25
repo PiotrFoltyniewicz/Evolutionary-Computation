@@ -173,22 +173,21 @@ int steepestLocalSearch(const Nodes &nodes, Solution &solution, IntraRouteMove i
 int greedyLocalSearch(const Nodes &nodes, Solution &solution, IntraRouteMove intraMove)
 {
     int objective = assessSolution(nodes, solution);
-
-    std::random_device rd;
-    std::mt19937 gen(rd());
+    static thread_local std::mt19937 gen{std::random_device{}()};
 
     while (true)
     {
         auto moves = generateMoves(solution, intraMove);
-
-        std::shuffle(moves.begin(), moves.end(), gen);
         bool improved = false;
-        for (const auto &move : moves)
+        for (size_t i = 0; i < moves.size(); ++i)
         {
-            const int delta = evaluateMoveDelta(nodes, solution, move);
+            std::uniform_int_distribution<size_t> dist(i, moves.size() - 1);
+            std::swap(moves[i], moves[dist(gen)]);
+
+            const int delta = evaluateMoveDelta(nodes, solution, moves[i]);
             if (delta < 0)
             {
-                applyMove(solution, move);
+                applyMove(solution, moves[i]);
                 objective += delta;
                 improved = true;
                 break;
