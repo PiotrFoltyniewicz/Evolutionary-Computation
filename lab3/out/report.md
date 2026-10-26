@@ -82,51 +82,54 @@ Each method was run 200 times per instance (200 random solutions, or each node a
 
 ## Results
 
-Each method was tested 200 times on TSPA and TSPB. Lower objective values are better. Results of labs 1 and 2 are copied from the previous reports. Methods of this lab are in bold. Tables are sorted by the mean objective; times are averages per run. For lab 3, "Starting solution" is the average time of generating the starting solution (the greedy construction heuristic, or a random permutation) and "Local search" is the remainder of the run (Avg Time minus Starting solution).
+Each of the eight methods was run 200 times on each instance.
 
-### TSPA
+Objective values use the format **average (minimum – maximum)**; running times are averages per run in milliseconds. Lower objective values are better.
 
-| Method | Runs | Minimum | Maximum | Mean | Avg Time (ms) | Starting solution (ms) | Local search (ms) |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| **Greedy Edges Greedy** | **200** | **71955** | **74861** | **72984.00** | **1.922548** | **1.414950** | **0.507598** |
-| **Steepest Edges Greedy** | **200** | **71955** | **74861** | **73003.80** | **1.743490** | **1.414950** | **0.328540** |
-| **Greedy Nodes Greedy** | **200** | **71955** | **74877** | **73020.10** | **2.043134** | **1.414950** | **0.628184** |
-| **Steepest Nodes Greedy** | **200** | **71955** | **74861** | **73021.71** | **1.967720** | **1.414950** | **0.552770** |
-| Greedy Cycle heuristics with a weighted sum criterion | 200 | 72011 | 75532 | 73353.51 | 5.075577 | – | – |
-| Greedy Cycle | 200 | 72590 | 75281 | 73743.73 | 3.582711 | – | – |
-| Nearest Node Any | 200 | 72328 | 77022 | 74306.53 | 2.884855 | – | – |
-| NN heuristics with a weighted sum criterion | 200 | 72419 | 78504 | 75561.20 | 5.377398 | – | – |
-| **Greedy Edges Random** | **200** | **74104** | **79090** | **76212.29** | **7.242936** | **0.003531** | **7.239405** |
-| **Steepest Edges Random** | **200** | **73478** | **80392** | **76261.07** | **10.064306** | **0.003531** | **10.060775** |
-| Nearest Node End | 200 | 84362 | 90075 | 87476.63 | 0.060209 | – | – |
-| **Greedy Nodes Random** | **200** | **81592** | **95442** | **88483.99** | **8.018548** | **0.003531** | **8.015017** |
-| **Steepest Nodes Random** | **200** | **83531** | **97983** | **89934.21** | **19.707589** | **0.003531** | **19.704058** |
-| Greedy Cycle 2-regret heuristics | 200 | 112806 | 128089 | 120378.76 | 5.229371 | – | – |
-| NN heuristics 2-regret heuristics | 200 | 110950 | 135771 | 121360.29 | 5.459556 | – | – |
-| Random | 200 | 233146 | 288073 | 260752.93 | 0.007843 | – | – |
+### Objective function values
 
-### TSPB
+| Method | TSPA | TSPB |
+|---|---:|---:|
+| **Steepest Nodes Random** | 90292.47 (84621 – 99661) | 65902.04 (60136 – 75295) |
+| **Steepest Nodes Greedy** | 73021.71 (**71955** – 74861) | 54292.07 (49978 – 61265) |
+| **Steepest Edges Random** | 76108.17 (73719 – 79105) | 52640.92 (50335 – 55286) |
+| **Steepest Edges Greedy** | 73003.80 (**71955** – 74861) | 53091.28 (**49346** – 60354) |
+| **Greedy Nodes Random** | 88266.88 (82357 – 98469) | 63746.16 (59205 – 70900) |
+| **Greedy Nodes Greedy** | 73019.87 (**71955** – 74877) | 54310.27 (49913 – 61265) |
+| **Greedy Edges Random** | 76299.05 (73468 – 80279) | 53038.72 (50575 – 55602) |
+| **Greedy Edges Greedy** | 72984.73 (**71955** – 74861) | 53251.93 (49660 – 60266) |
+| Greedy Cycle 2-regret heuristics (lab 2) | 120378.77 (112806 – 128089) | 72484.84 (68150 – 77274) |
+| Greedy Cycle heuristics with a weighted sum criterion (lab 2) | 73353.51 (**72011** – 75532) | 57866.33 (52731 – 63370) |
+| NN heuristics 2-regret heuristics (lab 2) | 121360.29 (110950 – 135771) | 73649.84 (68761 – 79756) |
+| NN heuristics with a weighted sum criterion (lab 2) | 75561.20 (72419 – 78504) | 55698.34 (**50485** – 61406) |
+| Random (lab 1) | 261559.68 (234022 – 287462) | 205914.49 (183676 – 233336) |
+| Nearest Node End (lab 1) | 87476.63 (84362 – 90075) | 59397.34 (56007 – 63166) |
+| Nearest Node Any (lab 1) | 74306.53 (**72328** – 77022) | 59476.23 (**52915** – 66164) |
+| Greedy Cycle (lab 1) | 73743.73 (72590 – 75281) | 59650.81 (55655 – 63734) |
 
-| Method | Runs | Minimum | Maximum | Mean | Avg Time (ms) | Starting solution (ms) | Local search (ms) |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| **Steepest Edges Random** | **200** | **50020** | **55780** | **52544.65** | **10.120907** | **0.003519** | **10.117388** |
-| **Greedy Edges Random** | **200** | **50306** | **55983** | **52966.58** | **7.276858** | **0.003519** | **7.273339** |
-| **Steepest Edges Greedy** | **200** | **49346** | **60354** | **53091.28** | **2.548794** | **1.411800** | **1.136994** |
-| **Greedy Edges Greedy** | **200** | **49692** | **60357** | **53172.22** | **2.607454** | **1.411800** | **1.195654** |
-| **Steepest Nodes Greedy** | **200** | **49978** | **61265** | **54292.07** | **2.864336** | **1.411800** | **1.452536** |
-| **Greedy Nodes Greedy** | **200** | **49996** | **61265** | **54294.05** | **2.473184** | **1.411800** | **1.061384** |
-| NN heuristics with a weighted sum criterion | 200 | 50485 | 61406 | 55698.34 | 5.332107 | – | – |
-| Greedy Cycle heuristics with a weighted sum criterion | 200 | 52731 | 63370 | 57866.33 | 5.140883 | – | – |
-| Nearest Node End | 200 | 56007 | 63166 | 59397.33 | 0.086600 | – | – |
-| Nearest Node Any | 200 | 52915 | 66164 | 59476.22 | 4.494223 | – | – |
-| Greedy Cycle | 200 | 55655 | 63734 | 59650.81 | 3.416733 | – | – |
-| **Greedy Nodes Random** | **200** | **58230** | **69865** | **63898.63** | **7.870025** | **0.003519** | **7.866506** |
-| **Steepest Nodes Random** | **200** | **59309** | **74904** | **66211.37** | **19.354679** | **0.003519** | **19.351160** |
-| Greedy Cycle 2-regret heuristics | 200 | 68150 | 77274 | 72484.84 | 5.307665 | – | – |
-| NN heuristics 2-regret heuristics | 200 | 68761 | 79756 | 73649.84 | 5.374936 | – | – |
-| Random | 200 | 179244 | 236859 | 206352.15 | 0.010232 | – | – |
 
-Note: labs 1-2 were run on a different machine than lab 3, so their times are not directly comparable with the times of lab 3.
+### Running times (ms)
+
+Total times cover the complete run: creating the starting solution and performing local search. 
+
+| Method | TSPA: total | TSPA: starting solution | TSPB: total | TSPB: starting solution |
+|---|---:|---:|---:|---:|
+| Steepest Nodes Random | 67.694814 | 0.003531 | 66.661623 | 0.003519 |
+| Steepest Nodes Greedy | 5.657000 | 4.066111 | 8.942153 | 4.111100 |
+| Steepest Edges Random | 35.005239 | 0.003531 | 35.416348 | 0.003519 |
+| Steepest Edges Greedy | 4.856945 | 4.066111 | 9.898119 | 4.111100 |
+| Greedy Nodes Random | 28.357479 | 0.003531 | 28.458643 | 0.003519 |
+| Greedy Nodes Greedy | 5.509622 | 4.066111 | 6.848713 | 4.111100 |
+| Greedy Edges Random | 24.942397 | 0.003531 | 24.829678 | 0.003519 |
+| Greedy Edges Greedy | 5.153622 | 4.066111 | 8.615719 | 4.111100 |
+| Greedy Cycle 2-regret heuristics (lab 2) | 4.517217 |  | 3.915432 |  |
+| Greedy Cycle heuristics with a weighted sum criterion (lab 2) | 4.066111 |  | 3.760381 |  |
+| NN heuristics 2-regret heuristics (lab 2) | 4.025403 |  | 4.062423 |  |
+| NN heuristics with a weighted sum criterion (lab 2) | 4.148715 |  | 4.111100 |  |
+| Random (lab 1) | 0.030866 |  | 0.011238 |  |
+| Nearest Node End (lab 1) | 0.142488 |  | 0.078278 |  |
+| Nearest Node Any (lab 1) | 4.214506 |  | 3.637342 |  |
+| Greedy Cycle (lab 1) | 3.036610 |  | 2.781263 |  |
 
 ## Best solutions and visualizations
 
@@ -136,23 +139,23 @@ Node color represents selection cost; the compact horizontal scale below each pl
 
 #### Steepest Nodes Random
 
-Objective: **83531**.
+Objective: **84621**.
 
 ![TSPA: Steepest Nodes Random](generated/TSPA_Steepest%20Nodes%20Random.png)
 
 **Solution (tour order):**
 
 ```text
- 28 180  83 123 100  71 115 136 163  29
-178 164 142   8   9  54  87 189   2 171
-141 102 185  33 143 112 139  51  16  67
-140  73  84 131  36 177  52 179  53 144
- 35 156 160 168  63 149 116  60 108 152
- 49  97  95 127 161 187  30  90 132  76
- 38  80  31   7  48  91 157  85  93 130
-146 159  47 147   1  50   3 174 176 150
-106 113  89  42 182  57  64  88 153 107
-151  72 134  58 158 192 181 114 135  45
+164   1 169   3  50  89  42 151 150  73
+ 45 102  28 180  90 123 160  30 141  87
+135 134  72 176 131 144  67  35  63 149
+116  60 108  38  80  31  48  91 157  71
+139 112 186 136 178  29 101 147  47  93
+106 113 130 107  78 193 170 159 146  75
+153  88  57 182 114  98 189   2 171 187
+ 51  16  52 143  33  36 177 179  53 140
+ 41  84  58 158 192 185 156 100 152  49
+168 127  97 132  76   4   9  54 174   8
 ```
 
 #### Steepest Nodes Greedy
@@ -178,23 +181,23 @@ Objective: **71955**.
 
 #### Steepest Edges Random
 
-Objective: **73478**.
+Objective: **73719**.
 
 ![TSPA: Steepest Edges Random](generated/TSPA_Steepest%20Edges%20Random.png)
 
 **Solution (tour order):**
 
 ```text
- 76 132  90 123 100 152  80  48  31  60
-108  49  63 149 116 168  97 127  69 171
-  2 189 187  30 141 180  87  45 140  73
-135 181 192 158  58  84 134  72 176 174
-150 106  89  42 151 182  57  64  88  78
-193 153 107 170 146 159 130  47 147  21
-101  55  17  29 178 184 136 186 164   1
-169   3  50  93  85 142   8 194  54   9
- 33 131  99  36 177  52 179  53 144  67
-185  28 156  35  16  51   4  71 157  91
+ 80  48  31  60 108 152  49  11  63 149
+116 119 168 129 104  69 127  97 161 171
+  2 189 187  30 141  87  45 140  53 179
+177  36 131 134  84  58  73 135 181 192
+158 182  57  64 107  88  78 153 170 159
+130  47  93  43 113  89  42 151 106 150
+176  72 174  85   3  50 169   1 178 101
+ 29 163 136 186 184 164 142   8  54   9
+ 33  52 144  67 185  16  51  35  28 180
+160  83 123  90 132  76   4  71 157  91
 ```
 
 #### Steepest Edges Greedy
@@ -220,23 +223,23 @@ Objective: **71955**.
 
 #### Greedy Nodes Random
 
-Objective: **81592**.
+Objective: **82357**.
 
 ![TSPA: Greedy Nodes Random](generated/TSPA_Greedy%20Nodes%20Random.png)
 
 **Solution (tour order):**
 
 ```text
-139 112  71 157  91  80 108  60 116 149
- 63 123 160  30 187 189   2 171  69 127
- 97  95 168  49 152 100  90 180  28 144
-179  52  51   4  76 132 141  87  98 135
- 61  73 140  53  45 185 102 156  35  67
-177  36   8 147  47 159 146 170 107 150
-174 176  72 134 138 151  50   3   1 178
-164   9  54 131  99  84  58 181 114 192
-158 182  88 153 193  78  64  57  42  89
-106  43 113 130  93  85 142  33 143  16
+177 179  52  80  48  31  60 116 149 123
+ 90 185  67 144  53 140  45 141 187 127
+ 95  97 161  30 180 156  35   4  71 157
+ 91 152  49  63 168 171   2 189  87  98
+114 181 192 111 182  57  42  89 113 107
+ 88  78 193 153 170 146 159 130  43 106
+174  54   9 194   8 131  36  99  84 134
+ 72 176 150 151 138 158  58 135  73 102
+ 28 132  76  51  16  33 164 142   3  50
+169   1 184 136 178  29 147  47  93  85
 ```
 
 #### Greedy Nodes Greedy
@@ -262,23 +265,23 @@ Objective: **71955**.
 
 #### Greedy Edges Random
 
-Objective: **74104**.
+Objective: **73468**.
 
 ![TSPA: Greedy Edges Random](generated/TSPA_Greedy%20Edges%20Random.png)
 
 **Solution (tour order):**
 
 ```text
- 58  20 158 192 181 114  25 135  73  45
-185  35 156  76 132  90 100 123  83 160
-161  30 141 180  28 102  87  98 189 187
-  2 171 127  97 168 116 149  63  11  49
-152 108  60  31  48  80  91 157  71   4
- 51  16  67 144 140  53 179 177  99 131
- 36  52 143  33   9  54   8 142 164 186
-136 184 178  29 101   1   3  50  93  47
-130 159 170 153 193  78  88 107  57 182
-151  42  89 106 150 174 176  72 134  84
+ 36 177  53 140  73 135  45  98  87 102
+185  35 156  28 180 141  30 187   2 171
+ 92 104 129  69 127  97 160  83 123 152
+108  49  11 168  63 149 116  60  31  48
+ 80  38 132  76  91 157  71   4  51  16
+ 67 144 179  52 143  33   9  54   8 164
+136 184 178  29  55 101 147  47  50 169
+  1   3  93 130 159 170 153 193  78  88
+107  64  57 182 151  42  89 113 106 150
+174 176  72 134 158 192  58  84  99 131
 ```
 
 #### Greedy Edges Greedy
@@ -306,23 +309,23 @@ Objective: **71955**.
 
 #### Steepest Nodes Random
 
-Objective: **59309**.
+Objective: **60136**.
 
 ![TSPB: Steepest Nodes Random](generated/TSPB_Steepest%20Nodes%20Random.png)
 
 **Solution (tour order):**
 
 ```text
-152  34  24  67  99  39 171  74  20 179
- 87  82 167 151 172 136 189  21  38  49
- 59  85  51 181  80  90 110   2  14 153
-129 127 105  94  70 190  57 185  76 162
-192  54  78  10 114 196 187 104   3 184
-117 120 121 198  96  48  89  86  46  72
-  8 133 183  30 130 149  28 145 158 177
-125 170 115 180 155  71 141  60 157  45
-134 175  36 197  40  33  69 160  47  97
-  6 103 178 132  29  26 154 140  64  73
+ 88 179  87  82 167 181 152  34  24  67
+ 66 162 192  54  10 114 196 104 116  37
+146 149  28  65 132  29 175 134  45 157
+155 140  47  38 176  30 183  21 189 133
+120  48  96 198 121  69 160  46  86  76
+185  57  83  89  32 156  72 117   8 122
+151  73  59  85  40  97 125  26 154  64
+  3 184 172 136 191 130  50  15 158 170
+115  71  60  51  74  20  14 153 118 110
+ 93   2 182  52  90 129 127  80 171  99
 ```
 
 #### Steepest Nodes Greedy
@@ -348,23 +351,23 @@ Objective: **49978**.
 
 #### Steepest Edges Random
 
-Objective: **50020**.
+Objective: **50335**.
 
 ![TSPB: Steepest Edges Random](generated/TSPB_Steepest%20Edges%20Random.png)
 
 **Solution (tour order):**
 
 ```text
- 94 105  61 139 196 114  10  90  52 129
-127  80 150 182 153  14   2 188  20  74
- 17 171  39  99  67  24  34 152 181 179
- 87  82  85  59  51 167  73  98 111 151
-122 184   3 135  76  86  46  72 117 120
-133 136 172 160  69 189 183 130 191  30
- 21  38  47 140 154  97 155  71  40  60
-157  45 134 175 132  29   6 115 170 125
-177 158 145  28 149 116 147 121 198  96
- 48  89  57 104 162 192  54 187  70  81
+177 170 115  97 154 140  47  38 176  21
+183  30 191 130 121 198  96 120 133 136
+172   8 117 160  69 122 173 151  98   3
+184  86  46  72 156  89  57 190  70  81
+ 94 105 196 114  10 148 118 110   2  14
+ 20  74 171  99 182 153  90 129 127  80
+192  54 159 162 104  76  66  67  24  34
+152 181 179  87  82  51 167  73  59  85
+ 40 141 155  71  60 157  45 134 175 197
+  6  29 132  65 145  28 149 158  26 125
 ```
 
 #### Steepest Edges Greedy
@@ -390,86 +393,86 @@ Objective: **49346**.
 
 #### Greedy Nodes Random
 
-Objective: **58230**.
+Objective: **59205**.
 
 ![TSPB: Greedy Nodes Random](generated/TSPB_Greedy%20Nodes%20Random.png)
 
 **Solution (tour order):**
 
 ```text
- 85 167 152 181 179  87  82  51  59  73
- 67  80 182 153 110  93   2  14  20  74
-171  99  31  34  24 192 162  76 151  45
-157  60  71  40  64  47 140 154 158  13
-146  37 116 130 191  30  38  26 125  97
- 21 183 189 172  57 190  70 196 114  10
- 78  90 129 127  54 104 185  86 117   8
-136 133 120 156  89  72  46   3 184  69
-160  48  96 198 121 149  28 145  65 177
-170 115   6 197  29 132   1 174 175 134
+ 24  34 151 136 133  30  38 154  97 180
+  6 175 134  45  76  54 196 114  10  90
+129 127  66  67  31  51  59  73 167  25
+152 181  88  99 171  17  93 110  14  20
+ 74 188   2 153  80 192 162 104  57  89
+156  48  96  58 198 121 116 149  28  65
+ 29 197  36 132 103 178 177 125 170 115
+155  71 157  60 141  40  82  87 179  85
+ 64  33 140  47  21 120  72  79 185  86
+ 46 117   8 172 160  69 184   3  27  11
 ```
 
 #### Greedy Nodes Greedy
 
-Objective: **49996**.
+Objective: **49913**.
 
 ![TSPB: Greedy Nodes Greedy](generated/TSPB_Greedy%20Nodes%20Greedy.png)
 
 **Solution (tour order):**
 
 ```text
- 65 145  28 149  13 146  37 116 147  42
+125 145  28 149  13 146  37 116 147  42
  50 191 130 121 198  96  48 156  89  57
-185  76 162  54 192  80 127 129  90 153
- 14   2  20  74  17 171  99  88 179  87
- 82  51  85  59  73 167 181 152  34  24
- 67  66  27  98 151 122   3 184  46  72
-117   8 120 133 136 172 160  69 183  30
-176  21  38 154 140  47  64  33  40 141
-155  71  60 157  45 134 175  62  36 197
-  6 115 170 125 177 178  29 132 174   1
+104 194 190  70 187 196 114  10  78  54
+162 192  80 127 129  90 153  14   2  20
+ 74  17 171  99  88 179  87  82  51  85
+ 59  73 167 181 152  34  24  67  66  76
+135  27  98 151 122   3 184  46  72 117
+  8 120 133 136 172 160  69 189  21 183
+ 30  38 154 140  47  64  33  40 141 155
+ 71  60 157  45 134 175 132  29   6 170
 ```
 
 #### Greedy Edges Random
 
-Objective: **50306**.
+Objective: **50575**.
 
 ![TSPB: Greedy Edges Random](generated/TSPB_Greedy%20Edges%20Random.png)
 
 **Solution (tour order):**
 
 ```text
-  6 180 115 170 125  26 154 140  97 155
- 71  60 175 134  45  40  64  47  38 176
- 30  21 189  69 160   8 117  72  46  86
-184   3 151  27  76 162  54 192  66  67
- 24  34  25 152 181 167  73  59  85  51
- 82  87 179  88  99 171  74  20   2  14
-153  52  90 129  80 127  10 114 196  61
-105  94  81  70 190  57  89 156 120 133
-136 172 183 191 130  96 198 121  42 147
-116 149  28 145 158  65 178 132  29 197
+197 132  29   6 180 115 170  97 140  47
+ 21 183  30 176  38 154  26 125 177 158
+145  28 149  13 146  37 116 147  50 130
+121 198  96  48 156  89  57  86  46  72
+120 133 136 172   8 117 160  69 151 184
+  3 135  76 185 104 162 192  54  18 194
+190  70 187 196 114  10  78 127  80 129
+ 90 153  14   2  20  74 171  99  67  66
+ 11  24  34 152 181 179  87  82  51 167
+ 59  85  40 155  71  60  45 134 175  36
 ```
 
 #### Greedy Edges Greedy
 
-Objective: **49692**.
+Objective: **49660**.
 
 ![TSPB: Greedy Edges Greedy](generated/TSPB_Greedy%20Edges%20Greedy.png)
 
 **Solution (tour order):**
 
 ```text
-105  94  81 187  70 190 194  89  57 185
- 76 135   3 184  86  46  72 117 160  69
-172 136 133 120  96 198 121  42 147 116
- 37 146  13 149  28 145  65 178 132  29
- 36 197   6 180 115 170 177 125  26 154
-140  38  30 183  21  47  64  40 141 155
- 71  60 157 175 134  45  85  51  59  73
-167  82  87 179 181  34  24  67  99  39
-171  17  74  20   2  14 153  90 129 127
- 80 192 162  54  78  10 148 114 196  61
+ 65 145  28 149  13 146  37 116 147  42
+121 198  96  89  57 104 190  70  94 105
+ 81 169 187 196 114 148  10  78  54 162
+192  80 127 129  90 153  14   2  20  74
+ 17 171  39  99  67  24  34 181 179  87
+ 82 167  51  85  59  73  98 151 122   3
+184  46  72 120 133 136 172 160  69 183
+130  30  21  38 154 140  47  64  33  40
+155  71  60 157  45 134 175  62  91  36
+197 132  29   6 180 115 170 125 177 158
 ```
 
 ## Solution checking
@@ -489,8 +492,8 @@ Repository: [PiotrFoltyniewicz/Evolutionary-Computation](https://github.com/Piot
 
 ## Conclusions
 
-Local search improved the greedy starting solutions: on TSPA the best average is 72984.00 (Greedy Edges Greedy, previously 73353.51) and the best objective 71955 (previously 72011), found by all variants started from the greedy construction; on TSPB the best average is 52544.65 (Steepest Edges Random) and the best objective 49346 (Steepest Edges Greedy, previously 50485). The gain in the average over the greedy starting solutions is about 0.5% on TSPA and 2.5-4.7% on TSPB.
+Local search improved the greedy starting solutions. On TSPA, the best average is 72984.73 (Greedy Edges Greedy), compared with 73353.51 for the construction heuristic. All four variants with greedy starts reach the best objective of 71955. On TSPB, the best average is 52640.92 (Steepest Edges Random), while the best objective is 49346 (Steepest Edges Greedy), compared with 50485 for the construction heuristic.
 
-Edge exchange is clearly better than node exchange, especially from random starts (TSPA 76.2-76.3k vs 88.5-89.9k, TSPB 52.5-53.0k vs 63.9-66.2k). From greedy starts the difference is negligible on TSPA and about 1.1-1.2k on TSPB. From greedy starts steepest and greedy search give similar quality (differences below 0.2%). From random starts greedy search is better with node exchange (by 1.6-3.5%), while with edge exchange the two are equal on TSPA and steepest is better by 0.8% on TSPB.
+Edge exchange gives better average objectives than node exchange, especially from random starts. On TSPA, random starts with edge exchange average 76.1–76.3k versus 88.3–90.3k with node exchange; on TSPB, the respective ranges are 52.6–53.0k and 63.7–65.9k. Greedy starts give similar results for both search strategies, particularly on TSPA.
 
-Greedy search is faster than steepest from random starts: about 7.2-8.0 ms vs 10.1 ms (edges) and 19.4-19.7 ms (nodes), because it evaluates only the moves up to the first improvement. From greedy starts few iterations are needed and the times are similar (1.7-2.9 ms in total, of which the construction takes about 1.4 ms). On TSPB, random starts with edge exchange have a better average and a smaller spread than greedy starts (maximum 55.8-56.0k vs 60.4k), although the best solutions come from greedy starts.
+From random starts, greedy search takes 24.8–28.5 ms per run, compared with 35.0–35.4 ms for steepest edge exchange and 66.7–67.7 ms for steepest node exchange. Greedy starts reduce total running times to 4.9–9.9 ms, including construction. On TSPB, random starts with edge exchange give better average objectives and smaller spreads than greedy starts, although the best individual solution comes from a greedy start.

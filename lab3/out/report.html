@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>report.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> or <div class="page"></div> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="lab-3-local-search">Lab 3: Local search</h1>
+<p>Authors: Piotr Foltyniewicz 160295, Jakub Adamski 160291</p>
+<h2 id="problem-description">Problem description</h2>
+<p>Each instance consists of 200 nodes. A row in the input file contains the node's planar coordinates and selection cost, in the form <code>x;y;cost</code>. Node indices are zero-based and correspond to row order. The task is to select exactly 100 distinct nodes (half of the available nodes), order them, and form a closed cycle that minimizes the sum of travel distances and selected-node costs.</p>
+<p>Distances are Euclidean, rounded to the nearest integer and precomputed after reading the instance. All algorithms use this distance matrix. The evaluation sums all selected-node costs and all cycle edges, including last -&gt; first. In the pseudocode, <code>m = 100</code>, <code>n = 200</code>, <code>c[v]</code> is node cost, and <code>d(a, b)</code> is the precomputed distance. A solution <code>S</code> is an ordered list of <code>m</code> distinct nodes; <code>U</code> denotes the set of nodes not in <code>S</code>.</p>
+<p>The objective for an ordered selection <code>S</code> is:</p>
+<pre class="hljs"><code><div>F(S) = sum(c[S[i]]) + sum(d(S[i], S[(i + 1) mod length(S)]))
+</div></code></pre>
+<h2 id="pseudocode">Pseudocode</h2>
+<p>All indices are zero-based. Local search starts from a given solution and applies moves until none improves the objective. Moves are evaluated only through deltas; the neighbor solution is never built and <code>F</code> is never recalculated from scratch. The eight methods combine: steepest or greedy search, node or edge exchange as the intra-route move, random or greedy starting solution.</p>
+<h3 id="neighborhood-and-deltas">Neighborhood and deltas</h3>
+<p>The neighborhood consists of inter-route moves and one kind of intra-route moves. A move is only a descriptor (type and positions).</p>
+<ul>
+<li><code>INTER(p, v)</code>: replace the selected node at position <code>p</code> with an unselected node <code>v</code>.</li>
+<li><code>SWAP_NODES(i, j)</code>, <code>i &lt; j</code>: exchange the nodes at positions <code>i</code> and <code>j</code>.</li>
+<li><code>SWAP_EDGES(i, j)</code>, <code>i &lt; j</code>: replace edges <code>(S[i], S[i+1])</code> and <code>(S[j], S[j+1])</code> with <code>(S[i], S[j])</code> and <code>(S[i+1], S[j+1])</code> by reversing <code>S[i+1..j]</code>. Edges sharing a node are skipped.</li>
+</ul>
+<p>Positions are taken modulo <code>m</code>, so the closing edge is handled like the others.</p>
+<pre class="hljs"><code><div>DELTA_INTER(S, p, v):
+    out = S[p]; prev = S[p - 1]; next = S[p + 1]
+    return d(prev, v) + d(v, next) - d(prev, out) - d(out, next) + c[v] - c[out]
+
+DELTA_SWAP_EDGES(S, i, j):
+    a = S[i]; b = S[i + 1]; e = S[j]; f = S[j + 1]
+    return d(a, e) + d(b, f) - d(a, b) - d(e, f)
+
+DELTA_SWAP_NODES(S, i, j):
+    E = distinct edge starts among {i - 1, i, j - 1, j}
+    return sum over e in E of d&#x27;(e, e + 1) - d(e, e + 1)     // d&#x27; = edge length after the swap
+</div></code></pre>
+<h3 id="steepest-local-search">Steepest local search</h3>
+<pre class="hljs"><code><div>STEEPEST(S):
+    loop:
+        best = NONE; bestDelta = 0
+        for move in all moves:
+            delta = DELTA(S, move)
+            if delta &lt; bestDelta: best = move; bestDelta = delta
+        if best == NONE: return S
+        APPLY(S, best)
+</div></code></pre>
+<h3 id="greedy-local-search">Greedy local search</h3>
+<p><strong>Randomization.</strong> All moves of both kinds (inter-route and the chosen intra-route kind) form one set of move descriptors. Moves are taken from it in uniformly random order: each time a move is needed, a random not yet examined move is drawn, so the two kinds are mixed and the search does not start preferentially from either of them. Deltas are not precomputed: only the drawn move is evaluated, and the first move with a negative delta is applied immediately. Therefore only as many moves are evaluated as are needed to find an improvement (all of them only at a local optimum). After a move is applied, the set of moves is generated again. The random generator is <code>std::mt19937</code> seeded from <code>std::random_device</code>.</p>
+<pre class="hljs"><code><div>GREEDY(S):
+    loop:
+        R = all moves                              // both kinds
+        improved = false
+        while R is not empty:
+            move = random element removed from R   // uniformly random order
+            if DELTA(S, move) &lt; 0:
+                APPLY(S, move)
+                improved = true
+                break
+        if not improved:
+            return S
+</div></code></pre>
+<h3 id="starting-solutions">Starting solutions</h3>
+<p>Random: the first <code>m</code> nodes of a random permutation of all <code>n</code> nodes. Greedy: the best construction heuristic of labs 1-2 for the instance, started from each of the 200 nodes: weighted-sum greedy cycle for TSPA and weighted-sum nearest neighbor for TSPB.</p>
+<p>Each method was run 200 times per instance (200 random solutions, or each node as the construction start). Times include the construction of the starting solution.</p>
+<h2 id="results">Results</h2>
+<p>Each of the eight methods was run 200 times on each instance.</p>
+<p>Objective values use the format <strong>average (minimum – maximum)</strong>; running times are averages per run in milliseconds. Lower objective values are better.</p>
+<h3 id="objective-function-values">Objective function values</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th style="text-align:right">TSPA</th>
+<th style="text-align:right">TSPB</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Steepest Nodes Random</strong></td>
+<td style="text-align:right">90292.47 (84621 – 99661)</td>
+<td style="text-align:right">65902.04 (60136 – 75295)</td>
+</tr>
+<tr>
+<td><strong>Steepest Nodes Greedy</strong></td>
+<td style="text-align:right">73021.71 (<strong>71955</strong> – 74861)</td>
+<td style="text-align:right">54292.07 (49978 – 61265)</td>
+</tr>
+<tr>
+<td><strong>Steepest Edges Random</strong></td>
+<td style="text-align:right">76108.17 (73719 – 79105)</td>
+<td style="text-align:right">52640.92 (50335 – 55286)</td>
+</tr>
+<tr>
+<td><strong>Steepest Edges Greedy</strong></td>
+<td style="text-align:right">73003.80 (<strong>71955</strong> – 74861)</td>
+<td style="text-align:right">53091.28 (<strong>49346</strong> – 60354)</td>
+</tr>
+<tr>
+<td><strong>Greedy Nodes Random</strong></td>
+<td style="text-align:right">88266.88 (82357 – 98469)</td>
+<td style="text-align:right">63746.16 (59205 – 70900)</td>
+</tr>
+<tr>
+<td><strong>Greedy Nodes Greedy</strong></td>
+<td style="text-align:right">73019.87 (<strong>71955</strong> – 74877)</td>
+<td style="text-align:right">54310.27 (49913 – 61265)</td>
+</tr>
+<tr>
+<td><strong>Greedy Edges Random</strong></td>
+<td style="text-align:right">76299.05 (73468 – 80279)</td>
+<td style="text-align:right">53038.72 (50575 – 55602)</td>
+</tr>
+<tr>
+<td><strong>Greedy Edges Greedy</strong></td>
+<td style="text-align:right">72984.73 (<strong>71955</strong> – 74861)</td>
+<td style="text-align:right">53251.93 (49660 – 60266)</td>
+</tr>
+<tr>
+<td>Greedy Cycle 2-regret heuristics (lab 2)</td>
+<td style="text-align:right">120378.77 (112806 – 128089)</td>
+<td style="text-align:right">72484.84 (68150 – 77274)</td>
+</tr>
+<tr>
+<td>Greedy Cycle heuristics with a weighted sum criterion (lab 2)</td>
+<td style="text-align:right">73353.51 (<strong>72011</strong> – 75532)</td>
+<td style="text-align:right">57866.33 (52731 – 63370)</td>
+</tr>
+<tr>
+<td>NN heuristics 2-regret heuristics (lab 2)</td>
+<td style="text-align:right">121360.29 (110950 – 135771)</td>
+<td style="text-align:right">73649.84 (68761 – 79756)</td>
+</tr>
+<tr>
+<td>NN heuristics with a weighted sum criterion (lab 2)</td>
+<td style="text-align:right">75561.20 (72419 – 78504)</td>
+<td style="text-align:right">55698.34 (<strong>50485</strong> – 61406)</td>
+</tr>
+<tr>
+<td>Random (lab 1)</td>
+<td style="text-align:right">261559.68 (234022 – 287462)</td>
+<td style="text-align:right">205914.49 (183676 – 233336)</td>
+</tr>
+<tr>
+<td>Nearest Node End (lab 1)</td>
+<td style="text-align:right">87476.63 (84362 – 90075)</td>
+<td style="text-align:right">59397.34 (56007 – 63166)</td>
+</tr>
+<tr>
+<td>Nearest Node Any (lab 1)</td>
+<td style="text-align:right">74306.53 (<strong>72328</strong> – 77022)</td>
+<td style="text-align:right">59476.23 (<strong>52915</strong> – 66164)</td>
+</tr>
+<tr>
+<td>Greedy Cycle (lab 1)</td>
+<td style="text-align:right">73743.73 (72590 – 75281)</td>
+<td style="text-align:right">59650.81 (55655 – 63734)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="running-times-ms">Running times (ms)</h3>
+<p>Total times cover the complete run: creating the starting solution and performing local search.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th style="text-align:right">TSPA: total</th>
+<th style="text-align:right">TSPA: starting solution</th>
+<th style="text-align:right">TSPB: total</th>
+<th style="text-align:right">TSPB: starting solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Steepest Nodes Random</td>
+<td style="text-align:right">67.694814</td>
+<td style="text-align:right">0.003531</td>
+<td style="text-align:right">66.661623</td>
+<td style="text-align:right">0.003519</td>
+</tr>
+<tr>
+<td>Steepest Nodes Greedy</td>
+<td style="text-align:right">5.657000</td>
+<td style="text-align:right">4.066111</td>
+<td style="text-align:right">8.942153</td>
+<td style="text-align:right">4.111100</td>
+</tr>
+<tr>
+<td>Steepest Edges Random</td>
+<td style="text-align:right">35.005239</td>
+<td style="text-align:right">0.003531</td>
+<td style="text-align:right">35.416348</td>
+<td style="text-align:right">0.003519</td>
+</tr>
+<tr>
+<td>Steepest Edges Greedy</td>
+<td style="text-align:right">4.856945</td>
+<td style="text-align:right">4.066111</td>
+<td style="text-align:right">9.898119</td>
+<td style="text-align:right">4.111100</td>
+</tr>
+<tr>
+<td>Greedy Nodes Random</td>
+<td style="text-align:right">28.357479</td>
+<td style="text-align:right">0.003531</td>
+<td style="text-align:right">28.458643</td>
+<td style="text-align:right">0.003519</td>
+</tr>
+<tr>
+<td>Greedy Nodes Greedy</td>
+<td style="text-align:right">5.509622</td>
+<td style="text-align:right">4.066111</td>
+<td style="text-align:right">6.848713</td>
+<td style="text-align:right">4.111100</td>
+</tr>
+<tr>
+<td>Greedy Edges Random</td>
+<td style="text-align:right">24.942397</td>
+<td style="text-align:right">0.003531</td>
+<td style="text-align:right">24.829678</td>
+<td style="text-align:right">0.003519</td>
+</tr>
+<tr>
+<td>Greedy Edges Greedy</td>
+<td style="text-align:right">5.153622</td>
+<td style="text-align:right">4.066111</td>
+<td style="text-align:right">8.615719</td>
+<td style="text-align:right">4.111100</td>
+</tr>
+<tr>
+<td>Greedy Cycle 2-regret heuristics (lab 2)</td>
+<td style="text-align:right">4.517217</td>
+<td style="text-align:right"></td>
+<td style="text-align:right">3.915432</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>Greedy Cycle heuristics with a weighted sum criterion (lab 2)</td>
+<td style="text-align:right">4.066111</td>
+<td style="text-align:right"></td>
+<td style="text-align:right">3.760381</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>NN heuristics 2-regret heuristics (lab 2)</td>
+<td style="text-align:right">4.025403</td>
+<td style="text-align:right"></td>
+<td style="text-align:right">4.062423</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>NN heuristics with a weighted sum criterion (lab 2)</td>
+<td style="text-align:right">4.148715</td>
+<td style="text-align:right"></td>
+<td style="text-align:right">4.111100</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>Random (lab 1)</td>
+<td style="text-align:right">0.030866</td>
+<td style="text-align:right"></td>
+<td style="text-align:right">0.011238</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>Nearest Node End (lab 1)</td>
+<td style="text-align:right">0.142488</td>
+<td style="text-align:right"></td>
+<td style="text-align:right">0.078278</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>Nearest Node Any (lab 1)</td>
+<td style="text-align:right">4.214506</td>
+<td style="text-align:right"></td>
+<td style="text-align:right">3.637342</td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td>Greedy Cycle (lab 1)</td>
+<td style="text-align:right">3.036610</td>
+<td style="text-align:right"></td>
+<td style="text-align:right">2.781263</td>
+<td style="text-align:right"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="best-solutions-and-visualizations">Best solutions and visualizations</h2>
+<p>Node color represents selection cost; the compact horizontal scale below each plot uses the same cost range for all methods on an instance. Gray nodes are not selected, blue segments form the closed tour, and the red star marks the first node in the displayed sequence. Lists below show ten node indices per row; read left to right, then top to bottom to follow the tour.</p>
+<h3 id="tspa">TSPA</h3>
+<h4 id="steepest-nodes-random">Steepest Nodes Random</h4>
+<p>Objective: <strong>84621</strong>.</p>
+<p><img src="generated/TSPA_Steepest Nodes Random.png" alt="TSPA: Steepest Nodes Random"></p>
+<p><strong>Solution (tour order):</strong></p>
+<pre class="hljs"><code><div>164   1 169   3  50  89  42 151 150  73
+ 45 102  28 180  90 123 160  30 141  87
+135 134  72 176 131 144  67  35  63 149
+116  60 108  38  80  31  48  91 157  71
+139 112 186 136 178  29 101 147  47  93
+106 113 130 107  78 193 170 159 146  75
+153  88  57 182 114  98 189   2 171 187
+ 51  16  52 143  33  36 177 179  53 140
+ 41  84  58 158 192 185 156 100 152  49
+168 127  97 132  76   4   9  54 174   8
+</div></code></pre>
+<h4 id="steepest-nodes-greedy">Steepest Nodes Greedy</h4>
+<p>Objective: <strong>71955</strong>.</p>
+<p><img src="generated/TSPA_Steepest Nodes Greedy.png" alt="TSPA: Steepest Nodes Greedy"></p>
+<p><strong>Solution (tour order):</strong></p>
+<pre class="hljs"><code><div>101  55  29 178 184 136 186 164   1 169
+  3  50  93  85 174   8  54   9  33 131
+ 36 177  52 179  53 140 144  67  16  51
+ 35 185 102  28 180 132  76   4  71 157
+ 91  80  48  31 108 152 100 123  83 160
+ 49  60 116 149  63 168  97 127 161  30
+187 171   2 189 141  87  45  73 135 114
+181 192 158  58  84 134  72 176 150 106
+113  89  42 151 138 182  57  64 107  88
+ 78 193 153 170 146 159 130  47  37 147
+</div></code></pre>
+<h4 id="steepest-edges-random">Steepest Edges Random</h4>
+<p>Objective: <strong>73719</strong>.</p>
+<p><img src="generated/TSPA_Steepest Edges Random.png" alt="TSPA: Steepest Edges Random"></p>
+<p><strong>Solution (tour order):</strong></p>
+<pre class="hljs"><code><div> 80  48  31  60 108 152  49  11  63 149
+116 119 168 129 104  69 127  97 161 171
+  2 189 187  30 141  87  45 140  53 179
+177  36 131 134  84  58  73 135 181 192
+158 182  57  64 107  88  78 153 170 159
+130  47  93  43 113  89  42 151 106 150
+176  72 174  85   3  50 169   1 178 101
+ 29 163 136 186 184 164 142   8  54   9
+ 33  52 144  67 185  16  51  35  28 180
+160  83 123  90 132  76   4  71 157  91
+</div></code></pre>
+<h4 id="steepest-edges-greedy">Steepest Edges Greedy</h4>
+<p>Objective: <strong>71955</strong>.</p>
+<p><img src="generated/TSPA_Steepest Edges Greedy.png" alt="TSPA: Steepest Edges Greedy"></p>
+<p><strong>Solution (tour order):</strong></p>
+<pre class="hljs"><code><div> 55 101 147  37  47 130 159 146 170 153
+193  78  88 107  64  57 182 138 151  42
+ 89 113 106 150 176  72 134  84  58 158
+192 181 114 135  73  45  87 141 189   2
+171 187  30 161 127  97 168  63 149 116
+ 60  49 160  83 123 100 152 108  31  48
+ 80  91 157  71   4  76 132 180  28 102
+185  35  51  16  67 144 140  53 179  52
+177  36 131  33   9  54   8 174  85  93
+ 50   3 169   1 164 186 136 184 178  29
+</div></code></pre>
+<h4 id="greedy-nodes-random">Greedy Nodes Random</h4>
+<p>Objective: <strong>82357</strong>.</p>
+<p><img src="generated/TSPA_Greedy Nodes Random.png" alt="TSPA: Greedy Nodes Random"></p>
+<p><strong>Solution (tour order):</strong></p>
+<pre class="hljs"><code><div>177 179  52  80  48  31  60 116 149 123
+ 90 185  67 144  53 140  45 141 187 127
+ 95  97 161  30 180 156  35   4  71 157
+ 91 152  49  63 168 171   2 189  87  98
+114 181 192 111 182  57  42  89 113 107
+ 88  78 193 153 170 146 159 130  43 106
+174  54   9 194   8 131  36  99  84 134
+ 72 176 150 151 138 158  58 135  73 102
+ 28 132  76  51  16  33 164 142   3  50
+169   1 184 136 178  29 147  47  93  85
+</div></code></pre>
+<h4 id="greedy-nodes-greedy">Greedy Nodes Greedy</h4>
+<p>Objective: <strong>71955</strong>.</p>
+<p><img src="generated/TSPA_Greedy Nodes Greedy.png" alt="TSPA: Greedy Nodes Greedy"></p>
+<p><strong>Solution (tour order):</strong></p>
+<pre class="hljs"><code><div>101  55  29 178 184 136 186 164   1 169
+  3  50  93  85 174   8  54   9  33 131
+ 36 177  52 179  53 140 144  67  16  51
+ 35 185 102  28 180 132  76   4  71 157
+ 91  80  48  31 108 152 100 123  83 160
+ 49  60 116 149  63 168  97 127 161  30
+187 171   2 189 141  87  45  73 135 114
+181 192 158  58  84 134  72 176 150 106
+113  89  42 151 138 182  57  64 107  88
+ 78 193 153 170 146 159 130  47  37 147
+</div></code></pre>
+<h4 id="greedy-edges-random">Greedy Edges Random</h4>
+<p>Objective: <strong>73468</strong>.</p>
+<p><img src="generated/TSPA_Greedy Edges Random.png" alt="TSPA: Greedy Edges Random"></p>
+<p><strong>Solution (tour order):</strong></p>
+<pre class="hljs"><code><div> 36 177  53 140  73 135  45  98  87 102
+185  35 156  28 180 141  30 187   2 171
+ 92 104 129  69 127  97 160  83 123 152
+108  49  11 168  63 149 116  60  31  48
+ 80  38 132  76  91 157  71   4  51  16
+ 67 144 179  52 143  33   9  54   8 164
+136 184 178  29  55 101 147  47  50 169
+  1   3  93 130 159 170 153 193  78  88
+107  64  57 182 151  42  89 113 106 150
+174 176  72 134 158 192  58  84  99 131
+</div></code></pre>
+<h4 id="greedy-edges-greedy">Greedy Edges Greedy</h4>
+<p>Objective: <strong>71955</strong>.</p>
+<p><img src="generated/TSPA_Greedy Edges Greedy.png" alt="TSPA: Greedy Edges Greedy"></p>
+<p><strong>Solution (tour order):</strong></p>
+<pre class="hljs"><code><div> 55 101 147  37  47 130 159 146 170 153
+193  78  88 107  64  57 182 138 151  42
+ 89 113 106 150 176  72 134  84  58 158
+192 181 114 135  73  45  87 141 189   2
+171 187  30 161 127  97 168  63 149 116
+ 60  49 160  83 123 100 152 108  31  48
+ 80  91 157  71   4  76 132 180  28 102
+185  35  51  16  67 144 140  53 179  52
+177  36 131  33   9  54   8 174  85  93
+ 50   3 169   1 164 186 136 184 178  29
+</div></code></pre>
+<h3 id="tspb">TSPB</h3>
+<h4 id="steepest-nodes-random-1">Steepest Nodes Random</h4>
+<p>Objective: <strong>60136</strong>.</p>
+<p><img src="generated/TSPB_Steepest Nodes Random.png" alt="TSPB: Steepest Nodes Random"></p>
+<p><strong>Solution (tour order):</strong></p>
+<pre class="hljs"><code><div> 88 179  87  82 167 181 152  34  24  67
+ 66 162 192  54  10 114 196 104 116  37
+146 149  28  65 132  29 175 134  45 157
+155 140  47  38 176  30 183  21 189 133
+120  48  96 198 121  69 160  46  86  76
+185  57  83  89  32 156  72 117   8 122
+151  73  59  85  40  97 125  26 154  64
+  3 184 172 136 191 130  50  15 158 170
+115  71  60  51  74  20  14 153 118 110
+ 93   2 182  52  90 129 127  80 171  99
+</div></code></pre>
+<h4 id="steepest-nodes-greedy-1">Steepest Nodes Greedy</h4>
+<p>Objective: <strong>49978</strong>.</p>
+<p><img src="generated/TSPB_Steepest Nodes Greedy.png" alt="TSPB: Steepest Nodes Greedy"></p>
+<p><strong>Solution (tour order):</strong></p>
+<pre class="hljs"><code><div> 65 145  28 149  13 146  37 116 147  42
+ 50 191 130 121 198  96  48 156  89  57
+185  76 162  54 192  80 127 129  90 153
+ 14   2  20  74  17 171  99  88 179  87
+ 82  51  85  59  73 167 181 152  34  24
+ 67  66  27  98 151 122   3 184  46  72
+117   8 120 133 136 172 160  69 189  21
+183  30  38 154 140  47  64  33  40 141
+155  71  60 157  45 134 175  62  36 197
+  6 115 170 125 177 178  29 132 174   1
+</div></code></pre>
+<h4 id="steepest-edges-random-1">Steepest Edges Random</h4>
+<p>Objective: <strong>50335</strong>.</p>
+<p><img src="generated/TSPB_Steepest Edges Random.png" alt="TSPB: Steepest Edges Random"></p>
+<p><strong>Solution (tour order):</strong></p>
+<pre class="hljs"><code><div>177 170 115  97 154 140  47  38 176  21
+183  30 191 130 121 198  96 120 133 136
+172   8 117 160  69 122 173 151  98   3
+184  86  46  72 156  89  57 190  70  81
+ 94 105 196 114  10 148 118 110   2  14
+ 20  74 171  99 182 153  90 129 127  80
+192  54 159 162 104  76  66  67  24  34
+152 181 179  87  82  51 167  73  59  85
+ 40 141 155  71  60 157  45 134 175 197
+  6  29 132  65 145  28 149 158  26 125
+</div></code></pre>
+<h4 id="steepest-edges-greedy-1">Steepest Edges Greedy</h4>
+<p>Objective: <strong>49346</strong>.</p>
+<p><img src="generated/TSPB_Steepest Edges Greedy.png" alt="TSPB: Steepest Edges Greedy"></p>
+<p><strong>Solution (tour order):</strong></p>
+<pre class="hljs"><code><div> 65 145  28 149  13 146  37 116 147  42
+121 198  96  48  89  57 190  70 187  81
+ 94 105  61 139 196 114  10  78  54 162
+192  80 127 129  90 153  14   2  20  74
+ 17 171  39  99  67  24  34 181 179  87
+ 82 167  51  85  59  73  98 151 122   3
+184  46  72 117   8 120 133 136 172 160
+ 69  21  38 154 140  47  64  33  40 155
+ 71  60 157  45 134 175  62  91  36 197
+132  29   6 180 115 170 177 125  26 158
+</div></code></pre>
+<h4 id="greedy-nodes-random-1">Greedy Nodes Random</h4>
+<p>Objective: <strong>59205</strong>.</p>
+<p><img src="generated/TSPB_Greedy Nodes Random.png" alt="TSPB: Greedy Nodes Random"></p>
+<p><strong>Solution (tour order):</strong></p>
+<pre class="hljs"><code><div> 24  34 151 136 133  30  38 154  97 180
+  6 175 134  45  76  54 196 114  10  90
+129 127  66  67  31  51  59  73 167  25
+152 181  88  99 171  17  93 110  14  20
+ 74 188   2 153  80 192 162 104  57  89
+156  48  96  58 198 121 116 149  28  65
+ 29 197  36 132 103 178 177 125 170 115
+155  71 157  60 141  40  82  87 179  85
+ 64  33 140  47  21 120  72  79 185  86
+ 46 117   8 172 160  69 184   3  27  11
+</div></code></pre>
+<h4 id="greedy-nodes-greedy-1">Greedy Nodes Greedy</h4>
+<p>Objective: <strong>49913</strong>.</p>
+<p><img src="generated/TSPB_Greedy Nodes Greedy.png" alt="TSPB: Greedy Nodes Greedy"></p>
+<p><strong>Solution (tour order):</strong></p>
+<pre class="hljs"><code><div>125 145  28 149  13 146  37 116 147  42
+ 50 191 130 121 198  96  48 156  89  57
+104 194 190  70 187 196 114  10  78  54
+162 192  80 127 129  90 153  14   2  20
+ 74  17 171  99  88 179  87  82  51  85
+ 59  73 167 181 152  34  24  67  66  76
+135  27  98 151 122   3 184  46  72 117
+  8 120 133 136 172 160  69 189  21 183
+ 30  38 154 140  47  64  33  40 141 155
+ 71  60 157  45 134 175 132  29   6 170
+</div></code></pre>
+<h4 id="greedy-edges-random-1">Greedy Edges Random</h4>
+<p>Objective: <strong>50575</strong>.</p>
+<p><img src="generated/TSPB_Greedy Edges Random.png" alt="TSPB: Greedy Edges Random"></p>
+<p><strong>Solution (tour order):</strong></p>
+<pre class="hljs"><code><div>197 132  29   6 180 115 170  97 140  47
+ 21 183  30 176  38 154  26 125 177 158
+145  28 149  13 146  37 116 147  50 130
+121 198  96  48 156  89  57  86  46  72
+120 133 136 172   8 117 160  69 151 184
+  3 135  76 185 104 162 192  54  18 194
+190  70 187 196 114  10  78 127  80 129
+ 90 153  14   2  20  74 171  99  67  66
+ 11  24  34 152 181 179  87  82  51 167
+ 59  85  40 155  71  60  45 134 175  36
+</div></code></pre>
+<h4 id="greedy-edges-greedy-1">Greedy Edges Greedy</h4>
+<p>Objective: <strong>49660</strong>.</p>
+<p><img src="generated/TSPB_Greedy Edges Greedy.png" alt="TSPB: Greedy Edges Greedy"></p>
+<p><strong>Solution (tour order):</strong></p>
+<pre class="hljs"><code><div> 65 145  28 149  13 146  37 116 147  42
+121 198  96  89  57 104 190  70  94 105
+ 81 169 187 196 114 148  10  78  54 162
+192  80 127 129  90 153  14   2  20  74
+ 17 171  39  99  67  24  34 181 179  87
+ 82 167  51  85  59  73  98 151 122   3
+184  46  72 120 133 136 172 160  69 183
+130  30  21  38 154 140  47  64  33  40
+155  71  60 157  45 134 175  62  91  36
+197 132  29   6 180 115 170 125 177 158
+</div></code></pre>
+<h2 id="solution-checking">Solution checking</h2>
+<p>All 16 best solutions were checked for exactly 100 distinct indices in the range 0-199, and their objectives match the minima in the lab 3 summary.</p>
+<h2 id="source-code">Source code</h2>
+<p>Repository: <a href="https://github.com/PiotrFoltyniewicz/Evolutionary-Computation">PiotrFoltyniewicz/Evolutionary-Computation</a>.</p>
+<ul>
+<li><a href="https://github.com/PiotrFoltyniewicz/Evolutionary-Computation/blob/main/lab3/src/local_search_methods.cpp">Local search (steepest, greedy, moves, starting solutions)</a></li>
+<li><a href="https://github.com/PiotrFoltyniewicz/Evolutionary-Computation/blob/main/lab3/src/lab3_experiment.cpp">Experiment runner</a></li>
+<li><a href="https://github.com/PiotrFoltyniewicz/Evolutionary-Computation/blob/main/common/src/experiment.cpp">Experiment statistics and timing</a></li>
+<li><a href="https://github.com/PiotrFoltyniewicz/Evolutionary-Computation/blob/main/common/src/visualize_experiments.py">Visualization script</a></li>
+<li><a href="https://github.com/PiotrFoltyniewicz/Evolutionary-Computation/blob/main/lab3/out/generated/results.csv">Exported solutions</a></li>
+<li><a href="https://github.com/PiotrFoltyniewicz/Evolutionary-Computation/blob/main/lab3/out/generated/summary.csv">Lab 3 summary</a></li>
+</ul>
+<h2 id="conclusions">Conclusions</h2>
+<p>Local search improved the greedy starting solutions. On TSPA, the best average is 72984.73 (Greedy Edges Greedy), compared with 73353.51 for the construction heuristic. All four variants with greedy starts reach the best objective of 71955. On TSPB, the best average is 52640.92 (Steepest Edges Random), while the best objective is 49346 (Steepest Edges Greedy), compared with 50485 for the construction heuristic.</p>
+<p>Edge exchange gives better average objectives than node exchange, especially from random starts. On TSPA, random starts with edge exchange average 76.1–76.3k versus 88.3–90.3k with node exchange; on TSPB, the respective ranges are 52.6–53.0k and 63.7–65.9k. Greedy starts give similar results for both search strategies, particularly on TSPA.</p>
+<p>From random starts, greedy search takes 24.8–28.5 ms per run, compared with 35.0–35.4 ms for steepest edge exchange and 66.7–67.7 ms for steepest node exchange. Greedy starts reduce total running times to 4.9–9.9 ms, including construction. On TSPB, random starts with edge exchange give better average objectives and smaller spreads than greedy starts, although the best individual solution comes from a greedy start.</p>
+
+</body>
+</html>
