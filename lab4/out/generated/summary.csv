@@ -1,0 +1,9 @@
+instance,method,min,max,average,average_time_ms
+TSPA,Steepest Edges Random,73288,79682,76126.85,11.44996358
+TSPA,Candidate Edges k5 Random,74191,80983,76993.965,1.594667195
+TSPA,Candidate Edges k10 Random,73966,79184,76278.355,2.82171359
+TSPA,Candidate Edges k20 Random,73288,80182,76095.42,5.448458595
+TSPB,Steepest Edges Random,49816,55429,52712.36,11.400660795
+TSPB,Candidate Edges k5 Random,50722,56889,52818.47,1.306085075
+TSPB,Candidate Edges k10 Random,50362,56836,52640.365,2.45939129
+TSPB,Candidate Edges k20 Random,49459,55512,52675.285,4.453391415
