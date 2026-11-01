@@ -32,3 +32,7 @@ $(foreach lab,$(LABS),$(eval $(call LAB_RULES,$(lab))))
 # Reuse construction heuristics without linking lab2's main or experiment runner.
 lab3/out/main: lab2/src/lab2_methods.cpp lab2/src/lab2_methods.hpp common/src/utils.hpp
 lab3/out/main: CPPFLAGS += -Ilab2/src
+
+# Reuse local search without linking lab3's main or experiment runner.
+lab4/out/main: lab3/src/local_search_methods.cpp lab3/src/local_search_methods.hpp
+lab4/out/main: CPPFLAGS += -Ilab3/src
