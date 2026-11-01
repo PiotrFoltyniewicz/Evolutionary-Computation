@@ -109,16 +109,16 @@ Objective values use the format **average (minimum – maximum)**; running times
 |---|---:|---:|
 | **Steepest Edges Random (baseline)** | 76126.85 (**73288** – 79682) | 52712.36 (49816 – 55429) |
 | **Candidate Edges k5 Random** | 76993.97 (74191 – 80983) | 52818.47 (50722 – 56889) |
-| **Candidate Edges k10 Random** | 76278.36 (73966 – 79184) | 52640.37 (50362 – 56836) |
-| **Candidate Edges k20 Random** | 76095.42 (**73288** – 80182) | 52675.29 (**49459** – 55512) |
+| **Candidate Edges k10 Random** | 76278.36 (73966 – 79184) | **52640.37** (50362 – 56836) |
+| **Candidate Edges k20 Random** | **76095.42** (**73288** – 80182) | 52675.29 (**49459** – 55512) |
 | Steepest Nodes Random (lab 3) | 90017.03 (82067 – 97807) | 65860.14 (58859 – 72495) |
 | Steepest Nodes Greedy (lab 3) | 73021.71 (**71955** – 74861) | 54292.07 (49978 – 61265) |
-| Steepest Edges Random (lab 3) | 76234.49 (73409 – 79907) | 52513.55 (50126 – 55265) |
+| Steepest Edges Random (lab 3) | 76234.49 (73409 – 79907) | **52513.55** (50126 – 55265) |
 | Steepest Edges Greedy (lab 3) | 73003.80 (**71955** – 74861) | 53091.28 (**49346** – 60354) |
 | Greedy Nodes Random (lab 3) | 88281.52 (83276 – 97988) | 63685.80 (57875 – 70381) |
 | Greedy Nodes Greedy (lab 3) | 73021.00 (**71955** – 74861) | 54258.15 (49978 – 61265) |
 | Greedy Edges Random (lab 3) | 76362.62 (74427 – 78668) | 52948.87 (50667 – 56093) |
-| Greedy Edges Greedy (lab 3) | 72983.31 (**71955** – 74877) | 53151.86 (49546 – 60357) |
+| Greedy Edges Greedy (lab 3) | **72983.31** (**71955** – 74877) | 53151.86 (49546 – 60357) |
 | Greedy Cycle 2-regret heuristics (lab 2) | 120378.77 (112806 – 128089) | 72484.84 (68150 – 77274) |
 | Greedy Cycle heuristics with a weighted sum criterion (lab 2) | 73353.51 (**72011** – 75532) | 57866.33 (52731 – 63370) |
 | NN heuristics 2-regret heuristics (lab 2) | 121360.29 (110950 – 135771) | 73649.84 (68761 – 79756) |
