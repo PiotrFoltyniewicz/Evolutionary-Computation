@@ -16,15 +16,15 @@ F(S) = sum(c[S[i]]) + sum(d(S[i], S[(i + 1) mod length(S)]))
 
 ## Pseudocode
 
-All indices are zero-based. Local search starts from a given solution and applies moves until none improves the objective. Moves are evaluated only through deltas; the neighbor solution is never built and `F` is never recalculated from scratch. Lab 3 found edge exchange (2-opt) to be the best intra-route neighborhood from random starts on both instances, so we combine it with inter-route replacement. Candidate lists restrict this neighborhood to moves introducing at least one candidate edge. The full-neighborhood steepest search is rerun as a baseline.
+All indices are zero-based. We use steepest search with inter-route replacement and 2-opt. The baseline checks all moves; candidate search checks only moves that add a candidate edge. Moves are evaluated through deltas without constructing neighboring solutions.
 
 ### Candidate edges
 
-For each node u, choose k other nodes minimizing `d(u, v) + c[v]`, breaking ties by node index. The list is directional because the destination costs differ. An undirected edge {u, v} is a candidate if v belongs to the nearest list of u OR u belongs to the nearest list of v. Store the union in both endpoints' adjacency lists, without duplicates or self-loops. Reverse incidence also covers candidate edges proposed by a currently unselected node.
+For each node `u`, choose `k` other nodes minimizing `d(u, v) + c[v]`, breaking ties by node ID. `A[u]` stores candidate neighbors: `v` belongs to it if `u` chose `v` or `v` chose `u`. These lists are built once and remain unchanged during the search. Adding reverse connections can make `A[u]` longer than `k`.
 
 ```text
 BUILD_CANDIDATES(k):
-    A = empty symmetric adjacency lists
+    A = empty candidate lists
     for u in all nodes:
         C[u] = k smallest v != u by (d(u, v) + c[v], v)
         for v in C[u]:
@@ -32,43 +32,55 @@ BUILD_CANDIDATES(k):
     return A
 ```
 
-The primary setting is k = 10, as specified in the assignment. Settings k = 5 and k = 20 show the time-quality tradeoff. The undirected union can give a node more than k incident candidate edges; k always denotes the original directional list length.
+We use k = 10 and compare it with k = 5 and k = 20.
 
-### Generating the two moves for an edge
+### Neighborhood and deltas
 
-An inter-route move replaces one selected node by an unselected node. A 2-opt move removes two nonadjacent cycle edges and reverses the segment between them. All positions, predecessors, and successors below are cyclic, including the closing edge. An edge-cut index identifies the edge starting at that position.
+`S` is the ordered cycle and `A[node]` lists candidates for `node`. `pos[node]` is its position in `S`; `-1` means the node is outside `S`. Indices `i`, `j`, `p`, `q` are cycle positions, and `prev`/`next` refer to their cyclic neighbors.
+
+- `INTER(p, v)`: replace `S[p]` with a node `v` from outside `S`.
+- `TWO_OPT(i, j)`: order the cut positions so `i < j`, remove the edges starting there, reconnect the cycle, and reverse `S[i+1..j]`. The cut edges must not share a node.
+
+If `candidate` is outside `S`, replacing either neighbor of `node` creates edge `{node, candidate}`. If both nodes are in `S`, consider the two 2-opt moves: cutting after both nodes or before both nodes. The condition `node < candidate` processes the pair only once, rather than again in the opposite order.
 
 ```text
 CANDIDATE_MOVES(S, A):
-    pos[v] = position of v in S, or -1 if unselected
-    for position i in S:
-        u = S[i]
-        for v in A[u]:
-            if pos[v] == -1:
-                emit INTER(prev(i), v)
-                emit INTER(next(i), v)
-            else if u < v:                 // visit selected pair once
-                j = pos[v]
-                emit TWO_OPT(i, j)         // cut after u and v
-                emit TWO_OPT(prev(i), prev(j)) // cut before u and v
-            // Skip equal or adjacent cuts in both TWO_OPT cases.
-```
+    moves = []
+    for node from 0 to n - 1:
+        pos[node] = -1
+    for i from 0 to m - 1:
+        pos[S[i]] = i
 
-For inter-route moves, u stays in the cycle and either neighbor of u is replaced by v, so the new edge {u, v} is actually introduced. Replacing u itself by one of its nearest nodes would not guarantee this condition. For 2-opt, cutting after both endpoints or before both endpoints gives the two reconnections introducing {u, v}. Invalid cuts sharing a node are skipped. A move can be emitted twice if both newly introduced edges are candidates; this only repeats a delta evaluation and does not change the neighborhood or result.
+    for i from 0 to m - 1:
+        node = S[i]
+        for candidate in A[node]:
+            if pos[candidate] == -1:
+                add INTER(prev(i), candidate) to moves
+                add INTER(next(i), candidate) to moves
+            else if node < candidate:
+                j = pos[candidate]
+                if edges (S[i], S[next(i)]) and (S[j], S[next(j)]) do not share a node:
+                    add TWO_OPT(i, j) to moves
 
-### Move deltas and steepest search
+                p = prev(i); q = prev(j)
+                if edges (S[p], S[next(p)]) and (S[q], S[next(q)]) do not share a node:
+                    add TWO_OPT(p, q) to moves
+    return moves
 
-No neighbor solution is constructed to evaluate a move. Internal reversed edges have equal costs because distances are symmetric.
-
-```text
 DELTA_INTER(S, p, v):
     out = S[p]; a = S[prev(p)]; b = S[next(p)]
     return d(a,v) + d(v,b) - d(a,out) - d(out,b) + c[v] - c[out]
 
 DELTA_TWO_OPT(S, i, j):
-    a = S[i]; b = S[next(i)]; c = S[j]; e = S[next(j)]
-    return d(a,c) + d(b,e) - d(a,b) - d(c,e)
+    a = S[i]; b = S[next(i)]; e = S[j]; f = S[next(j)]
+    return d(a,e) + d(b,f) - d(a,b) - d(e,f)
+```
 
+### Steepest local search
+
+`DELTA` uses the formula for the move type. `APPLY` performs the replacement or reversal. Equal improving deltas prefer inter-route moves, then smaller position and node indices.
+
+```text
 CANDIDATE_STEEPEST(S, A):
     value = F(S)
     loop:
@@ -76,19 +88,14 @@ CANDIDATE_STEEPEST(S, A):
         for move in CANDIDATE_MOVES(S, A):
             delta = DELTA(S, move)
             if delta < bestDelta: best = move; bestDelta = delta
-            // Equal negative deltas: use the baseline's move order.
         if best == NONE: return S, value
         APPLY(S, best)
         value += bestDelta
 ```
 
-Ties between improving moves are resolved by type (inter-route first), then the two descriptor indices, matching lab 3. The full baseline examines all `m(n-m) + m(m-3)/2 = 14850` moves per iteration. The candidate version loops only over selected nodes and incident candidate lists; it never scans the full neighborhood to filter it. There are at most nk undirected candidate edges, so generation and delta evaluation per iteration take O(m + nk), instead of O(m(n-m) + m^2). Candidate preprocessing uses partial sorting in O(n^2 log k) time, plus O(n^2) to materialize the symmetric lists. The implementation uses an O(n^2) temporary adjacency matrix during preprocessing. Iteration counts can differ because restricting the neighborhood changes the search path.
-
 ### Starting solutions
 
-Each of the four methods was run 200 times on TSPA and 200 times on TSPB: 1600 searches in total. A `std::mt19937` generator with seed 20261031 produces permutations of all 200 nodes; the first 100 form each starting cycle. The generator is reset before each method, so all methods use the same sequence of starting cycles. The seed reproduces starts with the same C++ standard library; `std::shuffle` need not give identical permutations across different library implementations.
-
-The baseline calls the unchanged `steepestLocalSearch` from lab 3 with edge exchange. The shared `runExperiment` function performs all runs, records statistics and CSV results, and measures random-start construction plus local search with `std::chrono::steady_clock`. Distance matrices and candidate lists are built once before the runs and are outside the measured interval. The supplied results use the Makefile's optimized C++20 build through WSL.
+Random starts contain the first 100 nodes of a shuffled permutation of all 200 nodes. Each method uses the same 200 starting cycles per instance, generated with seed 20261031. Reported times include creating the start and performing local search; candidate lists are built before the measured runs.
 
 ## Results
 

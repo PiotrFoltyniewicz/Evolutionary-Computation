@@ -16,15 +16,15 @@ F(S) = sum(c[S[i]]) + sum(d(S[i], S[(i + 1) mod length(S)]))
 
 ## Pseudocode
 
-All indices are zero-based. Steepest search combines 2-opt (the best intra-route neighborhood from random starts in lab 3) with inter-route replacement. It evaluates moves through deltas and stops when none improves the objective. Candidate search considers only moves introducing a candidate edge; full-neighborhood search serves as the baseline.
+All indices are zero-based. We use steepest search with inter-route replacement and 2-opt. The baseline checks all moves; candidate search checks only moves that add a candidate edge. Moves are evaluated through deltas without constructing neighboring solutions.
 
 ### Candidate edges
 
-For each node u, select k nodes by `d(u, v) + c[v]`, breaking ties by node index. These directional lists form an undirected union: {u, v} is a candidate if either endpoint selects the other. Symmetric adjacency lists also include edges proposed by unselected nodes.
+For each node `u`, choose `k` other nodes minimizing `d(u, v) + c[v]`, breaking ties by node ID. `A[u]` stores candidate neighbors: `v` belongs to it if `u` chose `v` or `v` chose `u`. These lists are built once and remain unchanged during the search. Adding reverse connections can make `A[u]` longer than `k`.
 
 ```text
 BUILD_CANDIDATES(k):
-    A = empty symmetric adjacency lists
+    A = empty candidate lists
     for u in all nodes:
         C[u] = k smallest v != u by (d(u, v) + c[v], v)
         for v in C[u]:
@@ -32,43 +32,55 @@ BUILD_CANDIDATES(k):
     return A
 ```
 
-We use the required k = 10 and compare k = 5 and k = 20. Here k is the directional list length; the undirected union may give a node more than k candidate edges.
+We use k = 10 and compare it with k = 5 and k = 20.
 
-### Generating the two moves for an edge
+### Neighborhood and deltas
 
-Inter-route moves replace a selected node with an unselected one; 2-opt reverses the segment between two nonadjacent edge cuts. Positions are cyclic, and each cut index denotes the edge starting there.
+`S` is the ordered cycle and `A[node]` lists candidates for `node`. `pos[node]` is its position in `S`; `-1` means the node is outside `S`. Indices `i`, `j`, `p`, `q` are cycle positions, and `prev`/`next` refer to their cyclic neighbors.
+
+- `INTER(p, v)`: replace `S[p]` with a node `v` from outside `S`.
+- `TWO_OPT(i, j)`: order the cut positions so `i < j`, remove the edges starting there, reconnect the cycle, and reverse `S[i+1..j]`. The cut edges must not share a node.
+
+If `candidate` is outside `S`, replacing either neighbor of `node` creates edge `{node, candidate}`. If both nodes are in `S`, consider the two 2-opt moves: cutting after both nodes or before both nodes. The condition `node < candidate` processes the pair only once, rather than again in the opposite order.
 
 ```text
 CANDIDATE_MOVES(S, A):
-    pos[v] = position of v in S, or -1 if unselected
-    for position i in S:
-        u = S[i]
-        for v in A[u]:
-            if pos[v] == -1:
-                emit INTER(prev(i), v)
-                emit INTER(next(i), v)
-            else if u < v:                 // visit selected pair once
-                j = pos[v]
-                emit TWO_OPT(i, j)         // cut after u and v
-                emit TWO_OPT(prev(i), prev(j)) // cut before u and v
-            // Skip equal or adjacent cuts in both TWO_OPT cases.
-```
+    moves = []
+    for node from 0 to n - 1:
+        pos[node] = -1
+    for i from 0 to m - 1:
+        pos[S[i]] = i
 
-Replacing either neighbor of u with v introduces {u, v}. For 2-opt, cutting before or after both endpoints introduces that edge; cuts sharing a node are skipped. Moves introducing two candidate edges may be evaluated twice without affecting the result.
+    for i from 0 to m - 1:
+        node = S[i]
+        for candidate in A[node]:
+            if pos[candidate] == -1:
+                add INTER(prev(i), candidate) to moves
+                add INTER(next(i), candidate) to moves
+            else if node < candidate:
+                j = pos[candidate]
+                if edges (S[i], S[next(i)]) and (S[j], S[next(j)]) do not share a node:
+                    add TWO_OPT(i, j) to moves
 
-### Move deltas and steepest search
+                p = prev(i); q = prev(j)
+                if edges (S[p], S[next(p)]) and (S[q], S[next(q)]) do not share a node:
+                    add TWO_OPT(p, q) to moves
+    return moves
 
-Deltas avoid constructing neighbors; symmetric distances leave reversed internal edge costs unchanged.
-
-```text
 DELTA_INTER(S, p, v):
     out = S[p]; a = S[prev(p)]; b = S[next(p)]
     return d(a,v) + d(v,b) - d(a,out) - d(out,b) + c[v] - c[out]
 
 DELTA_TWO_OPT(S, i, j):
-    a = S[i]; b = S[next(i)]; c = S[j]; e = S[next(j)]
-    return d(a,c) + d(b,e) - d(a,b) - d(c,e)
+    a = S[i]; b = S[next(i)]; e = S[j]; f = S[next(j)]
+    return d(a,e) + d(b,f) - d(a,b) - d(e,f)
+```
 
+### Steepest local search
+
+`DELTA` uses the formula for the move type. `APPLY` performs the replacement or reversal. Equal improving deltas prefer inter-route moves, then smaller position and node indices.
+
+```text
 CANDIDATE_STEEPEST(S, A):
     value = F(S)
     loop:
@@ -76,13 +88,14 @@ CANDIDATE_STEEPEST(S, A):
         for move in CANDIDATE_MOVES(S, A):
             delta = DELTA(S, move)
             if delta < bestDelta: best = move; bestDelta = delta
-            // Equal negative deltas: use the baseline's move order.
         if best == NONE: return S, value
         APPLY(S, best)
         value += bestDelta
 ```
 
-Ties follow lab 3: inter-route first, then descriptor indices. The baseline checks `m(n-m) + m(m-3)/2 = 14850` moves per iteration. Candidate search traverses selected nodes and their candidate lists in O(m + nk), versus O(m(n-m) + m^2) for the baseline. Preprocessing takes O(n^2 log k) for partial sorting and O(n^2) to build symmetric lists, using an O(n^2) temporary adjacency matrix. Restricting moves can change the search path and iteration count.
+### Starting solutions
+
+Random starts contain the first 100 nodes of a shuffled permutation of all 200 nodes. Each method uses the same 200 starting cycles per instance, generated with seed 20261031. Reported times include creating the start and performing local search; candidate lists are built before the measured runs.
 
 ## Results
 
@@ -97,11 +110,11 @@ Objective values use the format **average (minimum – maximum)**; running times
 | **Steepest Edges Random (baseline)** | 76126.85 (**73288** – 79682) | 52712.36 (49816 – 55429) |
 | **Candidate Edges k5 Random** | 76993.97 (74191 – 80983) | 52818.47 (50722 – 56889) |
 | **Candidate Edges k10 Random** | 76278.36 (73966 – 79184) | 52640.37 (50362 – 56836) |
-| **Candidate Edges k20 Random** | **76095.42** (**73288** – 80182) | 52675.29 (**49459** – 55512) |
+| **Candidate Edges k20 Random** | 76095.42 (**73288** – 80182) | 52675.29 (**49459** – 55512) |
 | Steepest Nodes Random (lab 3) | 90017.03 (82067 – 97807) | 65860.14 (58859 – 72495) |
 | Steepest Nodes Greedy (lab 3) | 73021.71 (**71955** – 74861) | 54292.07 (49978 – 61265) |
 | Steepest Edges Random (lab 3) | 76234.49 (73409 – 79907) | 52513.55 (50126 – 55265) |
-| Steepest Edges Greedy (lab 3) | **73003.80** (**71955** – 74861) | 53091.28 (**49346** – 60354) |
+| Steepest Edges Greedy (lab 3) | 73003.80 (**71955** – 74861) | 53091.28 (**49346** – 60354) |
 | Greedy Nodes Random (lab 3) | 88281.52 (83276 – 97988) | 63685.80 (57875 – 70381) |
 | Greedy Nodes Greedy (lab 3) | 73021.00 (**71955** – 74861) | 54258.15 (49978 – 61265) |
 | Greedy Edges Random (lab 3) | 76362.62 (74427 – 78668) | 52948.87 (50667 – 56093) |
