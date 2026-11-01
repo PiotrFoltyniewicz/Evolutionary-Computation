@@ -16,11 +16,11 @@ F(S) = sum(c[S[i]]) + sum(d(S[i], S[(i + 1) mod length(S)]))
 
 ## Pseudocode
 
-All indices are zero-based. Local search starts from a given solution and applies moves until none improves the objective. Moves are evaluated only through deltas; the neighbor solution is never built and `F` is never recalculated from scratch. Lab 3 found edge exchange (2-opt) to be the best intra-route neighborhood from random starts on both instances, so we combine it with inter-route replacement. Candidate lists restrict this neighborhood to moves introducing at least one candidate edge. The full-neighborhood steepest search is rerun as a baseline.
+All indices are zero-based. Steepest search combines 2-opt (the best intra-route neighborhood from random starts in lab 3) with inter-route replacement. It evaluates moves through deltas and stops when none improves the objective. Candidate search considers only moves introducing a candidate edge; full-neighborhood search serves as the baseline.
 
 ### Candidate edges
 
-For each node u, choose k other nodes minimizing `d(u, v) + c[v]`, breaking ties by node index. The list is directional because the destination costs differ. An undirected edge {u, v} is a candidate if v belongs to the nearest list of u OR u belongs to the nearest list of v. Store the union in both endpoints' adjacency lists, without duplicates or self-loops. Reverse incidence also covers candidate edges proposed by a currently unselected node.
+For each node u, select k nodes by `d(u, v) + c[v]`, breaking ties by node index. These directional lists form an undirected union: {u, v} is a candidate if either endpoint selects the other. Symmetric adjacency lists also include edges proposed by unselected nodes.
 
 ```text
 BUILD_CANDIDATES(k):
@@ -32,11 +32,11 @@ BUILD_CANDIDATES(k):
     return A
 ```
 
-The primary setting is k = 10, as specified in the assignment. Settings k = 5 and k = 20 show the time-quality tradeoff. The undirected union can give a node more than k incident candidate edges; k always denotes the original directional list length.
+We use the required k = 10 and compare k = 5 and k = 20. Here k is the directional list length; the undirected union may give a node more than k candidate edges.
 
 ### Generating the two moves for an edge
 
-An inter-route move replaces one selected node by an unselected node. A 2-opt move removes two nonadjacent cycle edges and reverses the segment between them. All positions, predecessors, and successors below are cyclic, including the closing edge. An edge-cut index identifies the edge starting at that position.
+Inter-route moves replace a selected node with an unselected one; 2-opt reverses the segment between two nonadjacent edge cuts. Positions are cyclic, and each cut index denotes the edge starting there.
 
 ```text
 CANDIDATE_MOVES(S, A):
@@ -54,11 +54,11 @@ CANDIDATE_MOVES(S, A):
             // Skip equal or adjacent cuts in both TWO_OPT cases.
 ```
 
-For inter-route moves, u stays in the cycle and either neighbor of u is replaced by v, so the new edge {u, v} is actually introduced. Replacing u itself by one of its nearest nodes would not guarantee this condition. For 2-opt, cutting after both endpoints or before both endpoints gives the two reconnections introducing {u, v}. Invalid cuts sharing a node are skipped. A move can be emitted twice if both newly introduced edges are candidates; this only repeats a delta evaluation and does not change the neighborhood or result.
+Replacing either neighbor of u with v introduces {u, v}. For 2-opt, cutting before or after both endpoints introduces that edge; cuts sharing a node are skipped. Moves introducing two candidate edges may be evaluated twice without affecting the result.
 
 ### Move deltas and steepest search
 
-No neighbor solution is constructed to evaluate a move. Internal reversed edges have equal costs because distances are symmetric.
+Deltas avoid constructing neighbors; symmetric distances leave reversed internal edge costs unchanged.
 
 ```text
 DELTA_INTER(S, p, v):
@@ -82,13 +82,7 @@ CANDIDATE_STEEPEST(S, A):
         value += bestDelta
 ```
 
-Ties between improving moves are resolved by type (inter-route first), then the two descriptor indices, matching lab 3. The full baseline examines all `m(n-m) + m(m-3)/2 = 14850` moves per iteration. The candidate version loops only over selected nodes and incident candidate lists; it never scans the full neighborhood to filter it. There are at most nk undirected candidate edges, so generation and delta evaluation per iteration take O(m + nk), instead of O(m(n-m) + m^2). Candidate preprocessing uses partial sorting in O(n^2 log k) time, plus O(n^2) to materialize the symmetric lists. The implementation uses an O(n^2) temporary adjacency matrix during preprocessing. Iteration counts can differ because restricting the neighborhood changes the search path.
-
-### Starting solutions
-
-Each of the four methods was run 200 times on TSPA and 200 times on TSPB: 1600 searches in total. A `std::mt19937` generator with seed 20261031 produces permutations of all 200 nodes; the first 100 form each starting cycle. The generator is reset before each method, so all methods use the same sequence of starting cycles. The seed reproduces starts with the same C++ standard library; `std::shuffle` need not give identical permutations across different library implementations.
-
-The baseline calls the unchanged `steepestLocalSearch` from lab 3 with edge exchange. The shared `runExperiment` function performs all runs, records statistics and CSV results, and measures random-start construction plus local search with `std::chrono::steady_clock`. Distance matrices and candidate lists are built once before the runs and are outside the measured interval. The supplied results use the Makefile's optimized C++20 build through WSL.
+Ties follow lab 3: inter-route first, then descriptor indices. The baseline checks `m(n-m) + m(m-3)/2 = 14850` moves per iteration. Candidate search traverses selected nodes and their candidate lists in O(m + nk), versus O(m(n-m) + m^2) for the baseline. Preprocessing takes O(n^2 log k) for partial sorting and O(n^2) to build symmetric lists, using an O(n^2) temporary adjacency matrix. Restricting moves can change the search path and iteration count.
 
 ## Results
 
@@ -103,20 +97,20 @@ Objective values use the format **average (minimum – maximum)**; running times
 | **Steepest Edges Random (baseline)** | 76126.85 (**73288** – 79682) | 52712.36 (49816 – 55429) |
 | **Candidate Edges k5 Random** | 76993.97 (74191 – 80983) | 52818.47 (50722 – 56889) |
 | **Candidate Edges k10 Random** | 76278.36 (73966 – 79184) | 52640.37 (50362 – 56836) |
-| **Candidate Edges k20 Random** | 76095.42 (**73288** – 80182) | 52675.29 (**49459** – 55512) |
-| Steepest Nodes Random (lab 3) | 90292.47 (84621 – 99661) | 65902.04 (60136 – 75295) |
+| **Candidate Edges k20 Random** | **76095.42** (**73288** – 80182) | 52675.29 (**49459** – 55512) |
+| Steepest Nodes Random (lab 3) | 90017.03 (82067 – 97807) | 65860.14 (58859 – 72495) |
 | Steepest Nodes Greedy (lab 3) | 73021.71 (**71955** – 74861) | 54292.07 (49978 – 61265) |
-| Steepest Edges Random (lab 3) | 76108.17 (73719 – 79105) | 52640.92 (50335 – 55286) |
-| Steepest Edges Greedy (lab 3) | 73003.80 (**71955** – 74861) | 53091.28 (**49346** – 60354) |
-| Greedy Nodes Random (lab 3) | 88266.88 (82357 – 98469) | 63746.16 (59205 – 70900) |
-| Greedy Nodes Greedy (lab 3) | 73019.87 (**71955** – 74877) | 54310.27 (49913 – 61265) |
-| Greedy Edges Random (lab 3) | 76299.05 (73468 – 80279) | 53038.72 (50575 – 55602) |
-| Greedy Edges Greedy (lab 3) | 72984.73 (**71955** – 74861) | 53251.93 (49660 – 60266) |
+| Steepest Edges Random (lab 3) | 76234.49 (73409 – 79907) | 52513.55 (50126 – 55265) |
+| Steepest Edges Greedy (lab 3) | **73003.80** (**71955** – 74861) | 53091.28 (**49346** – 60354) |
+| Greedy Nodes Random (lab 3) | 88281.52 (83276 – 97988) | 63685.80 (57875 – 70381) |
+| Greedy Nodes Greedy (lab 3) | 73021.00 (**71955** – 74861) | 54258.15 (49978 – 61265) |
+| Greedy Edges Random (lab 3) | 76362.62 (74427 – 78668) | 52948.87 (50667 – 56093) |
+| Greedy Edges Greedy (lab 3) | 72983.31 (**71955** – 74877) | 53151.86 (49546 – 60357) |
 | Greedy Cycle 2-regret heuristics (lab 2) | 120378.77 (112806 – 128089) | 72484.84 (68150 – 77274) |
 | Greedy Cycle heuristics with a weighted sum criterion (lab 2) | 73353.51 (**72011** – 75532) | 57866.33 (52731 – 63370) |
 | NN heuristics 2-regret heuristics (lab 2) | 121360.29 (110950 – 135771) | 73649.84 (68761 – 79756) |
 | NN heuristics with a weighted sum criterion (lab 2) | 75561.20 (72419 – 78504) | 55698.34 (**50485** – 61406) |
-| Random (lab 1) | 261559.68 (234022 – 287462) | 205914.49 (183676 – 233336) |
+| Random (lab 1) | 262009.64 (234223 – 288919) | 206071.06 (181689 – 230681) |
 | Nearest Node End (lab 1) | 87476.63 (84362 – 90075) | 59397.34 (56007 – 63166) |
 | Nearest Node Any (lab 1) | 74306.53 (**72328** – 77022) | 59476.23 (**52915** – 66164) |
 | Greedy Cycle (lab 1) | 73743.73 (72590 – 75281) | 59650.81 (55655 – 63734) |
@@ -129,26 +123,26 @@ Labs 1-3 retain their original measurements. Lab 4 was measured separately, so s
 
 | Method | TSPA: total | TSPA: starting solution | TSPB: total | TSPB: starting solution |
 |---|---:|---:|---:|---:|
-| **Steepest Edges Random (baseline)** | 11.449964 |  | 11.400661 |  |
-| **Candidate Edges k5 Random** | 1.594667 |  | 1.306085 |  |
-| **Candidate Edges k10 Random** | 2.821714 |  | 2.459391 |  |
-| **Candidate Edges k20 Random** | 5.448459 |  | 4.453391 |  |
-| Steepest Nodes Random (lab 3) | 67.694814 | 0.003531 | 66.661623 | 0.003519 |
-| Steepest Nodes Greedy (lab 3) | 5.657000 | 4.066111 | 8.942153 | 4.111100 |
-| Steepest Edges Random (lab 3) | 35.005239 | 0.003531 | 35.416348 | 0.003519 |
-| Steepest Edges Greedy (lab 3) | 4.856945 | 4.066111 | 9.898119 | 4.111100 |
-| Greedy Nodes Random (lab 3) | 28.357479 | 0.003531 | 28.458643 | 0.003519 |
-| Greedy Nodes Greedy (lab 3) | 5.509622 | 4.066111 | 6.848713 | 4.111100 |
-| Greedy Edges Random (lab 3) | 24.942397 | 0.003531 | 24.829678 | 0.003519 |
-| Greedy Edges Greedy (lab 3) | 5.153622 | 4.066111 | 8.615719 | 4.111100 |
-| Greedy Cycle 2-regret heuristics (lab 2) | 4.517217 |  | 3.915432 |  |
-| Greedy Cycle heuristics with a weighted sum criterion (lab 2) | 4.066111 |  | 3.760381 |  |
-| NN heuristics 2-regret heuristics (lab 2) | 4.025403 |  | 4.062423 |  |
-| NN heuristics with a weighted sum criterion (lab 2) | 4.148715 |  | 4.111100 |  |
-| Random (lab 1) | 0.030866 |  | 0.011238 |  |
-| Nearest Node End (lab 1) | 0.142488 |  | 0.078278 |  |
-| Nearest Node Any (lab 1) | 4.214506 |  | 3.637342 |  |
-| Greedy Cycle (lab 1) | 3.036610 |  | 2.781263 |  |
+| **Steepest Edges Random (baseline)** | 33.799286 |  | 34.286283 |  |
+| **Candidate Edges k5 Random** | 4.173085 |  | 3.818066 |  |
+| **Candidate Edges k10 Random** | 7.909238 |  | 6.727505 |  |
+| **Candidate Edges k20 Random** | 14.563482 |  | 12.108440 |  |
+| Steepest Nodes Random (lab 3) | 66.795616 | 0.003531 | 66.738804 | 0.003519 |
+| Steepest Nodes Greedy (lab 3) | 5.276252 | 4.066111 | 8.437412 | 4.111100 |
+| Steepest Edges Random (lab 3) | 34.488630 | 0.003531 | 35.122619 | 0.003519 |
+| Steepest Edges Greedy (lab 3) | 4.453417 | 4.066111 | 7.405829 | 4.111100 |
+| Greedy Nodes Random (lab 3) | 27.378438 | 0.003531 | 29.323703 | 0.003519 |
+| Greedy Nodes Greedy (lab 3) | 5.271248 | 4.066111 | 7.354972 | 4.111100 |
+| Greedy Edges Random (lab 3) | 24.915344 | 0.003531 | 25.450824 | 0.003519 |
+| Greedy Edges Greedy (lab 3) | 4.911828 | 4.066111 | 7.588654 | 4.111100 |
+| Greedy Cycle 2-regret heuristics (lab 2) | 3.767999 |  | 3.729813 |  |
+| Greedy Cycle heuristics with a weighted sum criterion (lab 2) | 3.722352 |  | 3.621625 |  |
+| NN heuristics 2-regret heuristics (lab 2) | 3.826779 |  | 3.824544 |  |
+| NN heuristics with a weighted sum criterion (lab 2) | 3.893400 |  | 4.053285 |  |
+| Random (lab 1) | 0.032951 |  | 0.013712 |  |
+| Nearest Node End (lab 1) | 0.256396 |  | 0.118587 |  |
+| Nearest Node Any (lab 1) | 3.829626 |  | 3.895479 |  |
+| Greedy Cycle (lab 1) | 2.859520 |  | 3.091238 |  |
 
 ## Best solutions and visualizations
 
@@ -349,18 +343,8 @@ Repository: [PiotrFoltyniewicz/Evolutionary-Computation](https://github.com/Piot
 
 ## Conclusions
 
-On TSPA, k = 10 reduces average total time from 11.450 to 2.822 ms (4.06x speedup). The mean objective changes from 76126.85 to 76278.36 (+0.199%).
+The required k = 10 gives a 4.27x speedup on TSPA and 5.10x on TSPB, with mean objective changes of +0.199% and -0.137%, respectively, relative to the lab 4 baseline.
 
-On TSPB, k = 10 reduces average total time from 11.401 to 2.459 ms (4.64x speedup). The mean objective changes from 52712.36 to 52640.37 (-0.137%).
+k = 5 is fastest on both instances. The best candidate means come from k = 20 on TSPA (76095.42) and k = 10 on TSPB (52640.37), both slightly below the baseline but above the best means from earlier labs (72983.31 and 52513.55).
 
-On TSPA, Candidate Edges k5 Random is the fastest tested candidate method; Candidate Edges k20 Random gives the lowest candidate mean (76095.42, versus 76126.85 for the full baseline).
-
-The best candidate mean on TSPA is 76095.42; the best mean from earlier labs is 72984.73 (Greedy Edges Greedy, lab 3).
-
-On TSPB, Candidate Edges k5 Random is the fastest tested candidate method; Candidate Edges k10 Random gives the lowest candidate mean (52640.37, versus 52712.36 for the full baseline).
-
-The best candidate mean on TSPB is 52640.37; the best mean from earlier labs is 52640.92 (Steepest Edges Random, lab 3).
-
-Increasing k raises the number of candidate moves and does not guarantee a better local optimum in every run, because the steepest move can lead to a different search trajectory. These observations describe this sample of starts, not a guarantee that restricted search dominates full search.
-
-The required k = 10 setting gives a substantial speedup with a small change in mean quality. Restricting the moves changes the stopping condition: a candidate-local optimum may still admit an improving non-candidate move. The results support candidate lists as an effective time-quality tradeoff for these instances.
+Candidate lists provide a useful time-quality tradeoff on these instances. Larger k does not guarantee better results because it changes the search path, and candidate-local optima may still admit improving non-candidate moves.

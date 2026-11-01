@@ -104,19 +104,19 @@ Objective values use the format **average (minimum – maximum)**; running times
 | **Candidate Edges k5 Random** | 76993.97 (74191 – 80983) | 52818.47 (50722 – 56889) |
 | **Candidate Edges k10 Random** | 76278.36 (73966 – 79184) | 52640.37 (50362 – 56836) |
 | **Candidate Edges k20 Random** | 76095.42 (**73288** – 80182) | 52675.29 (**49459** – 55512) |
-| Steepest Nodes Random (lab 3) | 90292.47 (84621 – 99661) | 65902.04 (60136 – 75295) |
+| Steepest Nodes Random (lab 3) | 90017.03 (82067 – 97807) | 65860.14 (58859 – 72495) |
 | Steepest Nodes Greedy (lab 3) | 73021.71 (**71955** – 74861) | 54292.07 (49978 – 61265) |
-| Steepest Edges Random (lab 3) | 76108.17 (73719 – 79105) | 52640.92 (50335 – 55286) |
+| Steepest Edges Random (lab 3) | 76234.49 (73409 – 79907) | 52513.55 (50126 – 55265) |
 | Steepest Edges Greedy (lab 3) | 73003.80 (**71955** – 74861) | 53091.28 (**49346** – 60354) |
-| Greedy Nodes Random (lab 3) | 88266.88 (82357 – 98469) | 63746.16 (59205 – 70900) |
-| Greedy Nodes Greedy (lab 3) | 73019.87 (**71955** – 74877) | 54310.27 (49913 – 61265) |
-| Greedy Edges Random (lab 3) | 76299.05 (73468 – 80279) | 53038.72 (50575 – 55602) |
-| Greedy Edges Greedy (lab 3) | 72984.73 (**71955** – 74861) | 53251.93 (49660 – 60266) |
+| Greedy Nodes Random (lab 3) | 88281.52 (83276 – 97988) | 63685.80 (57875 – 70381) |
+| Greedy Nodes Greedy (lab 3) | 73021.00 (**71955** – 74861) | 54258.15 (49978 – 61265) |
+| Greedy Edges Random (lab 3) | 76362.62 (74427 – 78668) | 52948.87 (50667 – 56093) |
+| Greedy Edges Greedy (lab 3) | 72983.31 (**71955** – 74877) | 53151.86 (49546 – 60357) |
 | Greedy Cycle 2-regret heuristics (lab 2) | 120378.77 (112806 – 128089) | 72484.84 (68150 – 77274) |
 | Greedy Cycle heuristics with a weighted sum criterion (lab 2) | 73353.51 (**72011** – 75532) | 57866.33 (52731 – 63370) |
 | NN heuristics 2-regret heuristics (lab 2) | 121360.29 (110950 – 135771) | 73649.84 (68761 – 79756) |
 | NN heuristics with a weighted sum criterion (lab 2) | 75561.20 (72419 – 78504) | 55698.34 (**50485** – 61406) |
-| Random (lab 1) | 261559.68 (234022 – 287462) | 205914.49 (183676 – 233336) |
+| Random (lab 1) | 262009.64 (234223 – 288919) | 206071.06 (181689 – 230681) |
 | Nearest Node End (lab 1) | 87476.63 (84362 – 90075) | 59397.34 (56007 – 63166) |
 | Nearest Node Any (lab 1) | 74306.53 (**72328** – 77022) | 59476.23 (**52915** – 66164) |
 | Greedy Cycle (lab 1) | 73743.73 (72590 – 75281) | 59650.81 (55655 – 63734) |
@@ -129,26 +129,26 @@ Labs 1-3 retain their original measurements. Lab 4 was measured separately, so s
 
 | Method | TSPA: total | TSPA: starting solution | TSPB: total | TSPB: starting solution |
 |---|---:|---:|---:|---:|
-| **Steepest Edges Random (baseline)** | 11.449964 |  | 11.400661 |  |
-| **Candidate Edges k5 Random** | 1.594667 |  | 1.306085 |  |
-| **Candidate Edges k10 Random** | 2.821714 |  | 2.459391 |  |
-| **Candidate Edges k20 Random** | 5.448459 |  | 4.453391 |  |
-| Steepest Nodes Random (lab 3) | 67.694814 | 0.003531 | 66.661623 | 0.003519 |
-| Steepest Nodes Greedy (lab 3) | 5.657000 | 4.066111 | 8.942153 | 4.111100 |
-| Steepest Edges Random (lab 3) | 35.005239 | 0.003531 | 35.416348 | 0.003519 |
-| Steepest Edges Greedy (lab 3) | 4.856945 | 4.066111 | 9.898119 | 4.111100 |
-| Greedy Nodes Random (lab 3) | 28.357479 | 0.003531 | 28.458643 | 0.003519 |
-| Greedy Nodes Greedy (lab 3) | 5.509622 | 4.066111 | 6.848713 | 4.111100 |
-| Greedy Edges Random (lab 3) | 24.942397 | 0.003531 | 24.829678 | 0.003519 |
-| Greedy Edges Greedy (lab 3) | 5.153622 | 4.066111 | 8.615719 | 4.111100 |
-| Greedy Cycle 2-regret heuristics (lab 2) | 4.517217 |  | 3.915432 |  |
-| Greedy Cycle heuristics with a weighted sum criterion (lab 2) | 4.066111 |  | 3.760381 |  |
-| NN heuristics 2-regret heuristics (lab 2) | 4.025403 |  | 4.062423 |  |
-| NN heuristics with a weighted sum criterion (lab 2) | 4.148715 |  | 4.111100 |  |
-| Random (lab 1) | 0.030866 |  | 0.011238 |  |
-| Nearest Node End (lab 1) | 0.142488 |  | 0.078278 |  |
-| Nearest Node Any (lab 1) | 4.214506 |  | 3.637342 |  |
-| Greedy Cycle (lab 1) | 3.036610 |  | 2.781263 |  |
+| **Steepest Edges Random (baseline)** | 33.799286 |  | 34.286283 |  |
+| **Candidate Edges k5 Random** | 4.173085 |  | 3.818066 |  |
+| **Candidate Edges k10 Random** | 7.909238 |  | 6.727505 |  |
+| **Candidate Edges k20 Random** | 14.563482 |  | 12.108440 |  |
+| Steepest Nodes Random (lab 3) | 66.795616 | 0.003531 | 66.738804 | 0.003519 |
+| Steepest Nodes Greedy (lab 3) | 5.276252 | 4.066111 | 8.437412 | 4.111100 |
+| Steepest Edges Random (lab 3) | 34.488630 | 0.003531 | 35.122619 | 0.003519 |
+| Steepest Edges Greedy (lab 3) | 4.453417 | 4.066111 | 7.405829 | 4.111100 |
+| Greedy Nodes Random (lab 3) | 27.378438 | 0.003531 | 29.323703 | 0.003519 |
+| Greedy Nodes Greedy (lab 3) | 5.271248 | 4.066111 | 7.354972 | 4.111100 |
+| Greedy Edges Random (lab 3) | 24.915344 | 0.003531 | 25.450824 | 0.003519 |
+| Greedy Edges Greedy (lab 3) | 4.911828 | 4.066111 | 7.588654 | 4.111100 |
+| Greedy Cycle 2-regret heuristics (lab 2) | 3.767999 |  | 3.729813 |  |
+| Greedy Cycle heuristics with a weighted sum criterion (lab 2) | 3.722352 |  | 3.621625 |  |
+| NN heuristics 2-regret heuristics (lab 2) | 3.826779 |  | 3.824544 |  |
+| NN heuristics with a weighted sum criterion (lab 2) | 3.893400 |  | 4.053285 |  |
+| Random (lab 1) | 0.032951 |  | 0.013712 |  |
+| Nearest Node End (lab 1) | 0.256396 |  | 0.118587 |  |
+| Nearest Node Any (lab 1) | 3.829626 |  | 3.895479 |  |
+| Greedy Cycle (lab 1) | 2.859520 |  | 3.091238 |  |
 
 ## Best solutions and visualizations
 
@@ -349,17 +349,17 @@ Repository: [PiotrFoltyniewicz/Evolutionary-Computation](https://github.com/Piot
 
 ## Conclusions
 
-On TSPA, k = 10 reduces average total time from 11.450 to 2.822 ms (4.06x speedup). The mean objective changes from 76126.85 to 76278.36 (+0.199%).
+On TSPA, k = 10 reduces average total time from 33.799 to 7.909 ms (4.27x speedup). The mean objective changes from 76126.85 to 76278.36 (+0.199%).
 
-On TSPB, k = 10 reduces average total time from 11.401 to 2.459 ms (4.64x speedup). The mean objective changes from 52712.36 to 52640.37 (-0.137%).
+On TSPB, k = 10 reduces average total time from 34.286 to 6.728 ms (5.10x speedup). The mean objective changes from 52712.36 to 52640.37 (-0.137%).
 
 On TSPA, Candidate Edges k5 Random is the fastest tested candidate method; Candidate Edges k20 Random gives the lowest candidate mean (76095.42, versus 76126.85 for the full baseline).
 
-The best candidate mean on TSPA is 76095.42; the best mean from earlier labs is 72984.73 (Greedy Edges Greedy, lab 3).
+The best candidate mean on TSPA is 76095.42; the best mean from earlier labs is 72983.31 (Greedy Edges Greedy, lab 3).
 
 On TSPB, Candidate Edges k5 Random is the fastest tested candidate method; Candidate Edges k10 Random gives the lowest candidate mean (52640.37, versus 52712.36 for the full baseline).
 
-The best candidate mean on TSPB is 52640.37; the best mean from earlier labs is 52640.92 (Steepest Edges Random, lab 3).
+The best candidate mean on TSPB is 52640.37; the best mean from earlier labs is 52513.55 (Steepest Edges Random, lab 3).
 
 Increasing k raises the number of candidate moves and does not guarantee a better local optimum in every run, because the steepest move can lead to a different search trajectory. These observations describe this sample of starts, not a guarantee that restricted search dominates full search.
 
