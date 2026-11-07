@@ -1,0 +1,5 @@
+instance,method,min,max,average,average_time_ms
+TSPA,Steepest Edges Random,73825,80885,76282.215,21.5886175
+TSPA,Move List Edges Random,73815,80002,76245.975,2.059028
+TSPB,Steepest Edges Random,50056,55057,52617.185,21.747047
+TSPB,Move List Edges Random,50420,55821,52471.51,1.8668725

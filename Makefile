@@ -36,3 +36,15 @@ lab3/out/main: CPPFLAGS += -Ilab2/src
 # Reuse local search without linking lab3's main or experiment runner.
 lab4/out/main: lab3/src/local_search_methods.cpp lab3/src/local_search_methods.hpp
 lab4/out/main: CPPFLAGS += -Ilab3/src
+
+# Lab 5 uses the same full-neighborhood baseline as lab 3.
+lab5/out/main: lab3/src/local_search_methods.cpp lab3/src/local_search_methods.hpp
+lab5/out/main: CPPFLAGS += -Ilab3/src
+
+.PHONY: test-lab5
+test-lab5: lab5/out/move_list_search_test
+	./lab5/out/move_list_search_test
+
+lab5/out/move_list_search_test: lab5/tests/move_list_search_test.cpp lab5/src/move_list_search.cpp lab5/src/move_list_search.hpp lab3/src/local_search_methods.cpp lab3/src/local_search_methods.hpp $(COMMON_SOURCES) $(COMMON_HEADERS)
+	mkdir -p lab5/out
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -Ilab3/src lab5/tests/move_list_search_test.cpp lab3/src/local_search_methods.cpp $(COMMON_SOURCES) -o $@
