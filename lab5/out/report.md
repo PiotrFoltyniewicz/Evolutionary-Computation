@@ -157,19 +157,19 @@ Each method runs 200 times per instance: 800 searches in total. Lab 5 methods ar
 | Candidate Edges k5 Random (lab 4) | 76993.97 (74191 - 80983) | 52818.47 (50722 - 56889) |
 | Candidate Edges k10 Random (lab 4) | 76278.36 (73966 - 79184) | 52640.37 (50362 - 56836) |
 | Candidate Edges k20 Random (lab 4) | 76095.42 (**73288** - 80182) | 52675.29 (**49459** - 55512) |
-| Steepest Nodes Random (lab 3) | 90017.03 (82067 - 97807) | 65860.14 (58859 - 72495) |
+| Steepest Nodes Random (lab 3) | 89769.44 (82915 - 103005) | 66080.08 (59585 - 76284) |
 | Steepest Nodes Greedy (lab 3) | 73021.71 (**71955** - 74861) | 54292.07 (49978 - 61265) |
-| Steepest Edges Random (lab 3) | 76234.49 (73409 - 79907) | 52513.55 (50126 - 55265) |
+| Steepest Edges Random (lab 3) | 76264.35 (74112 - 79504) | 52523.80 (50055 - 55295) |
 | Steepest Edges Greedy (lab 3) | 73003.80 (**71955** - 74861) | 53091.28 (**49346** - 60354) |
-| Greedy Nodes Random (lab 3) | 88281.52 (83276 - 97988) | 63685.80 (57875 - 70381) |
-| Greedy Nodes Greedy (lab 3) | 73021.00 (**71955** - 74861) | 54258.15 (49978 - 61265) |
-| Greedy Edges Random (lab 3) | 76362.62 (74427 - 78668) | 52948.87 (50667 - 56093) |
-| Greedy Edges Greedy (lab 3) | 72983.31 (**71955** - 74877) | 53151.86 (49546 - 60357) |
+| Greedy Nodes Random (lab 3) | 87945.91 (81253 - 95528) | 63597.14 (57020 - 71438) |
+| Greedy Nodes Greedy (lab 3) | 73019.61 (**71955** - 74877) | 54253.02 (49978 - 61265) |
+| Greedy Edges Random (lab 3) | 76216.88 (73690 - 79930) | 53014.55 (50850 - 55477) |
+| Greedy Edges Greedy (lab 3) | 72978.63 (**71955** - 74861) | 53183.11 (49938 - 60266) |
 | Greedy Cycle 2-regret heuristics (lab 2) | 120378.77 (112806 - 128089) | 72484.84 (68150 - 77274) |
 | Greedy Cycle heuristics with a weighted sum criterion (lab 2) | 73353.51 (**72011** - 75532) | 57866.33 (52731 - 63370) |
 | NN heuristics 2-regret heuristics (lab 2) | 121360.29 (110950 - 135771) | 73649.84 (68761 - 79756) |
 | NN heuristics with a weighted sum criterion (lab 2) | 75561.20 (72419 - 78504) | 55698.34 (**50485** - 61406) |
-| Random (lab 1) | 262009.64 (234223 - 288919) | 206071.06 (181689 - 230681) |
+| Random (lab 1) | 261432.28 (229891 - 296152) | 207021.99 (181982 - 239497) |
 | Nearest Node End (lab 1) | 87476.63 (84362 - 90075) | 59397.34 (56007 - 63166) |
 | Nearest Node Any (lab 1) | 74306.53 (**72328** - 77022) | 59476.23 (**52915** - 66164) |
 | Greedy Cycle (lab 1) | 73743.73 (72590 - 75281) | 59650.81 (55655 - 63734) |
@@ -180,28 +180,28 @@ Mean total time per run, including random-start construction and search. LM init
 
 | Method | TSPA | TSPB |
 |---|---:|---:|
-| **Steepest Edges Random (baseline)** | 21.588618 | 21.747047 |
-| **Move List Edges Random** | 2.059028 | 1.866873 |
-| Steepest Edges Random (lab 4) | 33.799286 | 34.286283 |
-| Candidate Edges k5 Random (lab 4) | 4.173085 | 3.818066 |
-| Candidate Edges k10 Random (lab 4) | 7.909238 | 6.727505 |
-| Candidate Edges k20 Random (lab 4) | 14.563482 | 12.108440 |
-| Steepest Nodes Random (lab 3) | 66.795616 | 66.738804 |
-| Steepest Nodes Greedy (lab 3) | 5.276252 | 8.437412 |
-| Steepest Edges Random (lab 3) | 34.488630 | 35.122619 |
-| Steepest Edges Greedy (lab 3) | 4.453417 | 7.405829 |
-| Greedy Nodes Random (lab 3) | 27.378438 | 29.323703 |
-| Greedy Nodes Greedy (lab 3) | 5.271248 | 7.354972 |
-| Greedy Edges Random (lab 3) | 24.915344 | 25.450824 |
-| Greedy Edges Greedy (lab 3) | 4.911828 | 7.588654 |
-| Greedy Cycle 2-regret heuristics (lab 2) | 3.767999 | 3.729813 |
-| Greedy Cycle heuristics with a weighted sum criterion (lab 2) | 3.722352 | 3.621625 |
-| NN heuristics 2-regret heuristics (lab 2) | 3.826779 | 3.824544 |
-| NN heuristics with a weighted sum criterion (lab 2) | 3.893400 | 4.053285 |
-| Random (lab 1) | 0.032951 | 0.013712 |
-| Nearest Node End (lab 1) | 0.256396 | 0.118587 |
-| Nearest Node Any (lab 1) | 3.829626 | 3.895479 |
-| Greedy Cycle (lab 1) | 2.859520 | 3.091238 |
+| **Steepest Edges Random (baseline)** | 34.347375 | 33.977279 |
+| **Move List Edges Random** | 2.986067 | 2.997350 |
+| Steepest Edges Random (lab 4) | 33.394173 | 33.577526 |
+| Candidate Edges k5 Random (lab 4) | 4.171090 | 3.514233 |
+| Candidate Edges k10 Random (lab 4) | 7.959120 | 6.762205 |
+| Candidate Edges k20 Random (lab 4) | 14.623206 | 12.190080 |
+| Steepest Nodes Random (lab 3) | 68.994481 | 66.957243 |
+| Steepest Nodes Greedy (lab 3) | 5.664292 | 8.910172 |
+| Steepest Edges Random (lab 3) | 35.542235 | 35.509476 |
+| Steepest Edges Greedy (lab 3) | 4.783631 | 7.824274 |
+| Greedy Nodes Random (lab 3) | 28.225998 | 28.026476 |
+| Greedy Nodes Greedy (lab 3) | 5.628679 | 7.445560 |
+| Greedy Edges Random (lab 3) | 25.004031 | 25.360979 |
+| Greedy Edges Greedy (lab 3) | 5.153959 | 7.519259 |
+| Greedy Cycle 2-regret heuristics (lab 2) | 4.002215 | 3.887373 |
+| Greedy Cycle heuristics with a weighted sum criterion (lab 2) | 3.936194 | 3.930922 |
+| NN heuristics 2-regret heuristics (lab 2) | 4.124135 | 4.049101 |
+| NN heuristics with a weighted sum criterion (lab 2) | 4.463945 | 4.085049 |
+| Random (lab 1) | 0.014100 | 0.026350 |
+| Nearest Node End (lab 1) | 0.100089 | 0.180254 |
+| Nearest Node Any (lab 1) | 3.669497 | 3.645192 |
+| Greedy Cycle (lab 1) | 2.803038 | 2.795594 |
 
 ## Best solutions and visualizations
 
@@ -311,8 +311,8 @@ All 800 exported cycles were checked for exactly 100 distinct valid node IDs. In
 
 ## Conclusions
 
-On TSPA, mean time is 21.589 ms for the baseline and 2.059 ms for LM (baseline/LM time ratio: 10.48x; above 1 means LM is faster). Mean objective changes from 76282.22 to 76245.98 (-0.048%; negative means improvement).
+On TSPA, mean time is 34.347 ms for the baseline and 2.986 ms for LM (baseline/LM time ratio: 11.50x; above 1 means LM is faster). Mean objective changes from 76282.22 to 76245.98 (-0.048%; negative means improvement).
 
-On TSPB, mean time is 21.747 ms for the baseline and 1.867 ms for LM (baseline/LM time ratio: 11.65x; above 1 means LM is faster). Mean objective changes from 52617.19 to 52471.51 (-0.277%; negative means improvement).
+On TSPB, mean time is 33.977 ms for the baseline and 2.997 ms for LM (baseline/LM time ratio: 11.34x; above 1 means LM is faster). Mean objective changes from 52617.19 to 52471.51 (-0.277%; negative means improvement).
 
 LM reuses evaluations while preserving the full neighborhood at termination. Its search path can differ from the baseline because new improvements wait for a rebuild and ties use a different order. The observed time and quality differences describe these 200 starts per instance.
