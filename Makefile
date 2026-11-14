@@ -48,3 +48,7 @@ test-lab5: lab5/out/move_list_search_test
 lab5/out/move_list_search_test: lab5/tests/move_list_search_test.cpp lab5/src/move_list_search.cpp lab5/src/move_list_search.hpp lab3/src/local_search_methods.cpp lab3/src/local_search_methods.hpp $(COMMON_SOURCES) $(COMMON_HEADERS)
 	mkdir -p lab5/out
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -Ilab3/src lab5/tests/move_list_search_test.cpp lab3/src/local_search_methods.cpp $(COMMON_SOURCES) -o $@
+
+# Lab 6 reuses the move-list LS from lab 5.
+lab6/out/main: lab5/src/move_list_search.cpp lab5/src/move_list_search.hpp
+lab6/out/main: CPPFLAGS += -Ilab5/src
