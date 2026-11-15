@@ -226,12 +226,9 @@ ILS(rng, T):
 
 For each instance, run MSLS 20 times. Set the ILS limit T to the mean total time of these 20 MSLS runs, then run ILS 20 times with that limit. The first LS in ILS is included in both the timer and the LS count. A started LS always finishes, so the final call may slightly exceed T.
 
-The timer includes random solution generation, perturbation and local search. Data loading, distance preprocessing, generator initialization and writing results are outside it. Each run uses a separate `mt19937` generator with seed `20261114 + 1000*instanceIndex + run`, where TSPA has index 0, TSPB index 1, and run is 0..19. The matching MSLS and ILS runs therefore begin with the same random solution. Compilation: `g++ -std=c++20 -O2`.
+The timer includes random solution generation, perturbation and local search.
 
 ## Results
-
-Tables show **mean (minimum - maximum)**. MSLS and ILS use 20 runs per instance. Earlier methods were rerun 200 times per instance on the same AMD Ryzen 5 5600X machine as lab 6, using WSL and g++ 13.3 with -O2. Bold values mark the lowest means, minima and mean running times in each instance.
-
 
 ### Objective function values
 
@@ -284,8 +281,6 @@ Means across all completed LS calls. Time covers only LS. Improving moves are th
 | TSPB / ILS | 0.237 | 16.78 |
 
 ## Best solutions and visualizations
-
-Node IDs are read left to right, then top to bottom. The last node connects back to the first. Colors show selection costs; gray nodes are unselected and the red star marks the first listed node.
 
 ### TSPA
 
