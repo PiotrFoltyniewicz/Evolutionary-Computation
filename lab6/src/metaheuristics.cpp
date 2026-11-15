@@ -14,6 +14,14 @@ namespace lab6
         {
             return std::chrono::duration<double, std::milli>(Clock::now() - start).count();
         }
+
+        int improve(const Nodes &nodes, Solution &solution, SearchResult &result)
+        {
+            const auto start = Clock::now();
+            const int value = moveListLocalSearch(nodes, solution, &result.improvingMoves);
+            result.localSearchMs += elapsedMs(start);
+            return value;
+        }
     }
 
     Solution randomStartingSolution(std::mt19937 &generator)
@@ -94,7 +102,7 @@ namespace lab6
         for (int i = 0; i < starts; ++i)
         {
             auto candidate = randomStartingSolution(generator);
-            const int value = moveListLocalSearch(nodes, candidate);
+            const int value = improve(nodes, candidate, best);
             ++best.localSearchRuns;
             if (i == 0)
                 best.initialObjective = value;
@@ -119,7 +127,7 @@ namespace lab6
         const auto deadline = start + budget;
         SearchResult best;
         best.solution = randomStartingSolution(generator);
-        best.objective = moveListLocalSearch(nodes, best.solution);
+        best.objective = improve(nodes, best.solution, best);
         best.initialObjective = best.objective;
         best.localSearchRuns = 1;
         int consecutiveFailures = 0;
@@ -130,7 +138,7 @@ namespace lab6
             // Do not launch a new LS if the perturbation used the remaining time.
             if (Clock::now() >= deadline)
                 break;
-            const int value = moveListLocalSearch(nodes, candidate);
+            const int value = improve(nodes, candidate, best);
             ++best.localSearchRuns;
             if (value < best.objective)
             {

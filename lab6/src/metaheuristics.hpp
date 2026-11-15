@@ -19,6 +19,8 @@ namespace lab6
         int localSearchRuns = 0;
         int acceptedImprovements = 0;
         double elapsedMs = 0.0;
+        double localSearchMs = 0.0;
+        int improvingMoves = 0;
     };
 
     Solution randomStartingSolution(std::mt19937 &generator);

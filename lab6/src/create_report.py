@@ -108,7 +108,10 @@ def validate(groups, summaries):
 
 
 def historical_comparisons():
-    previous = {lab: read_summary(f"lab{lab}") for lab in range(1, 6)}
+    previous = {lab: {} for lab in range(1, 6)}
+    with (GENERATED / "comparison_summary.csv").open(newline="", encoding="utf-8") as stream:
+        for row in csv.DictReader(stream):
+            previous[int(row["lab"])][(row["instance"], row["method"])] = row
     selected = set()
     # Union of winners by mean and by minimum on either instance. Ties in
     # minimum prefer the lower mean, then lab/method for deterministic output.
@@ -365,21 +368,37 @@ The timer includes random solution generation, perturbation and local search. Da
 
 ## Results
 
-Tables show **mean (minimum - maximum)**. MSLS and ILS use 20 runs per instance. The comparison includes the best construction heuristics and local search variants from earlier labs, with their original 200-run results. Earlier timings were measured separately.
+Tables show **mean (minimum - maximum)**. MSLS and ILS use 20 runs per instance. Earlier methods were rerun 200 times per instance on the same AMD Ryzen 5 5600X machine as lab 6, using WSL and g++ 13.3 with -O2. Bold values mark the lowest means, minima and mean running times in each instance.
 """
 
 
-def result_tables(summaries, historical):
+def result_tables(summaries, historical, groups):
     rows = [(f"**{method} (lab 6)**", {i: summaries[(i, method)] for i in INSTANCES})
             for method in METHODS]
     rows.extend((f"{method} (lab {lab})", data) for lab, method, data in historical)
+    best = {instance: {metric: min(float(data[instance][metric]) for _, data in rows)
+                       for metric in ("average", "min", "average_time_ms")}
+            for instance in INSTANCES}
     lines = ["### Objective function values", "", "| Method | TSPA | TSPB |", "|---|---:|---:|"]
     for label, data in rows:
-        values = [f"{formatted(data[i]['average'])} ({data[i]['min']} - {data[i]['max']})" for i in INSTANCES]
+        values = []
+        for instance in INSTANCES:
+            row = data[instance]
+            average, minimum = formatted(row["average"]), row["min"]
+            if float(row["average"]) == best[instance]["average"]:
+                average = f"**{average}**"
+            if float(row["min"]) == best[instance]["min"]:
+                minimum = f"**{minimum}**"
+            values.append(f"{average} ({minimum} - {row['max']})")
         lines.append(f"| {label} | {' | '.join(values)} |")
     lines.extend(["", "### Running times (ms per complete run)", "", "| Method | TSPA | TSPB |", "|---|---:|---:|"])
     for label, data in rows:
-        lines.append(f"| {label} | {' | '.join(formatted(data[i]['average_time_ms'], 6) for i in INSTANCES)} |")
+        values = []
+        for instance in INSTANCES:
+            time = data[instance]["average_time_ms"]
+            value = formatted(time, 6)
+            values.append(f"**{value}**" if float(time) == best[instance]["average_time_ms"] else value)
+        lines.append(f"| {label} | {' | '.join(values)} |")
     lines.extend(["", "### Number of complete basic LS runs", "",
                   "The initial LS is included. Values are mean (minimum - maximum) across 20 runs. MSLS performs exactly 400 calls in each run.", "",
                   "| Method | TSPA | TSPB |", "|---|---:|---:|"])
@@ -389,6 +408,16 @@ def result_tables(summaries, historical):
             row = summaries[(instance, method)]
             values.append(f"{formatted(row['average_ls_runs'])} ({row['min_ls_runs']} - {row['max_ls_runs']})")
         lines.append(f"| {method} | {' | '.join(values)} |")
+    lines.extend(["", "### Mean time and improving moves per LS", "",
+                  "Means across all completed LS calls. Time covers only LS. Improving moves are the individual improvements applied inside LS.", "",
+                  "| Instance / method | Time per LS (ms) | Improving moves per LS |", "|---|---:|---:|"])
+    for instance in INSTANCES:
+        for method in METHODS:
+            records = groups[(instance, method)]
+            calls = sum(int(row["ls_runs"]) for row in records)
+            time = sum(float(row["ls_time_ms"]) for row in records) / calls
+            moves = sum(int(row["improving_moves"]) for row in records) / calls
+            lines.append(f"| {instance} / {method} | {formatted(time, 3)} | {formatted(moves)} |")
     return lines + [""]
 
 
@@ -584,7 +613,7 @@ def main():
     checked = validate(groups, summaries)
     historical = historical_comparisons()
     lines = [DESCRIPTION, "",
-             *result_tables(summaries, historical),
+             *result_tables(summaries, historical, groups),
              *save_best_and_plots(groups), "## Solution checking", "",
              f"All {checked} exported cycles contain 100 distinct valid node IDs. Recomputed objectives and summary statistics match the CSV records. The four plotted solutions attain the reported minima.", "",
              "## Source code", "",
@@ -594,6 +623,7 @@ def main():
              "- [Validation, plots and report generator](../src/create_report.py)",
              "- [All 80 runs, timings, seeds and LS counts](generated/results.csv)",
              "- [Summary](generated/summary.csv)", "- [Best solutions](generated/best_solutions.csv)",
+             "- [Earlier methods rerun on the same machine](generated/comparison_summary.csv)",
              "- [Lab 5 report](../../lab5/out/report.md)",
              "- [Lab 4 report](../../lab4/out/report.md)", "",
              *conclusions(groups, summaries, historical)]

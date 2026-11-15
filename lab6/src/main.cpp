@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
         if (!results || !summary)
             throw std::runtime_error("Unable to open experiment outputs");
         results << "instance,method,run,start,objective,solution,time_ms,ls_runs,"
-                   "accepted_improvements,initial_objective,seed,time_budget_ms\n";
+                   "accepted_improvements,initial_objective,seed,time_budget_ms,ls_time_ms,improving_moves\n";
         summary << "instance,method,min,max,average,average_time_ms,min_ls_runs,max_ls_runs,average_ls_runs\n";
         for (std::size_t i = 0; i < files.size(); ++i)
             lab6::runExperimentForFile(files[i], static_cast<int>(i), results, summary);

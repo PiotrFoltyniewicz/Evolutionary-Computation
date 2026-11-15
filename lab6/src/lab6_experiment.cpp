@@ -20,7 +20,8 @@ namespace lab6
                 stream << (i == 0 ? "" : " ") << result.solution[i];
             stream << "\"," << result.elapsedMs << ',' << result.localSearchRuns << ','
                    << result.acceptedImprovements << ',' << result.initialObjective << ','
-                   << seed << ',' << budgetMs << '\n';
+                   << seed << ',' << budgetMs << ',' << result.localSearchMs << ','
+                   << result.improvingMoves << '\n';
             stream.flush();
         }
 

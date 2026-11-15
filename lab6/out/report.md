@@ -230,7 +230,7 @@ The timer includes random solution generation, perturbation and local search. Da
 
 ## Results
 
-Tables show **mean (minimum - maximum)**. MSLS and ILS use 20 runs per instance. The comparison includes the best construction heuristics and local search variants from earlier labs, with their original 200-run results. Earlier timings were measured separately.
+Tables show **mean (minimum - maximum)**. MSLS and ILS use 20 runs per instance. Earlier methods were rerun 200 times per instance on the same AMD Ryzen 5 5600X machine as lab 6, using WSL and g++ 13.3 with -O2. Bold values mark the lowest means, minima and mean running times in each instance.
 
 
 ### Objective function values
@@ -238,13 +238,13 @@ Tables show **mean (minimum - maximum)**. MSLS and ILS use 20 runs per instance.
 | Method | TSPA | TSPB |
 |---|---:|---:|
 | **MSLS (lab 6)** | 73608.50 (73386 - 74027) | 50296.75 (49926 - 50760) |
-| **ILS (lab 6)** | 71663.85 (71484 - 71994) | 48323.80 (48152 - 48477) |
+| **ILS (lab 6)** | **71683.60** (**71514** - 71998) | **48335.75** (**48152** - 48513) |
 | Steepest Edges Random (lab 5) | 76282.22 (73825 - 80885) | 52617.19 (50056 - 55057) |
 | Move List Edges Random (lab 5) | 76245.98 (73815 - 80002) | 52471.51 (50420 - 55821) |
 | Candidate Edges k20 Random (lab 4) | 76095.42 (73288 - 80182) | 52675.29 (49459 - 55512) |
 | Candidate Edges k10 Random (lab 4) | 76278.36 (73966 - 79184) | 52640.37 (50362 - 56836) |
 | Steepest Edges Greedy (lab 3) | 73003.80 (71955 - 74861) | 53091.28 (49346 - 60354) |
-| Greedy Edges Greedy (lab 3) | 72978.63 (71955 - 74861) | 53183.11 (49938 - 60266) |
+| Greedy Edges Greedy (lab 3) | 72989.61 (71955 - 74861) | 53171.39 (49537 - 60266) |
 | NN heuristics with a weighted sum criterion (lab 2) | 75561.20 (72419 - 78504) | 55698.34 (50485 - 61406) |
 | Greedy Cycle heuristics with a weighted sum criterion (lab 2) | 73353.51 (72011 - 75532) | 57866.33 (52731 - 63370) |
 
@@ -252,16 +252,16 @@ Tables show **mean (minimum - maximum)**. MSLS and ILS use 20 runs per instance.
 
 | Method | TSPA | TSPB |
 |---|---:|---:|
-| **MSLS (lab 6)** | 511.498428 | 509.700618 |
-| **ILS (lab 6)** | 511.624135 | 509.816645 |
-| Steepest Edges Random (lab 5) | 34.347375 | 33.977279 |
-| Move List Edges Random (lab 5) | 2.986067 | 2.997350 |
-| Candidate Edges k20 Random (lab 4) | 14.623206 | 12.190080 |
-| Candidate Edges k10 Random (lab 4) | 7.959120 | 6.762205 |
-| Steepest Edges Greedy (lab 3) | 4.783631 | 7.824274 |
-| Greedy Edges Greedy (lab 3) | 5.153959 | 7.519259 |
-| NN heuristics with a weighted sum criterion (lab 2) | 4.463945 | 4.085049 |
-| Greedy Cycle heuristics with a weighted sum criterion (lab 2) | 3.936194 | 3.930922 |
+| **MSLS (lab 6)** | 470.650187 | 469.309746 |
+| **ILS (lab 6)** | 470.793366 | 469.449086 |
+| Steepest Edges Random (lab 5) | 10.841779 | 10.998491 |
+| Move List Edges Random (lab 5) | **1.165003** | **1.158196** |
+| Candidate Edges k20 Random (lab 4) | 5.675154 | 4.664341 |
+| Candidate Edges k10 Random (lab 4) | 2.924336 | 2.493468 |
+| Steepest Edges Greedy (lab 3) | 1.896843 | 2.776707 |
+| Greedy Edges Greedy (lab 3) | 2.079999 | 2.803250 |
+| NN heuristics with a weighted sum criterion (lab 2) | 1.497114 | 1.497218 |
+| Greedy Cycle heuristics with a weighted sum criterion (lab 2) | 1.473993 | 1.453700 |
 
 ### Number of complete basic LS runs
 
@@ -270,7 +270,18 @@ The initial LS is included. Values are mean (minimum - maximum) across 20 runs. 
 | Method | TSPA | TSPB |
 |---|---:|---:|
 | MSLS | 400.00 (400 - 400) | 400.00 (400 - 400) |
-| ILS | 2076.05 (1948 - 2177) | 2173.35 (2089 - 2292) |
+| ILS | 1861.65 (1762 - 1978) | 1966.65 (1874 - 2098) |
+
+### Mean time and improving moves per LS
+
+Means across all completed LS calls. Time covers only LS. Improving moves are the individual improvements applied inside LS.
+
+| Instance / method | Time per LS (ms) | Improving moves per LS |
+|---|---:|---:|
+| TSPA / MSLS | 1.176 | 153.17 |
+| TSPA / ILS | 0.251 | 17.80 |
+| TSPB / MSLS | 1.173 | 151.60 |
+| TSPB / ILS | 0.237 | 16.78 |
 
 ## Best solutions and visualizations
 
@@ -301,23 +312,23 @@ Objective: **73386**, run **7** (zero-based).
 
 #### ILS
 
-Objective: **71484**, run **18** (zero-based).
+Objective: **71514**, run **15** (zero-based).
 
 ![TSPA: ILS](generated/TSPA_ILS.png)
 
 **Solution (node order):**
 
 ```text
- 80  48  31  60 116 149  63 168  49 108
-152 100 123  83 160  97 127  69 129 104
-171   2 189 187  30 141  87  45  73 135
-114 181 192 158  58  84 134  72 176 150
-106 113  89  42 151 182  57  64 107  88
- 78 193 153 170 146 159 130  47 147 101
- 29 178 184 136 186 164   1 169   3  50
- 93  85 174   8  54   9  33 131  36 177
- 52 179  53 140 144  67  16  51 156  35
-185 102  28 180 132  76   4  71 157  91
+ 50   3 169   1 164 186 136 184 178  29
+101 147  47 130 159 146 170 153 193  78
+ 88 107  64  57 182 151  42  89 113 106
+150 176  72 134  84  58 158 192 181 114
+135  73  45 185 102  87 141  30 187 189
+  2 171 104 129  69 127  97 168 116 149
+ 63  11  49 160  83 123 152 108  60  31
+ 48  80  91 157  71   4  76 132 180  28
+156  35  51  16  67 144 140  53 179  52
+177  36 131  33   9  54   8 174  85  93
 ```
 
 ### TSPB
@@ -377,13 +388,14 @@ All 80 exported cycles contain 100 distinct valid node IDs. Recomputed objective
 - [All 80 runs, timings, seeds and LS counts](generated/results.csv)
 - [Summary](generated/summary.csv)
 - [Best solutions](generated/best_solutions.csv)
+- [Earlier methods rerun on the same machine](generated/comparison_summary.csv)
 - [Lab 5 report](../../lab5/out/report.md)
 - [Lab 4 report](../../lab4/out/report.md)
 
 ## Conclusions
 
-On TSPA, ILS reduces the mean objective from 73608.50 to 71663.85 (2.642% improvement). Its best value is 71484, versus 73386 for MSLS. It beats MSLS in 20/20 matching-seed comparisons and improves on the best earlier LS mean of 72978.63.
+On TSPA, ILS reduces the mean objective from 73608.50 to 71683.60 (2.615% improvement). Its best value is 71514, versus 73386 for MSLS. It beats MSLS in 20/20 matching-seed comparisons and improves on the best earlier LS mean of 72989.61.
 
-On TSPB, ILS reduces the mean objective from 50296.75 to 48323.80 (3.923% improvement). Its best value is 48152, versus 49926 for MSLS. It beats MSLS in 20/20 matching-seed comparisons and improves on the best earlier LS mean of 52471.51.
+On TSPB, ILS reduces the mean objective from 50296.75 to 48335.75 (3.899% improvement). Its best value is 48152, versus 49926 for MSLS. It beats MSLS in 20/20 matching-seed comparisons and improves on the best earlier LS mean of 52471.51.
 
 ILS achieves better results on both instances within the MSLS time budgets. It preserves most of a good solution between searches, allowing more LS calls than fully random restarts: about 2,000 per run, compared with 400 for MSLS.

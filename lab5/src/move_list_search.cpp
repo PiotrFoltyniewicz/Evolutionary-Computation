@@ -176,7 +176,7 @@ namespace
     }
 }
 
-int moveListLocalSearch(const Nodes &nodes, Solution &solution)
+int moveListLocalSearch(const Nodes &nodes, Solution &solution, int *improvingMoves)
 {
     int objective = assessSolution(nodes, solution);
     auto positions = positionsOf(solution);
@@ -196,5 +196,7 @@ int moveListLocalSearch(const Nodes &nodes, Solution &solution)
         applyMove(solution, positions, chosen);
         objective += chosen.delta;
         positions = positionsOf(solution);
+        if (improvingMoves)
+            ++*improvingMoves;
     }
 }
