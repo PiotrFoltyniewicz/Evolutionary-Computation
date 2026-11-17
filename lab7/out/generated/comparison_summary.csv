@@ -1,0 +1,13 @@
+lab,instance,method,min,max,average,average_time_ms
+2,TSPA,Greedy Cycle heuristics with a weighted sum criterion,72011,75532,73353.51,1.4739933
+2,TSPB,Greedy Cycle heuristics with a weighted sum criterion,52731,63370,57866.33,1.453700145
+2,TSPA,NN heuristics with a weighted sum criterion,72419,78504,75561.195,1.49711393
+2,TSPB,NN heuristics with a weighted sum criterion,50485,61406,55698.34,1.497218025
+3,TSPA,Greedy Edges Greedy,71955,74861,72989.61,2.079999175
+3,TSPB,Greedy Edges Greedy,49537,60266,53171.39,2.803249875
+5,TSPA,Move List Edges Random,73815,80002,76245.975,1.16500258
+5,TSPB,Move List Edges Random,50420,55821,52471.51,1.15819595
+6,TSPA,MSLS,73386,74027,73608.5,849.7126551
+6,TSPB,MSLS,49926,50760,50296.75,834.7015053
+6,TSPA,ILS,71534,71998,71695.15,850.0169893
+6,TSPB,ILS,48152,48551,48346.1,834.89489155

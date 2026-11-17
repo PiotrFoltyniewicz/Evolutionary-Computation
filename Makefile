@@ -1,4 +1,4 @@
-﻿CXX = g++
+CXX = g++
 CXXFLAGS ?= -std=c++20 -O2 -Wall -Wextra
 CPPFLAGS += -Icommon/src
 PYTHON ?= python3
@@ -52,3 +52,11 @@ lab5/out/move_list_search_test: lab5/tests/move_list_search_test.cpp lab5/src/mo
 # Lab 6 reuses the move-list LS from lab 5.
 lab6/out/main: lab5/src/move_list_search.cpp lab5/src/move_list_search.hpp
 lab6/out/main: CPPFLAGS += -Ilab5/src
+
+# Lab 7 reuses weighted-regret repair, random starts, and move-list steepest LS.
+lab7/out/main: lab2/src/lab2_methods.cpp lab2/src/lab2_methods.hpp lab5/src/move_list_search.cpp lab5/src/move_list_search.hpp lab6/src/metaheuristics.cpp lab6/src/metaheuristics.hpp
+lab7/out/main: CPPFLAGS += -Ilab2/src -Ilab5/src -Ilab6/src
+
+.PHONY: report-lab7
+report-lab7:
+	$(PYTHON) lab7/src/create_report.py

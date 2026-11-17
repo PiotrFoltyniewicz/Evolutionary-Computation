@@ -147,3 +147,24 @@ int nearestNeighbourWeightedSumHeuristics(const Nodes& nodesArr, int startIdx, S
         return findBestWeightedSumNode(nodes, current, available, cycle);
     });
 }
+
+int completeWeightedSumSolution(const Nodes& nodesArr, Solution& solution, bool cycle)
+{
+    if (solution.empty() || solution.size() > SOLUTIONSIZE)
+        throw std::invalid_argument("Repair requires 1 to 100 distinct nodes");
+    Available available;
+    available.fill(true);
+    for (int node : solution)
+    {
+        if (node < 0 || node >= PROBLEMSIZE || !available[node])
+            throw std::invalid_argument("Invalid partial solution");
+        available[node] = false;
+    }
+    while (solution.size() < SOLUTIONSIZE)
+    {
+        const auto [node, position] = findBestWeightedSumNode(nodesArr, solution, available, cycle);
+        solution.insert(solution.begin() + position, node);
+        available[node] = false;
+    }
+    return assessSolution(nodesArr, solution);
+}

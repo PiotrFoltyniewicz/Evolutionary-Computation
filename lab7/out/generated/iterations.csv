@@ -1,0 +1,13 @@
+instance,method,min_iterations,max_iterations,average_iterations
+TSPA,LNS Random Nodes,747,880,798.25
+TSPA,LNS Random Nodes + LS,630,733,675.1
+TSPA,LNS Single Subpath,665,826,761.85
+TSPA,LNS Single Subpath + LS,458,683,627.55
+TSPA,LNS Multiple Subpaths,554,836,714.45
+TSPA,LNS Multiple Subpaths + LS,453,687,560.45
+TSPB,LNS Random Nodes,551,834,777
+TSPB,LNS Random Nodes + LS,412,711,603.6
+TSPB,LNS Single Subpath,510,787,650.85
+TSPB,LNS Single Subpath + LS,472,688,622
+TSPB,LNS Multiple Subpaths,781,854,825.85
+TSPB,LNS Multiple Subpaths + LS,614,716,676.3
