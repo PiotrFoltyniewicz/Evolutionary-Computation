@@ -27,15 +27,6 @@ namespace lab7
 
     Solution destroy(const Solution &solution, Destroy method, std::mt19937 &generator)
     {
-        if (solution.size() != SOLUTIONSIZE)
-            throw std::invalid_argument("Destroy requires a full 100-node cycle");
-        std::array<bool, PROBLEMSIZE> selected{};
-        for (int node : solution)
-        {
-            if (node < 0 || node >= PROBLEMSIZE || selected[node])
-                throw std::invalid_argument("Invalid cycle passed to destroy");
-            selected[node] = true;
-        }
         std::array<bool, SOLUTIONSIZE> removed{};
         if (method == Destroy::RandomNodes)
         {
@@ -50,8 +41,6 @@ namespace lab7
             int parts = 1;
             if (method == Destroy::MultipleSubpaths)
                 parts = std::uniform_int_distribution<int>(3, 5)(generator);
-            else if (method != Destroy::SingleSubpath)
-                throw std::invalid_argument("Unknown destroy operator");
             const auto lengths = partition(REMOVED_NODES, parts, generator);
             const auto gaps = partition(SOLUTIONSIZE - REMOVED_NODES, parts, generator);
             int position = std::uniform_int_distribution<int>(0, SOLUTIONSIZE - 1)(generator);
@@ -79,8 +68,6 @@ namespace lab7
                                         std::mt19937 &generator,
                                         std::chrono::duration<double, std::milli> budget)
     {
-        if (!std::isfinite(budget.count()) || budget.count() < 0)
-            throw std::invalid_argument("LNS needs a finite nonnegative time budget");
         using Clock = std::chrono::steady_clock;
         const auto start = Clock::now();
         const auto deadline = start + budget;

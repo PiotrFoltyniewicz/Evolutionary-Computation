@@ -14,8 +14,6 @@ F(S) = sum(cost[S[i]] + dist(S[i], S[(i+1) mod 100]), i=0..99)
 
 ### Large neighborhood search
 
-All six variants start from a random permutation of the 200 nodes truncated to 100 nodes. Apply steepest local search to this initial solution. Every main-loop iteration destroys a copy of the incumbent, repairs it to 100 nodes, optionally applies local search, and accepts a strict decrease in F. Rejected candidates leave the incumbent available for the next iteration.
-
 ```text
 LNS(operator, useLS, cycleRepair, rng, T)
     start = NOW()
@@ -44,7 +42,7 @@ LNS(operator, useLS, cycleRepair, rng, T)
 
 ### Random node removal
 
-Shuffle all 100 cycle positions and delete the first 30 positions. Every size-30 subset has equal probability. Read survivors in their original cyclic order and connect consecutive survivors, including the last and first nodes. The operator returns a 70-node partial cycle.
+Shuffle all 100 cycle positions and delete the first 30 positions. Read survivors in their original cyclic order and connect consecutive survivors, including the last and first nodes.
 
 ```text
 RANDOM_NODES(S, rng)
@@ -55,7 +53,7 @@ RANDOM_NODES(S, rng)
 
 ### Single random subpath removal
 
-Choose a start uniformly among the 100 cycle positions and delete the next 30 consecutive positions modulo 100. This includes subpaths crossing the stored last-to-first boundary. Keep the other 70 nodes in cyclic order.
+Choose a start uniformly among the 100 cycle positions and delete the next 30 consecutive positions modulo 100. Connect survivors.
 
 ```text
 SINGLE_SUBPATH(S, rng)
@@ -66,9 +64,7 @@ SINGLE_SUBPATH(S, rng)
 
 ### Multiple random subpath removal
 
-Choose k uniformly from 3, 4 and 5. Split the 30 removed positions into k positive random lengths, and independently split the 70 surviving positions into k positive gap lengths. Choose a random origin and alternate a deleted subpath and a survivor gap around the cycle. Positive gaps ensure exactly k disjoint deleted subpaths. The total number removed is always 30.
-
-A positive composition of a total into k parts is sampled by shuffling the boundaries from 1 through total-1, taking k-1 boundaries, sorting them with 0 and total, and returning consecutive differences. This samples positive ordered compositions uniformly. Survivors retain their cyclic order.
+Choose k uniformly from 3, 4 and 5. Split the 30 removed positions into k random lengths, and independently split the 70 surviving positions into k gap lengths. Choose a random origin and alternate a deleted subpath and a survivor gap around the cycle. Gaps ensure exactly k disjoint deleted subpaths. Connect survivors.
 
 ```text
 MULTIPLE_SUBPATHS(S, rng)
@@ -87,11 +83,11 @@ MULTIPLE_SUBPATHS(S, rng)
 
 ### Weighted-regret repair
 
-Choose the greedy heuristic with the lowest earlier mean objective separately for each instance, considering construction methods from labs 1 and 2, including regret. TSPA uses weighted-regret greedy-cycle insertion, with an earlier mean of 73353.51. TSPB uses weighted-regret open-path insertion, with an earlier mean of 55698.34. This choice is fixed from the historical comparisons saved in lab6 and is shared by all six variants on that instance.
+Choose the greedy heuristic with the lowest earlier mean objective separately for each instance. TSPA uses weighted-regret greedy-cycle insertion. TSPB uses weighted-regret nearest-neighbor insertion.
 
-For TSPA, consider every edge of the partial cycle, including the closing edge. For TSPB, rotate the 70 survivors by a uniformly random offset and treat them as an open path. This randomly chooses which survivor edge is broken. Consider all internal insertion positions and the two endpoints, then close the completed path for objective evaluation.
+For TSPA, consider every edge of the partial cycle, including the closing edge. For TSPB, rotate the 70 survivors by a uniformly random offset and treat them as an open path, so starting/ending nodes change every time. Consider all internal insertion positions and the two endpoints, then close the completed path for objective evaluation.
 
-For each unselected node v, find the two smallest insertion costs b1 and b2 over available positions. Insertion cost includes the cost of v. An internal insertion between a and b costs dist(a,v)+dist(v,b)-dist(a,b)+cost[v]. Insertion at an open endpoint costs one added edge plus cost[v]. Regret is b2-b1. Choose the node minimizing 0.5*b1-0.5*regret and insert it at its cheapest position. Equal scores favor the lower node ID, and equal insertion costs favor the first enumerated position. Repeat until 100 nodes are selected. Removed nodes and nodes outside the previous incumbent are all eligible.
+For each unselected node v, find the two smallest insertion costs b1 and b2 over available positions. Insertion at an open endpoint costs one added edge plus cost[v]. Regret is b2-b1. Choose the node minimizing 0.5*b1-0.5*regret and insert it at its cheapest position. Equal scores favor the lower node ID, and equal insertion costs favor the first enumerated position.
 
 ```text
 REPAIR(S, cycle)
@@ -112,11 +108,7 @@ REPAIR(S, cycle)
     return F(S)
 ```
 
-The implementation calls the existing lab2 weighted-regret selector to complete a partial solution.
-
 ### Steepest local search
-
-Use the move-list steepest search from lab5, also used by MSLS and ILS in lab6. It searches node replacements with unselected nodes and intra-cycle 2-opt edge exchanges. A replacement includes the difference in node costs. A 2-opt move reverses the segment between two nonadjacent cycle edges. At each step the search applies the lowest-delta applicable improving move. The move list is rebuilt when no stored improving move applies. Search ends when a freshly rebuilt list also has no applicable improving move.
 
 ```text
 LS(S)
@@ -133,18 +125,6 @@ LS(S)
         value += move.delta
 ```
 
-The full move descriptors, validity checks and reversal handling are documented in the lab6 report. The + LS variants apply this search after every repair. Every variant applies it once before the main loop.
-
-### Computational experiment
-
-Run each of the three destroy operators with and without post-repair local search, giving six methods. Use exactly 30% removal. Run each method 20 times on TSPA and TSPB, giving 240 runs. Seed run r on instance i with 20261117+1000*i+r, where i=0 for TSPA, i=1 for TSPB and r ranges from 0 to 19. All six variants share the same random start and initial local optimum for a given instance and run. Each variant then uses its own generator object.
-
-Set each instance's time budget to the average duration of its 20 complete MSLS runs saved in lab6. TSPA uses 470.65018675 ms and TSPB uses 469.3097464 ms. These are the budgets used by the C++ runner. Timing starts before initial solution generation and includes initial local search, destroy, repair, and subsequent local search. Complete each iteration started before the deadline, so a run can exceed its limit by the remainder of one iteration.
-
-Count complete main-loop iterations, excluding initial local search. Without post-repair LS, the LS count is 1. With post-repair LS, it is iterations+1. Record strict accepted improvements, initial objective, final cycle, seed, elapsed time and budget in the raw results.
-
-Earlier MSLS and ILS results come from lab6. Earlier greedy and local-search comparisons use lab6's saved comparison table, where the methods were rerun on the same machine. Select the best greedy and the best local search by mean objective on each instance and include both instance winners. Also include the exact move-list LS kernel. The historical construction and single-start LS summaries each cover 200 starts, while each metaheuristic summary covers 20 runs. Timing figures describe the saved experiments and depend on compiler and machine load.
-
 ## Results
 
 ### Objective function values
@@ -158,13 +138,15 @@ Entries show mean (minimum - maximum). Lower values are better.
 | LNS Single Subpath | 72241.60 (71827 - 73064) | 49588.05 (49016 - 50597) |
 | LNS Single Subpath + LS | 72097.80 (71827 - 72969) | 48792.25 (48379 - 49537) |
 | LNS Multiple Subpaths | 71780.90 (71704 - 71858) | 49003.65 (48466 - 49939) |
-| LNS Multiple Subpaths + LS | 71715.50 (71650 - 71870) | 48578.55 (48218 - 49260) |
-| Greedy Cycle heuristics with a weighted sum criterion (lab 2) | 73353.51 (72011 - 75532) | 57866.33 (52731 - 63370) |
-| NN heuristics with a weighted sum criterion (lab 2) | 75561.20 (72419 - 78504) | 55698.34 (50485 - 61406) |
-| Greedy Edges Greedy (lab 3) | 72989.61 (71955 - 74861) | 53171.39 (49537 - 60266) |
-| Move List Edges Random (lab 5) | 76245.98 (73815 - 80002) | 52471.51 (50420 - 55821) |
+| LNS Multiple Subpaths + LS | **71715.50** (**71650** - 71870) | **48578.55** (**48218** - 49260) |
 | MSLS (lab 6) | 73608.50 (73386 - 74027) | 50296.75 (49926 - 50760) |
-| ILS (lab 6) | 71695.15 (71534 - 71998) | 48346.10 (48152 - 48551) |
+| ILS (lab 6) | **71695.15** (**71534** - 71998) | **48346.10** (**48152** - 48551) |
+| Move List Edges Random LS (lab 5) | 76245.98 (73815 - 80002) | 52471.51 (50420 - 55821) |
+| Greedy Cycle with a weighted sum (lab 2) | 73353.51 (72011 - 75532) | 57866.33 (52731 - 63370) |
+| NN with a weighted sum (lab 2) | 75561.20 (72419 - 78504) | 55698.34 (50485 - 61406) |
+
+
+
 
 ### Running times
 
@@ -175,15 +157,16 @@ Mean milliseconds per complete run.
 | LNS Random Nodes | 850.340871 | 835.192614 |
 | LNS Random Nodes + LS | 850.271179 | 835.641578 |
 | LNS Single Subpath | 850.351831 | 835.249443 |
-| LNS Single Subpath + LS | 850.318938 | 835.420002 |
+| LNS Single Subpath + LS | 850.318938 | 835.420002 | 
 | LNS Multiple Subpaths | 850.446852 | 835.212920 |
 | LNS Multiple Subpaths + LS | 850.570457 | 835.251685 |
-| Greedy Cycle heuristics with a weighted sum criterion (lab 2) | 1.473993 | 1.453700 |
-| NN heuristics with a weighted sum criterion (lab 2) | 1.497114 | 1.497218 |
-| Greedy Edges Greedy (lab 3) | 2.079999 | 2.803250 |
-| Move List Edges Random (lab 5) | 1.165003 | 1.158196 |
 | MSLS (lab 6) | 849.712655 | 834.701505 |
 | ILS (lab 6) | 850.016989 | 834.894892 |
+| Move List Edges Random LS (lab 5) | 1.165003 | 1.158196 |
+| Greedy Cycle heuristics with a weighted sum criterion (lab 2) | 1.473993 | 1.453700 |
+| NN heuristics with a weighted sum criterion (lab 2) | 1.497114 | 1.497218 |
+
+
 
 ### Number of main-loop iterations
 
@@ -456,10 +439,6 @@ Objective **48218**, run **10** (zero-based).
 171  99  88 179  87  82  51  85  59  73
 ```
 
-## Solution checking
-
-All 240 exported cycles contain 100 distinct valid node IDs. Independently recomputed objectives and summary statistics match the CSV records. Each group contains exactly 20 runs. Recorded seeds, shared initial local optima, time budgets, elapsed times, accepted improvements and LS counts are consistent. All 120 final cycles from + LS runs have no improving node replacement or 2-opt move in the full neighborhood. All 12 plotted cycles attain their group minima.
-
 ## Source code
 
 - [LNS and destroy operators](../src/lns.cpp)
@@ -471,36 +450,14 @@ All 240 exported cycles contain 100 distinct valid node IDs. Independently recom
 - [Historical MSLS/ILS results and budgets](../../lab6/out/generated/summary.csv)
 - [Historical construction and LS comparisons](../../lab6/out/generated/comparison_summary.csv)
 
-- [All 240 raw results](generated/results.csv)
-- [Summary](generated/summary.csv)
-- [Main-loop iterations](generated/iterations.csv)
-- [Comparison summaries](generated/comparison_summary.csv)
-- [Best solutions](generated/best_solutions.csv)
-
 ## Conclusions
 
-On TSPA, LNS Multiple Subpaths + LS has the lowest LNS mean objective of 71715.50, with a best value of 71650. Its mean run completes 560.45 main-loop iterations.
+LNS Multiple Subpaths + LS achieves the lowest mean objective among LNS variants on both instances:
+| Instance | Mean | Best | Mean iterations | Mean vs. MSLS | Mean vs. ILS |
+|---|---:|---:|---:|---:|---:|
+| TSPA | 71715.50 | 71650 | 560.45 | 2.572% lower | 0.028% higher |
+| TSPB | 48578.55 | 48218 | 676.30 | 3.416% lower | 0.481% higher |
 
-Its mean is 2.572% lower than MSLS's 73608.50. The best MSLS value is 73386.
+Post-repair LS improves the mean objective for every destroy operator, while reducing iteration counts. Across 20 paired runs per operator, it wins 12–18 times on TSPA and 17–20 times on TSPB.
 
-Its mean is 0.028% higher than ILS's 71695.15. The best ILS value is 71534.
-
-For Random Nodes on TSPA, post-repair LS changes the mean from 72274.55 to 72194.65. Mean iterations change from 798.25 to 675.10. In 20 comparisons with the same initial local optimum, the + LS variant wins 12, ties 1, and loses 7.
-
-For Single Subpath on TSPA, post-repair LS changes the mean from 72241.60 to 72097.80. Mean iterations change from 761.85 to 627.55. In 20 comparisons with the same initial local optimum, the + LS variant wins 14, ties 1, and loses 5.
-
-For Multiple Subpaths on TSPA, post-repair LS changes the mean from 71780.90 to 71715.50. Mean iterations change from 714.45 to 560.45. In 20 comparisons with the same initial local optimum, the + LS variant wins 18, ties 0, and loses 2.
-
-On TSPB, LNS Multiple Subpaths + LS has the lowest LNS mean objective of 48578.55, with a best value of 48218. Its mean run completes 676.30 main-loop iterations.
-
-Its mean is 3.416% lower than MSLS's 50296.75. The best MSLS value is 49926.
-
-Its mean is 0.481% higher than ILS's 48346.10. The best ILS value is 48152.
-
-For Random Nodes on TSPB, post-repair LS changes the mean from 49168.25 to 48952.40. Mean iterations change from 777.00 to 603.60. In 20 comparisons with the same initial local optimum, the + LS variant wins 18, ties 0, and loses 2.
-
-For Single Subpath on TSPB, post-repair LS changes the mean from 49588.05 to 48792.25. Mean iterations change from 650.85 to 622.00. In 20 comparisons with the same initial local optimum, the + LS variant wins 20, ties 0, and loses 0.
-
-For Multiple Subpaths on TSPB, post-repair LS changes the mean from 49003.65 to 48578.55. Mean iterations change from 825.85 to 676.30. In 20 comparisons with the same initial local optimum, the + LS variant wins 17, ties 0, and loses 3.
-
-Each LNS variant runs under the same per-instance historical MSLS budget. Iteration counts measure the search performed within that budget. The two instances use different repair variants, so comparisons between destroy operators are made within each instance. These are descriptive results over the measured runs.
+Overall, LNS Multiple Subpaths + LS outperforms MSLS on average and approaches ILS. ILS retains lower mean and best objectives on both instances.
