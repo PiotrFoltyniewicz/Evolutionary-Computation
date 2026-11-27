@@ -172,19 +172,34 @@ def result_tables(charts, best_values, references):
 
 
 def conclusions(charts):
+    magnitudes = {key: abs(chart.coefficient) for key, chart in charts.items()}
+    paragraphs = []
+    if all(magnitudes[i, "average", "edges"] > magnitudes[i, "average", "nodes"] for i in INSTANCES):
+        paragraphs.append("For average similarity, common edges are more strongly associated with a low "
+                          "objective value than common nodes on both instances. Better optima tend to use "
+                          "the connections that recur across the sample.")
+
+    reference_findings = []
+    if all(magnitudes[i, comparison, "nodes"] > magnitudes[i, comparison, "edges"]
+           for i in INSTANCES for comparison in ("best_local", "best_method")):
+        reference_findings.append("With either single reference, common nodes have the stronger correlation "
+                                  "on both instances. Better optima tend to share more of the reference's "
+                                  "selected nodes even when they connect them differently.")
+    if all(magnitudes[i, "best_method", m] > magnitudes[i, "best_local", m]
+           for i in INSTANCES for m in MEASURES):
+        reference_findings.append("The ILS cycle gives a stronger correlation for both measures than the best "
+                                  "of the 1000 optima, so the choice of reference matters for this comparison.")
+    if reference_findings:
+        paragraphs.append(" ".join(reference_findings))
+
     negative = sum(chart.coefficient < 0 for chart in charts.values())
-    direction = ("All correlations are negative. Lower objective values tend to go with higher similarity."
+    direction = ("The negative correlations on both instances support global convexity in the sampled optima."
                  if negative == len(charts)
                  else f"{negative} of the {len(charts)} correlations are negative.")
-    statements = [direction]
-    for instance in INSTANCES:
-        strongest = max((chart for chart in charts.values() if chart.instance == instance),
-                        key=lambda chart: abs(chart.coefficient))
-        comparison = COMPARISONS[strongest.comparison]
-        statements.append(f"{instance} has the strongest correlation for "
-                          f"{comparison[0].lower() + comparison[1:]} using "
-                          f"{MEASURES[strongest.measure].lower()} (r = {strongest.coefficient:.3f}).")
-    return " ".join(statements)
+    paragraphs.append(direction + " The spread in the plots shows that solutions with similar overlap can "
+                      "still differ substantially in cost. Similarity indicates promising parts of the "
+                      "search space, with the objective needed to rank individual cycles.")
+    return paragraphs
 
 
 def markdown_table(rows):
@@ -192,7 +207,7 @@ def markdown_table(rows):
     return "\n".join("| " + " | ".join(map(str, row)) + " |" for row in lines)
 
 
-def write_markdown(charts, objectives, correlations, conclusion):
+def write_markdown(charts, objectives, correlations, conclusion_paragraphs):
     sections = [f"# {TITLE}", AUTHORS, "## Problem description", *DESCRIPTION, "## Pseudocode",
                 SIMILARITY_NOTE, f"```text\n{PSEUDOCODE}\n```", "## Results",
                 "### Objective function values", markdown_table(objectives),
@@ -205,11 +220,11 @@ def write_markdown(charts, objectives, correlations, conclusion):
                 chart = charts[instance, comparison, measure]
                 sections.append(f"![{instance} - {label} - {name}](generated/{chart.filename})")
     links = "\n".join(f"- [{label}]({path})" for label, path in SOURCES)
-    sections.extend(["## Source code", links, "## Conclusions", conclusion])
+    sections.extend(["## Conclusions", *conclusion_paragraphs, "## Source code", links])
     (OUT / "report.md").write_text("\n\n".join(sections) + "\n", encoding="utf-8")
 
 
-def write_pdf(charts, objectives, correlations, conclusion):
+def write_pdf(charts, objectives, correlations, conclusion_paragraphs):
     styles = getSampleStyleSheet()
     styles["Code"].fontSize = 8
     styles["Code"].leading = 10
@@ -249,8 +264,7 @@ def write_pdf(charts, objectives, correlations, conclusion):
              paragraph(SIMILARITY_NOTE), Preformatted(PSEUDOCODE, styles["Code"]),
              paragraph("Results", "Heading1"), paragraph("Objective function values", "Heading2"),
              table(objectives, [327, 86, 86]), paragraph("Pearson correlation coefficients", "Heading2"),
-             table(correlations, [185, 142, 86, 86]), paragraph("Conclusions", "Heading1"),
-             paragraph(conclusion)]
+             table(correlations, [185, 142, 86, 86])]
     for instance in INSTANCES:
         story.extend([PageBreak(), paragraph(f"Visualizations - {instance}", "Heading1")])
         images = [[Image(str(GENERATED / charts[instance, comparison, measure].filename),
@@ -261,7 +275,9 @@ def write_pdf(charts, objectives, correlations, conclusion):
             ("RIGHTPADDING", (0, 0), (-1, -1), 0),
             ("ALIGN", (0, 0), (-1, -1), "CENTER"),
         ])))
-    story.extend([paragraph("Source code", "Heading2"),
+    story.extend([PageBreak(), paragraph("Conclusions", "Heading1"),
+                  *(paragraph(text) for text in conclusion_paragraphs),
+                  paragraph("Source code", "Heading1"),
                   *(paragraph(f"{label} ({path})") for label, path in SOURCES)])
     document.build(story, onFirstPage=footer, onLaterPages=footer)
 
@@ -287,9 +303,9 @@ def main():
                     chart = charts[instance, comparison, measure]
                     writer.writerow([instance, comparison, measure, chart.points, chart.coefficient])
     objectives, correlations = result_tables(charts, best_values, references)
-    conclusion = conclusions(charts)
-    write_markdown(charts, objectives, correlations, conclusion)
-    write_pdf(charts, objectives, correlations, conclusion)
+    conclusion_paragraphs = conclusions(charts)
+    write_markdown(charts, objectives, correlations, conclusion_paragraphs)
+    write_pdf(charts, objectives, correlations, conclusion_paragraphs)
 
 
 if __name__ == "__main__":

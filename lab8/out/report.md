@@ -89,13 +89,17 @@ for each instance:
 
 ![TSPB - Similarity to ILS (lab 6) - Common selected nodes](generated/TSPB_best_method_nodes.png)
 
+## Conclusions
+
+For average similarity, common edges are more strongly associated with a low objective value than common nodes on both instances. Better optima tend to use the connections that recur across the sample.
+
+With either single reference, common nodes have the stronger correlation on both instances. Better optima tend to share more of the reference's selected nodes even when they connect them differently. The ILS cycle gives a stronger correlation for both measures than the best of the 1000 optima, so the choice of reference matters for this comparison.
+
+The negative correlations on both instances support global convexity in the sampled optima. The spread in the plots shows that solutions with similar overlap can still differ substantially in cost. Similarity indicates promising parts of the search space, with the objective needed to rank individual cycles.
+
 ## Source code
 
 - [Experiment runner](../src/lab8_experiment.cpp)
 - [Greedy local search](../../lab3/src/local_search_methods.cpp)
 - [ILS reference cycles](../../lab6/out/generated/best_solutions.csv)
 - [Similarity calculations and report generator](../src/create_report.py)
-
-## Conclusions
-
-All correlations are negative. Lower objective values tend to go with higher similarity. TSPA has the strongest correlation for similarity to ILS (lab 6) using common selected nodes (r = -0.687). TSPB has the strongest correlation for similarity to ILS (lab 6) using common selected nodes (r = -0.673).
