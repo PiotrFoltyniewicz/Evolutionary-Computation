@@ -1,0 +1,13 @@
+instance,comparison,measure,points,pearson_r
+TSPA,average,edges,1000,-0.6221083869395369
+TSPA,average,nodes,1000,-0.42349453702310597
+TSPA,best_local,edges,999,-0.5564857855992773
+TSPA,best_local,nodes,999,-0.6247375198532188
+TSPA,best_method,edges,1000,-0.6082657460605128
+TSPA,best_method,nodes,1000,-0.6869561468805354
+TSPB,average,edges,1000,-0.6372412053988102
+TSPB,average,nodes,1000,-0.4576847358178724
+TSPB,best_local,edges,999,-0.4859562142047577
+TSPB,best_local,nodes,999,-0.5265550927711965
+TSPB,best_method,edges,1000,-0.6041324419109348
+TSPB,best_method,nodes,1000,-0.672801754141558

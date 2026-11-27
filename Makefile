@@ -23,8 +23,10 @@ $(1)/out/main: $(wildcard $(1)/src/*.cpp) $(wildcard $(1)/src/*.hpp) $(COMMON_SO
 run-$(1): $(1)
 	./$(1)/out/main
 
+ifneq ($(1),lab8)
 visualize-$(1):
 	$$(PYTHON) common/src/visualize_experiments.py $(1)
+endif
 endef
 
 $(foreach lab,$(LABS),$(eval $(call LAB_RULES,$(lab))))
@@ -60,3 +62,13 @@ lab7/out/main: CPPFLAGS += -Ilab2/src -Ilab5/src -Ilab6/src
 .PHONY: report-lab7
 report-lab7:
 	$(PYTHON) lab7/src/create_report.py
+
+# Lab 8 reuses the greedy local search from lab 3.
+lab8/out/main: lab3/src/local_search_methods.cpp lab3/src/local_search_methods.hpp
+lab8/out/main: CPPFLAGS += -Ilab3/src
+
+.PHONY: report-lab8
+visualize-lab8: report-lab8
+
+report-lab8:
+	$(PYTHON) lab8/src/create_report.py
